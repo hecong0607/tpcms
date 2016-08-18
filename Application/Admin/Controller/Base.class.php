@@ -3,6 +3,7 @@ namespace Admin\Controller;
 
 use Admin\Model\AdminModel;
 use Admin\Model\AdminRoleModel;
+use Admin\Model\UserModel;
 use Think\Controller;
 
 /**
@@ -12,8 +13,15 @@ use Think\Controller;
  */
 class Base extends Controller
 {
-
 	function __construct() {
+		ECHO 1;
+		$user = new UserModel();
+		$where['id'] = ':id';
+		$bind[':id'] = array(1,\PDO::PARAM_INT);
+		$result = $user->where($where)->bind($bind)->find();
+		var_dump($result,$user->getLastSql());die;
+
+
 		parent::__construct();
 		$this->checkIsLogin();
 	}
