@@ -3,7 +3,6 @@ namespace Admin\Controller;
 
 use Admin\Model\AdminModel;
 use Admin\Model\AdminRoleModel;
-use Admin\Model\UserModel;
 use Think\Controller;
 
 /**
