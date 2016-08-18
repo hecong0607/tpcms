@@ -6,7 +6,7 @@
 		<meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
 		<meta name="renderer" content="webkit|ie-comp|ie-stand">
 		<meta name="robots" content="noindex,nofollow">
-		<link href="__PUBLIC__/admin/css/adminlogin.css" rel="stylesheet" />
+		<link href="__PUBLIC__/admin/css/adminLogin.css" rel="stylesheet" />
 		<style>
 			#login_btn_wraper{
 				text-align: center;
