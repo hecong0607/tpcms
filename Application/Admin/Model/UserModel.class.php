@@ -71,7 +71,7 @@ class UserModel extends Model
 	//不需要验证的路由,check=true不需要验证
 	private $Router = array(
 		array('module' => 'Admin', 'controller' => 'Public', 'action' => 'login', 'check' => true),
-		array('module' => 'Admin', 'controller' => 'Public', 'action' => 'dologin', 'check' => true),
+		array('module' => 'Admin', 'controller' => 'Public', 'action' => 'doLogin', 'check' => true),
 		array('module' => 'Admin', 'controller' => 'Public', 'action' => 'verify', 'check' => true),
 		array('module' => 'Admin', 'controller' => 'Home', 'action' => 'index', 'check' => false),
 	);
