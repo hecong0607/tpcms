@@ -1,5 +1,6 @@
 <?php
 namespace Common\Controls;
+
 /**
  * Class Logic
  * @package Controls\Helps
@@ -12,7 +13,7 @@ class Logic
 
 	function __construct() {
 		//初始化消息类成员
-		$this->msg = new \Controls\Helps\Msg();
+		$this->msg = new Msg();
 	}
 
 }

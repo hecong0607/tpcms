@@ -14,12 +14,12 @@
 			<div class="control-group">
 				<label class="control-label">新密码：</label>
 				<div class="controls">
-					<input type="password" name="newPass"  id="newPass"/>
+					<input type="password" name="password"  id="password"/>
 					<span class="form-required"></span>
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label">重复新密码：</label>
+				<label class="control-label">确认密码：</label>
 				<div class="controls">
 					<input type="password" name="againPass"  id="againPass"/>
 					<span class="form-required"></span>

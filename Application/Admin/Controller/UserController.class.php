@@ -1,9 +1,10 @@
 <?php
 namespace Admin\Controller;
 
-use Admin\Model\AdminModel;
-use Admin\Model\AdminRoleModel;
+use Admin\Model\Form\User\AdminSave;
+use Admin\Model\Form\User\ChangePasswordForm;
 use Admin\Model\Form\User\InfoForm;
+use Admin\Model\RoleModel;
 use Admin\Model\UserModel;
 
 class UserController extends Base
@@ -69,7 +70,7 @@ class UserController extends Base
 	 */
 	protected function doSave($id = '') {
 		if (IS_POST) {
-			$userModel = new UserModel();
+			$userModel = new AdminSave();
 			$userModel->id = $id;
 			$userModel->username = I('post.username');
 			$userModel->password = I('post.password');
@@ -93,7 +94,7 @@ class UserController extends Base
 	 */
 	protected function save($id = '') {
 		$userModel = new UserModel();
-		$roleModel = new AdminRoleModel();
+		$roleModel = new RoleModel();
 		$roleData = $roleModel->getRoleAllForSelect();
 		$msgData = $userModel->getData($id);
 		$this->assign('data', $msgData->data);
@@ -129,11 +130,15 @@ class UserController extends Base
 		}
 	}
 
+
+	/*****************************
+	 *    用户修改
+	 ****************************/
 	/**
 	 * 登录者信息修改页面
 	 */
 	public function infoAction() {
-		$userModel = new UserModel();
+		$userModel = new InfoForm();
 		$infoMsg = $userModel->getMyData();
 		$this->assign('data', $infoMsg->data);
 		$this->display('User/info');
@@ -169,11 +174,11 @@ class UserController extends Base
 	 * 密码修改--操作
 	 */
 	public function setPassAction() {
-		$userModel = new AdminModel();
-		$oldPass = I('post.oldPass');
-		$newPass = I('post.newPass');
-		$againPass = I('post.againPass');
-		$userMsg = $userModel->setMyPass($oldPass,$newPass,$againPass);
+		$userModel = new ChangePasswordForm();
+		$userModel->oldPass = I('post.oldPass');
+		$userModel->password = I('post.password');
+		$userModel->againPass = I('post.againPass');
+		$userMsg = $userModel->setMyPass();
 		if ($userMsg->status) {
 			$this->success($userMsg->content);
 		} else {

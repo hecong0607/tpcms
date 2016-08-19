@@ -1,5 +1,5 @@
 <?php
-namespace Controls\Helps;
+namespace Common\Controls;
 /**
  * Class Check
  * @package Controls\Helps

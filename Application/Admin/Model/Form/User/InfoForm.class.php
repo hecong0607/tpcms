@@ -15,19 +15,20 @@ use Admin\Model\UserModel;
 class InfoForm extends UserModel
 {
 	protected $_validate = array(
-		array('realname','require','昵称不可为空！'), //默认情况下用正则进行验证
-		array('email','require','邮箱不可为空！'), //默认情况下用正则进行验证
+		array('realname', 'require', '昵称不可为空！'), //默认情况下用正则进行验证
+		array('email', 'require', '邮箱不可为空！'), //默认情况下用正则进行验证
 	);
+
 	/**
 	 * 个人信息修改操作
 	 * @return \Controls\Helps\Msg
 	 */
 	public function setMyInfo() {
-		if(!$this->create()){
+		if (!$this->create($this->data)) {
 			$this->msg->status = false;
 			$this->msg->content = $this->getError();
-		}else{
-			$this->id = session('admin')['id'];
+		} else {
+			$this->id = $this->getMyId();
 			$result = $this->save();
 			if ($result === false) {
 				$this->msg->status = false;

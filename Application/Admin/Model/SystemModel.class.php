@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Model;
 
-use Controls\Apps\Logic;
+use Common\Controls\Logic;
 
 class SystemModel extends Logic
 {

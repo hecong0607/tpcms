@@ -4,7 +4,6 @@ namespace Admin\Model;
 use Common\Controls\Model;
 
 /**
- * 管理员用户类
  * Class UserModel
  * @package Admin\Model
  *
@@ -20,6 +19,7 @@ use Common\Controls\Model;
  * @property integer $login_count
  * @property integer $status
  * @property integer $role
+ *
  */
 class UserModel extends Model
 {
@@ -27,44 +27,11 @@ class UserModel extends Model
 	const black = 2;             //黑名单
 	protected $tableName = 'admin_user';
 
-	protected $_validate = array(
-
-	);
-
-	/**************************
-	 *        增
-	 **************************/
-
-	/**************************
-	 *        删
-	 **************************/
-
-	/**************************
-	 *        改
-	 **************************/
-
-	/**************************
-	 *        查
-	 **************************/
-
-	/**
-	 * 通过用户名获取用户信息
-	 * @param $username
-	 * @return mixed
-	 */
-	private function modelGetUserByName($username) {
-		$where = [
-			'username' => $username,
-			'status'   => self::normal,
-		];
-		$data = $this->where($where)->find();
-		return $data;
-	}
-
+	const timeLogin = 7200;
 
 	/********************************************
 	 *********************************************
-	 *         逻辑数据处理
+	 *          用户操作
 	 ********************************************
 	 ********************************************/
 
@@ -76,23 +43,8 @@ class UserModel extends Model
 		array('module' => 'Admin', 'controller' => 'Home', 'action' => 'index', 'check' => false),
 	);
 
-	const timeLogin = 7200;
-
 	/**
-	 * 验证当前是否登录
-	 * @return \Controls\Helps\Msg
-	 */
-	public function checkIsLogin() {
-		$result = session('admin');
-		if (empty($result)) {
-			$this->msg->status = false;
-		} else {
-			$this->msg->status = true;
-		}
-		return $this->msg;
-	}
-
-	/**
+	 * 可能需要移除，移至base中
 	 * 当前是否是不需要验证的
 	 * @return \Controls\Helps\Msg
 	 */
@@ -108,6 +60,20 @@ class UserModel extends Model
 			}
 		}
 		return $this->msg;
+	}
+
+	/**
+	 * 通过用户名获取用户信息
+	 * @param $username
+	 * @return mixed
+	 */
+	protected function modelGetUserByName($username) {
+		$where = [
+			'username' => $username,
+			'status'   => self::normal,
+		];
+		$data = $this->where($where)->find();
+		return $data;
 	}
 
 	/**
@@ -142,7 +108,7 @@ class UserModel extends Model
 		session(array('name' => 'session_id', 'expire' => 7200));
 		session('admin', $data);
 		//获取并保存登录者的权限信息
-		$roleModel = new AdminRoleModel();
+		$roleModel = new RoleModel();
 		$msgRole = $roleModel->getDataById($data['role']);
 		session('role', $msgRole->data);
 		//修改登录次数、时间和ip
@@ -152,7 +118,21 @@ class UserModel extends Model
 			'login_count' => (int)$data['login_count'] + 1,
 		);
 		$this->id = $data['id'];
-		$this->modelDoSave($updateData);
+		$this->save($updateData);
+	}
+
+	/**
+	 * 验证当前是否登录
+	 * @return \Controls\Helps\Msg
+	 */
+	public function checkIsLogin() {
+		$result = session('admin');
+		if (empty($result)) {
+			$this->msg->status = false;
+		} else {
+			$this->msg->status = true;
+		}
+		return $this->msg;
 	}
 
 	/**
@@ -161,7 +141,37 @@ class UserModel extends Model
 	public function logout() {
 		session('admin', null);
 		session('role', null);
+		$this->msg->status = true;
+		$this->msg->content = '退出成功！';
+		return $this->msg;
 	}
+
+	/**
+	 * 获取登录者的信息
+	 * @return \Controls\Helps\Msg
+	 */
+	public function getMyData() {
+		$admin = session('admin');
+		$this->id = (int)$admin['id'];
+		$this->msg->data = $this->find();
+		$this->msg->status = empty($this->msg->data) ? false : true;
+		return $this->msg;
+	}
+
+	/**
+	 * 获取登录者id
+	 * @return int
+	 */
+	protected function getMyId() {
+		$admin = session('admin');
+		return empty($admin['id']) ? 0 : $admin['id'];
+	}
+
+	/********************************************
+	 *********************************************
+	 *         管理员操作
+	 ********************************************
+	 ********************************************/
 
 	/**
 	 * 获取数据，并分页，返回数据
@@ -186,20 +196,11 @@ class UserModel extends Model
 	 * @return \Controls\Helps\Msg
 	 */
 	public function getData($id) {
-		$this->msg->data = $this->find($id);
+		$this->msg->data = $this->where(array('id'=>$id))->find();
 		$this->msg->status = empty($this->msg->data) ? false : true;
 		return $this->msg;
 	}
 
-	/**
-	 * 获取登录者的信息
-	 * @return \Controls\Helps\Msg
-	 */
-	public function getMyData() {
-		$admin = session('admin');
-		$id = (int)$admin['id'];
-		return $this->getData($id);
-	}
 
 	/**
 	 * 拉黑
@@ -240,60 +241,6 @@ class UserModel extends Model
 	}
 
 	/**
-	 * 保存操作（新增和修改）
-	 * @return \Controls\Helps\Msg
-	 */
-	public function doSave() {
-		$this->checkSave();
-		if ($this->msg->status == true) {
-			$data = array(
-				'username' => $this->username,
-				'phone'    => $this->phone,
-				'email'    => $this->email,
-				'role'     => $this->role,
-			);
-			if (!empty($this->password)) {
-				$data['password'] = md5(md5(md5($this->password)));
-			}
-			if (empty($this->id)) {
-				$result = $this->modelDoAdd($data);
-			} else {
-				$result = $this->modelDoSave($data);
-			}
-			if ($result === false) {
-				$this->msg->status = false;
-				$this->msg->content = '保存失败！';
-			} else {
-				$this->msg->status = true;
-				$this->msg->content = '保存成功';
-			}
-		}
-		return $this->msg;
-	}
-
-	/**
-	 * 验证保存的数据（新增和修改）
-	 */
-	protected function checkSave() {
-		$this->msg->status = true;
-		if (empty($this->username)) {
-			$this->msg->status = false;
-			$this->msg->content = '用户名不可为空！';
-			return;
-		}
-		if (empty($this->role)) {
-			$this->msg->status = false;
-			$this->msg->content = '角色不可以为空！';
-			return;
-		}
-		if (empty($this->id) && empty($this->password)) {
-			$this->msg->status = false;
-			$this->msg->content = '密码不可为空！';
-			return;
-		}
-	}
-
-	/**
 	 * 删除数据逻辑，返回删除结果
 	 * @param $id
 	 * @return \Controls\Helps\Msg
@@ -306,78 +253,6 @@ class UserModel extends Model
 		} else {
 			$this->msg->status = true;
 			$this->msg->content = '删除成功！';
-		}
-		return $this->msg;
-	}
-
-	/**
-	 * 个人信息修改操作
-	 * @return \Controls\Helps\Msg
-	 */
-	public function setMyInfo() {
-		if (empty($this->realname)) {
-			$this->msg->status = false;
-			$this->msg->content = '昵称不可为空！';
-		} else {
-			$data = array(
-				'realname' => $this->realname,
-				'phone'    => $this->phone,
-				'email'    => $this->email,
-				'qq'       => $this->qq,
-			);
-			$this->id = session('admin')['id'];
-			$result = $this->modelDoSave($data);
-			if ($result === false) {
-				$this->msg->status = false;
-				$this->msg->content = '保存失败！';
-			} else {
-				$this->msg->status = true;
-				$this->msg->content = '保存成功';
-			}
-		}
-		return $this->msg;
-	}
-
-	/**
-	 * 个人修密码修改
-	 * @param $oldPass
-	 * @param $newPass
-	 * @param $againPass
-	 * @return \Controls\Helps\Msg
-	 */
-	public function setMyPass($oldPass, $newPass, $againPass) {
-		if (empty($oldPass)) {
-			$this->msg->status = false;
-			$this->msg->content = '原始密码不可为空！';
-		} elseif (empty($newPass)) {
-			$this->msg->status = false;
-			$this->msg->content = '新密码不可为空！';
-		} elseif (empty($againPass)) {
-			$this->msg->status = false;
-			$this->msg->content = '重复新密码不可为空！';
-		} elseif ($newPass != $againPass) {
-			$this->msg->status = false;
-			$this->msg->content = '两次密码不一致！';
-		} else {
-			$this->id = session('admin')['id'];
-			$data = $this->modelGetDataById($this->id);
-			$pass = md5(md5(md5($oldPass)));
-			if (!empty($data) && $data['password'] == $pass) {
-				$data = array(
-					'password' => md5(md5(md5($newPass))),
-				);
-				$result = $this->modelDoSave($data);
-				if ($result === false) {
-					$this->msg->status = false;
-					$this->msg->content = '保存失败！';
-				} else {
-					$this->msg->status = true;
-					$this->msg->content = '保存成功';
-				}
-			} else {
-				$this->msg->status = false;
-				$this->msg->content = '原始密码不正确！';
-			}
 		}
 		return $this->msg;
 	}

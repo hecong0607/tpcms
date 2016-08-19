@@ -1,8 +1,8 @@
 <?php
 namespace Admin\Controller;
 
-use Admin\Model\AdminMenuRuleModel;
-use Admin\Model\AdminRoleModel;
+use Admin\Model\MenuRule;
+use Admin\Model\RoleModel;
 
 class RoleController extends Base
 {
@@ -40,7 +40,7 @@ class RoleController extends Base
 	 * 显示详情页面
 	 */
 	public function showAction() {
-		$roleModel = new AdminRoleModel();
+		$roleModel = new RoleModel();
 		$id = I('get.id', 0);
 		$msgData = $roleModel->getDataById($id);
 		$this->assign('data', $msgData->data);
@@ -51,7 +51,7 @@ class RoleController extends Base
 	 * 列表页面
 	 */
 	public function listAction() {
-		$roleModel = new AdminRoleModel();
+		$roleModel = new RoleModel();
 		$msgRole = $roleModel->getList();
 		$this->assign(array('list' => $msgRole->data['list'], 'page' => $msgRole->data['page']));
 		$this->display('Role/list');
@@ -62,7 +62,7 @@ class RoleController extends Base
 	 */
 	public function delAction() {
 		$id = I('get.id');
-		$roleModel = new AdminRoleModel();
+		$roleModel = new RoleModel();
 		$msgDel = $roleModel->del($id);
 		if ($msgDel->status == false) {
 			$this->error($msgDel->content);
@@ -76,14 +76,14 @@ class RoleController extends Base
 	 */
 	public function setPowerAction() {
 		$id = (int)I('get.id');
-		$roleModel = new AdminRoleModel();
+		$roleModel = new RoleModel();
 		$roleData = clone $roleModel->getDataById($id);
-		if($roleData->status == false){
-			$this->error($roleData->content,'Admin/Role/list');
-		}else{
-			$menuModel = new AdminMenuRuleModel();
+		if ($roleData->status == false) {
+			$this->error($roleData->content, 'Admin/Role/list');
+		} else {
+			$menuModel = new MenuRule();
 			$MenuList = clone $menuModel->getMenuAll();
-			$this->assign('roleData',$roleData->data);
+			$this->assign('roleData', $roleData->data);
 			$this->assign('ruleList', $MenuList->data);
 			$this->display('Role/setPower');
 		}
@@ -93,7 +93,7 @@ class RoleController extends Base
 	 * 设置权限操作
 	 */
 	public function doSetPowerAction() {
-		$roleModel = new AdminRoleModel();
+		$roleModel = new RoleModel();
 		$roleModel->id = I('post.id');
 		$roleModel->power = I('post.power');
 		$msgSet = $roleModel->setPowerForRole();
@@ -107,9 +107,9 @@ class RoleController extends Base
 
 	/**
 	 * 接收页面传递数据
-	 * @param AdminRoleModel $roleModel
+	 * @param RoleModel $roleModel
 	 */
-	protected function postData(AdminRoleModel &$roleModel) {
+	protected function postData(RoleModel &$roleModel) {
 		$roleModel->name = I('post.name');
 		$roleModel->status = I('post.status');
 		$roleModel->remark = I('post.remark');
@@ -121,7 +121,7 @@ class RoleController extends Base
 	 */
 	protected function doSave($id = '') {
 		if (IS_POST) {
-			$roleModel = new AdminRoleModel();
+			$roleModel = new RoleModel();
 			$roleModel->id = $id;
 			$this->postData($roleModel);
 			$msgSave = $roleModel->doSave();
@@ -140,7 +140,7 @@ class RoleController extends Base
 	 * @param string $id
 	 */
 	protected function save($id = '') {
-		$roleModel = new AdminRoleModel();
+		$roleModel = new RoleModel();
 		$msgData = $roleModel->getDataById($id);
 		$this->assign('data', $msgData->data);
 		$this->display('Role/save');

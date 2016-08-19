@@ -1,7 +1,7 @@
 <div class="sidebar" id="sidebar">
 	<!-- <div class="sidebar-shortcuts" id="sidebar-shortcuts">
 	</div> -->
-	<?php function getsubmenu($submenus, \Admin\Model\AdminRoleModel $roleModel) {
+	<?php function getsubmenu($submenus, \Admin\Model\RoleModel $roleModel) {
 		foreach ($submenus as $menu) {
 			$url = $menu['module'] . '/' . $menu['controller'] . '/' . $menu['action'];
 			$name = $menu['module'] . '_' . $menu['controller'] . '_' . $menu['action'];
@@ -33,7 +33,7 @@
 		}
 	}
 
-	function getsubmenu1($submenus, \Admin\Model\AdminRoleModel $roleModel) {
+	function getsubmenu1($submenus, \Admin\Model\RoleModel $roleModel) {
 		foreach ($submenus as $menu) {
 			$url = $menu['module'] . '/' . $menu['controller'] . '/' . $menu['action'];
 			$name = $menu['module'] . '_' . $menu['controller'] . '_' . $menu['action'];
@@ -63,7 +63,7 @@
 		}
 	}
 
-	function getsubmenu2($submenus, \Admin\Model\AdminRoleModel $roleModel) {
+	function getsubmenu2($submenus, \Admin\Model\RoleModel $roleModel) {
 		foreach ($submenus as $menu) {
 			$url = $menu['module'] . '/' . $menu['controller'] . '/' . $menu['action'];
 			$name = $menu['module'] . '_' . $menu['controller'] . '_' . $menu['action'];
@@ -82,7 +82,7 @@
 
 	<div id="nav_wraper" style="height: 907px; overflow: auto;">
 		<ul class="nav nav-list">
-			<?php  $roleModel = new \Admin\Model\AdminRoleModel();
+			<?php  $roleModel = new \Admin\Model\RoleModel();
 			getsubmenu($menu, $roleModel); ?>
 		</ul>
 	</div>

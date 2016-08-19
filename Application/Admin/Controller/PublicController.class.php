@@ -1,16 +1,15 @@
 <?php
 namespace Admin\Controller;
 
-
-use Admin\Model\AdminModel;
 use Admin\Model\UserModel;
+use \Common\Controls\Check;
 
 class PublicController extends Base
 {
 
 	//后台登陆界面
 	public function loginAction() {
-		
+
 		$this->display();
 	}
 
@@ -18,7 +17,7 @@ class PublicController extends Base
 	 * 登录操作
 	 */
 	public function doLoginAction() {
-		$msgVerify = \Controls\Helps\Check::verify(I('post.verify'));
+		$msgVerify = Check::verify(I('post.verify'));
 		if ($msgVerify->status == false) {
 			$this->error($msgVerify->content, U('Admin/Public/login'));
 			die();
@@ -26,7 +25,7 @@ class PublicController extends Base
 			$username = I('post.username');
 			$password = I('post.password');
 			$userModel = new UserModel();
-			$msgDoLogin = $userModel->doLogin($username, $password , $_SERVER['SERVER_ADDR']);
+			$msgDoLogin = $userModel->doLogin($username, $password, $_SERVER['SERVER_ADDR']);
 			if ($msgDoLogin->status == true) {
 				$this->success($msgDoLogin->content, U('Admin/Home/index'));
 				die();
@@ -41,9 +40,9 @@ class PublicController extends Base
 	 * 推出登录操作
 	 */
 	public function logoutAction() {
-		$userModel = new AdminModel();
+		$userModel = new UserModel();
 		$userModel->logout();
-		$this->success('退出成功',U('Public/logout'));
+		$this->success('退出成功', U('Public/logout'));
 	}
 
 	/**
