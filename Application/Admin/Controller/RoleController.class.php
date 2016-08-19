@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Controller;
 
-use Admin\Model\MenuRule;
+use Admin\Model\MenuRuleModel;
 use Admin\Model\RoleModel;
 
 class RoleController extends Base
@@ -81,7 +81,7 @@ class RoleController extends Base
 		if ($roleData->status == false) {
 			$this->error($roleData->content, 'Admin/Role/list');
 		} else {
-			$menuModel = new MenuRule();
+			$menuModel = new MenuRuleModel();
 			$MenuList = clone $menuModel->getMenuAll();
 			$this->assign('roleData', $roleData->data);
 			$this->assign('ruleList', $MenuList->data);

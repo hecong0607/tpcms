@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Controller;
 
-use Admin\Model\MenuRule;
+use Admin\Model\MenuRuleModel;
 use Admin\Model\SystemModel;
 
 class HomeController extends Base
@@ -10,7 +10,7 @@ class HomeController extends Base
 	 * 后台登录后的主页
 	 */
 	public function indexAction() {
-		$menuModel = new MenuRule();
+		$menuModel = new MenuRuleModel();
 		$menu = $menuModel->getMenuAllForSidebar();
 		$this->assign('menu', $menu);
 		$this->display('Home/index');

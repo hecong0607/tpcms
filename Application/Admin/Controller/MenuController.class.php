@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Controller;
 
-use Admin\Model\MenuRule;
+use Admin\Model\MenuRuleModel;
 
 /**
  * 菜单规则类
@@ -44,7 +44,7 @@ class MenuController extends Base
 	 * 显示详情页面
 	 */
 	public function showAction() {
-		$menuModel = new MenuRule();
+		$menuModel = new MenuRuleModel();
 		$id = I('get.id', 0);
 		$msgData = $menuModel->getData($id);
 		$this->assign('data', $msgData->data);
@@ -55,7 +55,7 @@ class MenuController extends Base
 	 * 列表页面
 	 */
 	public function listAction() {
-		$menuModel = new MenuRule();
+		$menuModel = new MenuRuleModel();
 		$msgData = $menuModel->getList();
 		$this->assign(array('list' => $msgData->data['list'], 'page' => $msgData->data['page']));
 		$this->display('Menu/list');
@@ -66,7 +66,7 @@ class MenuController extends Base
 	 */
 	public function delAction() {
 		$id = I('get.id');
-		$menuModel = new MenuRule();
+		$menuModel = new MenuRuleModel();
 		$msgDel = $menuModel->del($id);
 		if ($msgDel->status == false) {
 			$this->error($msgDel->content);
@@ -84,9 +84,9 @@ class MenuController extends Base
 
 	/**
 	 * 接收页面传递数据
-	 * @param MenuRule $MenuModel
+	 * @param MenuRuleModel $MenuModel
 	 */
-	protected function postMenu(MenuRule &$MenuModel) {
+	protected function postMenu(MenuRuleModel &$MenuModel) {
 		$MenuModel->parent_id = I('post.parent_id');
 		$MenuModel->module = I('post.module');
 		$MenuModel->controller = I('post.controller');
@@ -106,7 +106,7 @@ class MenuController extends Base
 	 */
 	protected function doSave($id = '') {
 		if (IS_POST) {
-			$MenuModel = new MenuRule();
+			$MenuModel = new MenuRuleModel();
 			$MenuModel->id = $id;
 			$this->postMenu($MenuModel);
 			$msgSave = $MenuModel->doSave();
@@ -125,7 +125,7 @@ class MenuController extends Base
 	 * @param string $id
 	 */
 	protected function save($id = '') {
-		$MenuModel = new MenuRule();
+		$MenuModel = new MenuRuleModel();
 		$menu = $MenuModel->getMenuAllForSelect();
 		$msgData = $MenuModel->getData($id);
 		$this->assign('data', $msgData->data);

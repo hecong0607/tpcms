@@ -40,7 +40,7 @@ class RoleModel extends Model
 
 	/**
 	 * 保存操作（新增和修改）
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function doSave() {
 		$this->checkSave();
@@ -71,7 +71,7 @@ class RoleModel extends Model
 	/**
 	 * 根据id获取的一条数据
 	 * @param $id
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function getDataById($id) {
 		$data = $this->where(array('id' => $id))->find();
@@ -87,7 +87,7 @@ class RoleModel extends Model
 
 	/**
 	 * 获取数据，并分页，返回数据
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function getList() {
 		$count = (int)$this->count();
@@ -104,7 +104,7 @@ class RoleModel extends Model
 	/**
 	 * 删除数据逻辑，返回删除结果
 	 * @param $id
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function del($id) {
 		$this->id = $id;
@@ -143,7 +143,7 @@ class RoleModel extends Model
 	/**
 	 * 权限验证
 	 * @param $check
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function checkRoleByPower($check) {
 		//超级管理员分组不需要验证

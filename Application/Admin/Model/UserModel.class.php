@@ -46,7 +46,7 @@ class UserModel extends Model
 	/**
 	 * 可能需要移除，移至base中
 	 * 当前是否是不需要验证的
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function checkRouter() {
 		$this->msg->status = false;
@@ -81,7 +81,7 @@ class UserModel extends Model
 	 * @param $username
 	 * @param $password
 	 * @param $ip
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function doLogin($username, $password, $ip) {
 		$data = $this->modelGetUserByName($username);
@@ -123,7 +123,7 @@ class UserModel extends Model
 
 	/**
 	 * 验证当前是否登录
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function checkIsLogin() {
 		$result = session('admin');
@@ -148,7 +148,7 @@ class UserModel extends Model
 
 	/**
 	 * 获取登录者的信息
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function getMyData() {
 		$admin = session('admin');
@@ -175,7 +175,7 @@ class UserModel extends Model
 
 	/**
 	 * 获取数据，并分页，返回数据
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function getList() {
 		$count = (int)$this->count();
@@ -193,7 +193,7 @@ class UserModel extends Model
 	/**
 	 * 根据id获取的一条数据
 	 * @param $id
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function getData($id) {
 		$this->msg->data = $this->where(array('id'=>$id))->find();
@@ -205,7 +205,7 @@ class UserModel extends Model
 	/**
 	 * 拉黑
 	 * @param $id
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function setBlack($id) {
 		$this->id = $id;
@@ -224,7 +224,7 @@ class UserModel extends Model
 	/**
 	 * 启用
 	 * @param $id
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function setEnable($id) {
 		$this->id = $id;
@@ -243,7 +243,7 @@ class UserModel extends Model
 	/**
 	 * 删除数据逻辑，返回删除结果
 	 * @param $id
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function del($id) {
 		$result = $this->delete((int)$id);

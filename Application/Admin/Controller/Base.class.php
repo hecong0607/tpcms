@@ -29,13 +29,7 @@ class Base extends Controller
 				$this->error('暂未登录', U('Admin/Public/login'));
 				die();
 			}
-			$roleModel = new RoleModel();
-			$power = MODULE_NAME . '_' . CONTROLLER_NAME . '_' . ACTION_NAME;
-			$msgPower = $roleModel->checkRoleByPower($power);        //权限验证
-			if ($msgPower->status == false) {
-				$this->noPermissions($msgPower->content);
-				die;
-			}
+			$this->authority();
 		}
 	}
 
@@ -49,7 +43,7 @@ class Base extends Controller
 	}
 
 	private function noPermissions($content){
-		$this->assign('error','无权限！');
+		$this->assign('error',$content);
 		$this->display('Public/error');
 	}
 
@@ -63,7 +57,6 @@ class Base extends Controller
 		if ($msgPower->status == false) {
 			$this->noPermissions($msgPower->content);
 			die;
-			$this->error($msgPower->content, U('Admin/Home/main'));
 		}
 	}
 }
