@@ -35,26 +35,18 @@ class UserModel extends Model
 	 ********************************************
 	 ********************************************/
 
-	//不需要验证的路由,check=true不需要验证
-	private $Router = array(
-		array('module' => 'Admin', 'controller' => 'Public', 'action' => 'login', 'check' => true),
-		array('module' => 'Admin', 'controller' => 'Public', 'action' => 'doLogin', 'check' => true),
-		array('module' => 'Admin', 'controller' => 'Public', 'action' => 'verify', 'check' => true),
-		array('module' => 'Admin', 'controller' => 'Home', 'action' => 'index', 'check' => false),
-	);
-
 	/**
 	 * 可能需要移除，移至base中
 	 * 当前是否是不需要验证的
 	 * @return \Common\Controls\Msg
 	 */
 	public function checkRouter() {
+		$allowActions = C('param')['allowActions'];
+		$url = '/' . MODULE_NAME . '/' . CONTROLLER_NAME . '/' . ACTION_NAME;
 		$this->msg->status = false;
-		foreach ($this->Router as $k => $v) {
-			if (MODULE_NAME == $v['module'] && CONTROLLER_NAME == $v['controller'] && ACTION_NAME == $v['action']) {
-				if ($v['check'] == true) {
-					$this->msg->status = true;
-				}
+		foreach ($allowActions as $k => $v) {
+			if (strcasecmp($v,$url) == 0) {
+				$this->msg->status = true;
 				layout(false);
 				break;
 			}

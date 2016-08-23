@@ -19,13 +19,6 @@ class RoleModel extends Model
 {
 	protected $tableName = 'admin_role';
 
-	//不需要验证的路由
-	private $Router = array(
-		array('module' => 'Admin', 'controller' => 'Home', 'action' => 'index'),
-		array('module' => 'Admin', 'controller' => 'Home', 'action' => 'main'),
-		array('module' => 'Admin', 'controller' => 'Public', 'action' => 'logout'),
-	);
-
 	/**
 	 * 验证保存的数据（新增和修改）
 	 */
@@ -153,8 +146,9 @@ class RoleModel extends Model
 		} else {
 			//过滤不需要验证的路由
 			$this->msg->status = false;
-			foreach ($this->Router as $v) {
-				if ($check == $v['module'] . '_' . $v['controller'] . '_' . $v['action']) {
+			$allowAdminActions = C('param')['allowAdminActions'];
+			foreach ($allowAdminActions as $v) {
+				if (strcasecmp($check, $v) == 0) {
 					$this->msg->status = true;
 				}
 			}

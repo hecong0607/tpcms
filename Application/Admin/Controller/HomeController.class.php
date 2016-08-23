@@ -10,6 +10,7 @@ class HomeController extends Base
 	 * 后台登录后的主页
 	 */
 	public function indexAction() {
+		layout(false);
 		$menuModel = new MenuRuleModel();
 		$menu = $menuModel->getMenuAllForSidebar();
 		$this->assign('menu', $menu);

@@ -22,5 +22,18 @@ $config = array(
 
 	'URL_ADMIN_HOME'      => U('Admin/Home/index'),
 	'URL_ADMIN_LOGIN'     => U('Admin/Public/login'),
+	'param'               => array(
+		'allowActions' => array(		//直接开放的路由，不用管登录
+			'/Admin/Public/login',
+			'/Admin/Public/doLogin',
+			'/Admin/Public/verify',
+			'/Admin/Home/index',
+			'/Admin/Public/logout',
+		),
+		'allowAdminActions' => array(
+			'/Admin/Home/index',
+			'/Admin/Home/main',
+		),
+	),
 );
 return array_merge($config, $config_local);

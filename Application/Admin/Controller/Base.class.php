@@ -52,7 +52,7 @@ class Base extends Controller
 	 */
 	private function authority() {
 		$roleModel = new RoleModel();
-		$power = MODULE_NAME . '_' . CONTROLLER_NAME . '_' . ACTION_NAME;
+		$power = '/' . MODULE_NAME . '/' . CONTROLLER_NAME . '/' . ACTION_NAME;
 		$msgPower = $roleModel->checkRoleByPower($power);        //权限验证
 		if ($msgPower->status == false) {
 			$this->noPermissions($msgPower->content);

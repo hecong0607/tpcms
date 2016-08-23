@@ -42,7 +42,7 @@ class PublicController extends Base
 	public function logoutAction() {
 		$userModel = new UserModel();
 		$userModel->logout();
-		$this->success('退出成功', U('Public/logout'));
+		$this->success('退出成功', U('Public/login'));
 	}
 
 	/**

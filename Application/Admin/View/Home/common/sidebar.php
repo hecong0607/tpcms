@@ -4,7 +4,7 @@
 	<?php function getsubmenu($submenus, \Admin\Model\RoleModel $roleModel) {
 		foreach ($submenus as $menu) {
 			$url = $menu['module'] . '/' . $menu['controller'] . '/' . $menu['action'];
-			$name = $menu['module'] . '_' . $menu['controller'] . '_' . $menu['action'];
+			$name = '/' . $menu['module'] . '/' . $menu['controller'] . '/' . $menu['action'];
 			if ($roleModel->checkRoleByPower($name)->status) { ?>
 				<li>
 					<?php if (empty($menu['items'])) { ?>
@@ -36,7 +36,7 @@
 	function getsubmenu1($submenus, \Admin\Model\RoleModel $roleModel) {
 		foreach ($submenus as $menu) {
 			$url = $menu['module'] . '/' . $menu['controller'] . '/' . $menu['action'];
-			$name = $menu['module'] . '_' . $menu['controller'] . '_' . $menu['action'];
+			$name ='/' .  $menu['module'] . '/' . $menu['controller'] . '/' . $menu['action'];
 			if ($roleModel->checkRoleByPower($name)->status) { ?>
 				<li>
 					<?php if (empty($menu['items'])) { ?>
@@ -66,7 +66,7 @@
 	function getsubmenu2($submenus, \Admin\Model\RoleModel $roleModel) {
 		foreach ($submenus as $menu) {
 			$url = $menu['module'] . '/' . $menu['controller'] . '/' . $menu['action'];
-			$name = $menu['module'] . '_' . $menu['controller'] . '_' . $menu['action'];
+			$name = '/' . $menu['module'] . '/' . $menu['controller'] . '/' . $menu['action'];
 			if ($roleModel->checkRoleByPower($name)->status) { ?>
 				<li>
 					<a href="javascript:openapp('{:U($url)}','{$name}','{$menu['menu_name']}',true);">
