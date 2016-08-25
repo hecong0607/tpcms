@@ -10,7 +10,7 @@
 					<tr id="node-{$value['id']}" <?=empty($value['parent_id'])?'':'class="child-of-node-'.$value['parent_id'].'"'?>>
 						<td style="padding-left:30px;">
 							<?=str_repeat("&nbsp;&nbsp;&nbsp;│",$value['level']-2).str_repeat("&nbsp;&nbsp;&nbsp;├─&nbsp;",$value['level']>1?1:0);?>
-							<?php $power = '/' . $value['module'] . '/' . $value['controller'] . '/' . $value['action'];?>
+							<?php $power = $value['route'] ;?>
 							<input type="checkbox" name="power[]" value="{$power}" level="{$value['level']-1}" <?= (stripos($roleData['power'],$power) === false)?'':'checked';?>>
 							{$value['menu_name']}
 						</td>

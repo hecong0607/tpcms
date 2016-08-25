@@ -57,7 +57,7 @@ class MenuController extends Base
 	public function listAction() {
 		$menuModel = new MenuRuleModel();
 		$msgData = $menuModel->getList();
-		$this->assign(array('list' => $msgData->data['list'], 'page' => $msgData->data['page']));
+		$this->assign(array('list' => $msgData->data));
 		$this->display('Menu/list');
 	}
 
@@ -88,16 +88,13 @@ class MenuController extends Base
 	 */
 	protected function postMenu(MenuRuleModel &$MenuModel) {
 		$MenuModel->parent_id = I('post.parent_id');
-		$MenuModel->module = I('post.module');
-		$MenuModel->controller = I('post.controller');
-		$MenuModel->action = I('post.action');
+		$MenuModel->route = I('post.route');
 		$MenuModel->type = I('post.type');
-		$MenuModel->status = I('post.status');
+		$MenuModel->left_name = I('post.left_name');
 		$MenuModel->menu_name = I('post.menu_name');
 		$MenuModel->remark = I('post.remark');
 		$MenuModel->list_order = I('post.list_order');
 		$MenuModel->logo = I('post.logo');
-		$MenuModel->level = I('post.level');
 	}
 
 	/**

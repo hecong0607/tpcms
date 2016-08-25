@@ -8,7 +8,7 @@ class AdminSave extends UserModel
 
 	/**
 	 * 保存操作（新增和修改）
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function doSave() {
 		$this->checkSave();
@@ -56,6 +56,12 @@ class AdminSave extends UserModel
 		if (empty($this->id) && empty($this->password)) {
 			$this->msg->status = false;
 			$this->msg->content = '密码不可为空！';
+			return;
+		}
+		$find = $this->where(array('username'=>$this->username))->find();
+		if( !empty($find)){
+			$this->msg->status = false;
+			$this->msg->content = '用户名重复！';
 			return;
 		}
 	}

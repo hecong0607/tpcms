@@ -22,14 +22,15 @@ class Base extends Controller
 	 */
 	public function checkIsLogin() {
 		$userModel = new UserModel();
-		$msgRouter = $userModel->checkRouter();
+		$url = '/' . MODULE_NAME . '/' . CONTROLLER_NAME . '/' . ACTION_NAME;
+		$msgRouter = $userModel->checkRouter($url);
 		if ($msgRouter->status == false) {        //验证路由（到时候是否修改到配置文件中）
 			$msgIsLogin = $userModel->checkIsLogin();
 			if ($msgIsLogin->status == false) {    //验证登录
 				$this->error('暂未登录', U('Admin/Public/login'));
 				die();
 			}
-			$this->authority();
+			$this->authority($url);
 		}
 	}
 
@@ -50,10 +51,9 @@ class Base extends Controller
 	/**
 	 * 权限验证
 	 */
-	private function authority() {
+	private function authority($url) {
 		$roleModel = new RoleModel();
-		$power = '/' . MODULE_NAME . '/' . CONTROLLER_NAME . '/' . ACTION_NAME;
-		$msgPower = $roleModel->checkRoleByPower($power);        //权限验证
+		$msgPower = $roleModel->checkRoleByPower($url);        //权限验证
 		if ($msgPower->status == false) {
 			$this->noPermissions($msgPower->content);
 			die;

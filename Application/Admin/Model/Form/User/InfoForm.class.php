@@ -21,7 +21,7 @@ class InfoForm extends UserModel
 
 	/**
 	 * 个人信息修改操作
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function setMyInfo() {
 		if (!$this->create($this->data)) {

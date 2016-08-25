@@ -51,7 +51,7 @@
 		<div class="form-actions">
 			<input type="hidden" name="id" value="{$data['id']}"/>
 			<button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
-			<a class="btn" href="{:U('Admin/Role/list')}">返回</a>
+			<a class="btn" href="{:U('Admin/User/list')}">返回</a>
 		</div>
 	</form>
 </div>

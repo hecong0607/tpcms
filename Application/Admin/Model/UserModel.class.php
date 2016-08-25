@@ -40,9 +40,8 @@ class UserModel extends Model
 	 * 当前是否是不需要验证的
 	 * @return \Common\Controls\Msg
 	 */
-	public function checkRouter() {
+	public function checkRouter($url) {
 		$allowActions = C('param')['allowActions'];
-		$url = '/' . MODULE_NAME . '/' . CONTROLLER_NAME . '/' . ACTION_NAME;
 		$this->msg->status = false;
 		foreach ($allowActions as $k => $v) {
 			if (strcasecmp($v,$url) == 0) {

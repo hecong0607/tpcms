@@ -6,41 +6,22 @@
 	<table class="table table-hover table-bordered">
 		<thead>
 		<tr>
-			<th width="50">ID</th>
+			<th width="50">序号</th>
 			<th>图标-菜单名称</th>
-			<th>模块</th>
-			<th>控制器</th>
-			<th>方法</th>
+			<th>路由</th>
 			<th>类型</th>
-			<th>状态</th>
-			<th width="150">列表显示排序（高到底）</th>
-			<th>等级</th>
+			<th width="150">排序</th>
 			<th width="120">操作</th>
 		</tr>
 		</thead>
+		<?php $num = 1;?>
 		<foreach name="list" item="value">
 			<tr>
-				<td>{$value['id']}</td>
-				<td><i class="fa fa-{$value['logo']} normal"></i> {$value['menu_name']}</td>
-				<td>{$value['module']}</td>
-				<td>{$value['controller']}</td>
-				<td>{$value['action']}</td>
-				<td>
-					<if condition="$value['type']==1">
-						菜单
-					<else/>
-						菜单+权限
-					</if>
-				</td>
-				<td>
-					<if condition="$value['status']==1">
-						显示
-					<else/>
-						隐藏
-					</if>
-				</td>
+				<td id="{$value['id']}">{$num++}</td>
+				<td>{$value['left']}<i class="fa fa-{$value['logo']} normal"></i>&nbsp;&nbsp;{$value['menu_name']}</td>
+				<td>{$value['route']}</td>
+				<td><?= ($value['type']==0)?'菜单':(($value['type']==1)?'菜单+权限':'权限'); ?></td>
 				<td>{$value['list_order']}</td>
-				<td>{$value['level']}</td>
 				<td>
 					<a href="{:U('Admin/Menu/show',array('id'=>$value['id']))}">查看</a> |
 					<a href="{:U('Admin/Menu/save',array('id'=>$value['id']))}">编辑</a> |
@@ -51,5 +32,4 @@
 		<tbody>
 		</tbody>
 	</table>
-	<div class="manu">{$page}</div>
 </div>

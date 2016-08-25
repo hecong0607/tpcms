@@ -18,7 +18,7 @@
 						<option vlaue="0" >作为一级菜单</option>
 						<foreach name="menu" item="v">
 							<if condition="$v['id']!=$data['id']">
-								<option value="{$v['id']}" <?= $data['parent_id']==$v['id']?'selected':'';?>>{$v.menu_name}</option>
+								<option value="{$v['id']}" <?= $data['parent_id']==$v['id']?'selected':'';?>>{$v.left}{$v.menu_name}</option>
 							</if>
 						</foreach>
 					</select>
@@ -32,23 +32,9 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label">模块：</label>
+				<label class="control-label">路由：</label>
 				<div class="controls">
-					<input type="text" name="module" value="{$data['module']}">
-					<span class="form-required">*</span>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">控制器：</label>
-				<div class="controls">
-					<input type="text" name="controller" value="{$data['controller']}">
-					<span class="form-required">*</span>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">方法：</label>
-				<div class="controls">
-					<input type="text" name="action" value="{$data['action']}">
+					<input type="text" name="route" value="{$data['route']}">
 					<span class="form-required">*</span>
 				</div>
 			</div>
@@ -67,41 +53,19 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label">状态：</label>
-				<div class="controls">
-					<select name="status">
-						<option value="1" <?=$data['status']==1?'selected':'';?> >显示</option>
-						<option value="0" <?=$data['status']==='0'?'selected':'';?> >隐藏</option>
-					</select>
-					<span>侧边栏菜单是否显示</span>
-				</div>
-			</div>
-			<div class="control-group">
 				<label class="control-label">类型：</label>
 				<div class="controls">
 					<select name="type">
-						<option value="1" <?=$data['type']==1?'selected':'';?>>菜单</option>
-						<option value="0" <?=$data['type']==='0'?'selected':'';?> >菜单+权限</option>
+						<option value="0" <?=$data['type']==0?'selected':'';?>>菜单</option>
+						<option value="1" <?=$data['type']==1?'selected':'';?>>菜单+权限</option>
+						<option value="2" <?=$data['type']==2?'selected':'';?>>权限</option>
 					</select>
-					<span>注意：“权限认证+菜单”表示加入后台权限管理，纯碎是菜单项请不要选择此项。</span>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">列表排序：</label>
 				<div class="controls">
 					<input type="text" name="list_order" value="{$data['list_order']}">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">等级：</label>
-				<div class="controls">
-					<select name="level">
-						<option value="1" <?=$data['level']==1?'selected':'';?>>1</option>
-						<option value="2" <?=$data['level']==2?'selected':'';?>>2</option>
-						<option value="3" <?=$data['level']==3?'selected':'';?>>3</option>
-						<option value="4" <?=$data['level']==4?'selected':'';?>>4</option>
-						<option value="5" <?=$data['level']==5?'selected':'';?>>5</option>
-					</select>
 				</div>
 			</div>
 		</fieldset>

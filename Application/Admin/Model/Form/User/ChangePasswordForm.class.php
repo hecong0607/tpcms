@@ -27,7 +27,7 @@ class ChangePasswordForm extends UserModel
 
 	/**
 	 * 个人信息修改操作
-	 * @return \Controls\Helps\Msg
+	 * @return \Common\Controls\Msg
 	 */
 	public function setMyPass() {
 		if (!$this->create($this->data)) {

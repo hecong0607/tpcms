@@ -10,19 +10,18 @@ use Common\Controls\Model;
  *
  * @property integer $id
  * @property integer $parent_id
- * @property string $module
- * @property string $controller
- * @property string $action
+ * @property string $route
  * @property integer $type
+ * @property string $left_name
  * @property string $menu_name
  * @property string $remark
  * @property integer $list_order
  * @property string $logo
- * @property integer $level
  */
 class MenuRuleModel extends Model
 {
 	protected $tableName = 'admin_menu_rule';
+
 
 	/********************************************
 	 *********************************************
@@ -38,16 +37,13 @@ class MenuRuleModel extends Model
 		$this->checkSave();
 		$data = array(
 			'parent_id'  => $this->parent_id,
-			'module'     => $this->module,
-			'controller' => $this->controller,
-			'action'     => $this->action,
+			'route'      => $this->route,
 			'type'       => $this->type,
-			'status'     => $this->status,
+			'left_name'  => $this->left_name,
 			'menu_name'  => $this->menu_name,
 			'remark'     => $this->remark,
 			'list_order' => $this->list_order,
 			'logo'       => $this->logo,
-			'level'      => $this->level,
 		);
 		if ($this->msg->status == true) {
 			if (empty($this->id)) {
@@ -76,19 +72,9 @@ class MenuRuleModel extends Model
 			$this->msg->content = '菜单名称不可为空！';
 			return;
 		}
-		if (empty($this->module)) {
+		if (empty($this->route)) {
 			$this->msg->status = false;
-			$this->msg->content = '模块不可为空！';
-			return;
-		}
-		if (empty($this->controller)) {
-			$this->msg->status = false;
-			$this->msg->content = '控制器不可为空！';
-			return;
-		}
-		if (empty($this->action)) {
-			$this->msg->status = false;
-			$this->msg->content = '操作不可为空！';
+			$this->msg->content = '路由不可为空！';
 			return;
 		}
 	}
@@ -114,16 +100,46 @@ class MenuRuleModel extends Model
 	 * @return \Common\Controls\Msg
 	 */
 	public function getList() {
-		$count = (int)$this->count();
-		$Page = new \Think\Page($count, $this->default_page);// 实例化分页类 传入总记录数和每页显示的记录数(30)
-		$list = $this->order('list_order,id')->limit($Page->firstRow . ',' . $Page->listRows)->select();
-		$data = array(
-			'page' => $Page->show(),
-			'list' => $list,
-		);
+		$data = [];
+		$base = '&nbsp;&nbsp;&nbsp;';
+		$before = '&nbsp;&nbsp;&nbsp;';
+		$type = 2;
+		$this->recursion(0, $data, $base, $before, $type);
 		$this->msg->data = $data;
 		return $this->msg;
 	}
+
+	/**
+	 * 递归：行结构
+	 * @param int $id
+	 * @param $data
+	 * @param string $base
+	 * @param string $before
+	 * @param int $type
+	 * @param int $level
+	 * @return null
+	 */
+	protected function recursion($id = 0, &$data, $base = '&nbsp;&nbsp;&nbsp;', $before = '&nbsp;&nbsp;&nbsp;', $type = 2, $level = 1) {
+		$where = [
+			'parent_id' => $id,
+			'type'      => array('ELT', $type),
+		];
+		$result = $this->where($where)->order('list_order')->select();
+		if (empty($result)) {
+			return null;
+		} else {
+			if ($id != 0) {
+				$base = $before . $base;
+			}
+			foreach ($result as $k => &$v) {
+				$v['left'] = $base;
+				$v['level'] = $level;
+				$data[] = $v;
+				$this->recursion($v['id'], $data, $base, $before, $type, $level+1);
+			}
+		}
+	}
+
 
 	/**
 	 * 删除数据逻辑，返回删除结果
@@ -147,8 +163,12 @@ class MenuRuleModel extends Model
 	 * @return mixed
 	 */
 	public function getMenuAll() {
-		$result = $this->order('list_order')->select();
-		$this->msg->data = $result;
+		$data = [];
+		$base = '&nbsp;&nbsp;&nbsp;';
+		$before = '&nbsp;&nbsp;&nbsp;';
+		$type = 2;
+		$this->recursion(0, $data, $base, $before, $type);
+		$this->msg->data = $data;
 		return $this->msg;
 	}
 
@@ -157,21 +177,12 @@ class MenuRuleModel extends Model
 	 * @return mixed
 	 */
 	public function getMenuAllForSelect() {
-		$where = array(
-			'level' => array('in', '1,2,3,4'),
-		);
-		$data = $this->where($where)->field('id,menu_name,level')->order('list_order')->select();
-		foreach ($data as $k => &$v) {
-			if ($v['level'] == 1) {
-				$v['menu_name'] = '&nbsp;├&nbsp;' . $v['menu_name'];
-			} elseif ($v['level'] == 2) {
-				$v['menu_name'] = '&nbsp;│&nbsp;├&nbsp;' . $v['menu_name'];
-			} elseif ($v['level'] == 3) {
-				$v['menu_name'] = '&nbsp;│&nbsp;│&nbsp;├&nbsp;' . $v['menu_name'];
-			} elseif ($v['level'] == 4) {
-				$v['menu_name'] = '&nbsp;│&nbsp;│&nbsp;│&nbsp;├&nbsp;' . $v['menu_name'];
-			}
-		}
+
+		$data = [];
+		$base = '&nbsp;├&nbsp;';
+		$before = '&nbsp;│';
+		$level = 0;
+		$this->recursion(0, $data, $level, $base, $before);
 		return $data;
 	}
 
@@ -180,11 +191,11 @@ class MenuRuleModel extends Model
 	 * @return array
 	 */
 	public function getMenuAllForSidebar() {
-		$where = array(
-			'level'  => array('in', '1,2,3'),
-			'status' => 1,
-		);
-		$data = $this->where($where)->order('list_order')->select();
+		$data = [];
+		$base = '';
+		$before = '';
+		$type = 1;
+		$this->recursion(0, $data, $base, $before, $type);
 		$menu = $this->generateTree($this->setKeyById($data));
 		return $menu;
 	}

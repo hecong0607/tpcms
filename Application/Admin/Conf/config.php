@@ -27,7 +27,6 @@ $config = array(
 			'/Admin/Public/login',
 			'/Admin/Public/doLogin',
 			'/Admin/Public/verify',
-			'/Admin/Home/index',
 			'/Admin/Public/logout',
 		),
 		'allowAdminActions' => array(
