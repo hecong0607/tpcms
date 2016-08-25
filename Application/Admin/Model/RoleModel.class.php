@@ -100,8 +100,12 @@ class RoleModel extends Model
 	 * @return \Common\Controls\Msg
 	 */
 	public function del($id) {
-		$this->id = $id;
-		$result = $this->delete($id);
+		if($id == 1){
+			$result = false;
+		}else{
+			$this->id = $id;
+			$result = $this->delete($id);
+		}
 		if ($result == false) {
 			$this->msg->status = false;
 			$this->msg->content = '删除失败！';

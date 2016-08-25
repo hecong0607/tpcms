@@ -237,7 +237,11 @@ class UserModel extends Model
 	 * @return \Common\Controls\Msg
 	 */
 	public function del($id) {
-		$result = $this->delete((int)$id);
+		if($id == 1){
+			$result = false;
+		}else{
+			$result = $this->delete((int)$id);
+		}
 		if ($result == false) {
 			$this->msg->status = false;
 			$this->msg->content = '删除失败！';
