@@ -181,8 +181,8 @@ class MenuRuleModel extends Model
 		$data = [];
 		$base = '&nbsp;├&nbsp;';
 		$before = '&nbsp;│';
-		$level = 0;
-		$this->recursion(0, $data, $level, $base, $before);
+		$type = 2;
+		$this->recursion(0, $data, $base, $before,$type);
 		return $data;
 	}
 
