@@ -101,7 +101,12 @@ class MenuRuleModel extends Model
 	 */
 	public function getList() {
 		$data = [];
-		$base = '&nbsp;&nbsp;&nbsp;';
+		$base = array(
+			'void'     => '&nbsp;&nbsp;&nbsp;',
+			'end'      => '└&nbsp;&nbsp;',
+			'continue' => '├&nbsp;&nbsp;',
+			'left'     => '│&nbsp;&nbsp;',
+		);
 		$before = '&nbsp;&nbsp;&nbsp;';
 		$type = 2;
 		$this->recursion(0, $data, $base, $before, $type);
@@ -128,14 +133,18 @@ class MenuRuleModel extends Model
 		if (empty($result)) {
 			return null;
 		} else {
-			if ($id != 0) {
-				$base = $before . $base;
-			}
+			$count = count($result) - 1;
 			foreach ($result as $k => &$v) {
-				$v['left'] = $base;
 				$v['level'] = $level;
-				$data[] = $v;
-				$this->recursion($v['id'], $data, $base, $before, $type, $level+1);
+				if ($count == $k) {
+					$v['left'] = $before . $base['end'];
+					$data[] = $v;
+					$this->recursion($v['id'], $data, $base, $before . $base['void'], $type, $level + 1);
+				} else {
+					$v['left'] =  $before . $base['continue'];
+					$data[] = $v;
+					$this->recursion($v['id'], $data, $base, $before . $base['left'], $type, $level + 1);
+				}
 			}
 		}
 	}
@@ -164,7 +173,12 @@ class MenuRuleModel extends Model
 	 */
 	public function getMenuAll() {
 		$data = [];
-		$base = '&nbsp;&nbsp;&nbsp;';
+		$base = array(
+			'void'     => '&nbsp;&nbsp;&nbsp;',
+			'end'      => '&nbsp;&nbsp;&nbsp;',
+			'continue' => '&nbsp;&nbsp;&nbsp;',
+			'left'     => '&nbsp;&nbsp;&nbsp;',
+		);
 		$before = '&nbsp;&nbsp;&nbsp;';
 		$type = 2;
 		$this->recursion(0, $data, $base, $before, $type);
@@ -179,10 +193,16 @@ class MenuRuleModel extends Model
 	public function getMenuAllForSelect() {
 
 		$data = [];
-		$base = '&nbsp;├&nbsp;';
-		$before = '&nbsp;│';
+		$base = array(
+			'void'     => '&nbsp;&nbsp;',
+			'end'      => '└&nbsp;',
+			'continue' => '├&nbsp;',
+			'left'     => '│&nbsp;',
+		);
+//		$base = '&nbsp;├&nbsp;';
+		$before = '&nbsp;';
 		$type = 2;
-		$this->recursion(0, $data, $base, $before,$type);
+		$this->recursion(0, $data, $base, $before, $type);
 		return $data;
 	}
 

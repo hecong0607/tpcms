@@ -28,14 +28,14 @@ class RouteModel extends Model
 				if (empty($v)) {
 					continue;
 				} else {
-					$temp = array('name' => $v, 'create_time' => $time,);
+					$temp = array('route' => $v, 'create_time' => $time,);
 					$data[] = $temp;
 				}
 			}
 			if (empty($data)) {
 				$result = false;
 			} else {
-				$result = $this->data($data)->add();
+				$result = $this->addAll($data);
 			}
 			if ($result === false) {
 				$this->msg->status = false;
@@ -77,7 +77,7 @@ class RouteModel extends Model
 	 * @return \Common\Controls\Msg
 	 */
 	public function getRoutes(){
-		$data['database'] = $this->field('id,route')->select();
+		$data['database'] = $this->field('id,route')->order('route')->select();
 		$databaseStr = '';
 		foreach($data['database'] as $k=>$v){
 			$databaseStr .= $v['route'];
@@ -97,15 +97,15 @@ class RouteModel extends Model
 					if (substr($value, -strlen($actionSuffix)) == $actionSuffix) {
 						$action = substr($value, 0, strlen($value) - strlen($actionSuffix));
 						$route = '/' . $module . '/' . $controller . '/' . $action;
-						$routes[] = $route;
-//						if (stripos($databaseStr, $route) === false){
-//							$routes[] = $route;
-//						}
+						if (stripos($databaseStr, $route) === false){
+							$routes[] = $route;
+						}
 
 					}
 				}
 			}
 		}
+//		asort($routes);
 		$data['program'] = $routes;
 		$this->msg->data = $data;
 		return $this->msg;

@@ -13,15 +13,14 @@ class RouteController extends Base
 		$result = $route->getRoutes();
 		$this->assign('program',$result->data['program']);
 		$this->assign('database',$result->data['database']);
-		$this->display('Route/list');die;
-		var_dump($result->data);
+		$this->display('Route/list');
 	}
 
 	/**
 	 * 批量删除接口
 	 */
 	public function delAction(){
-		$data = I('get.id');
+		$data = I('post.id');
 		$route = new RouteModel();
 		$delMsg = $route->del($data);
 		if($delMsg->status == false){
@@ -35,7 +34,7 @@ class RouteController extends Base
 	 * 批量新增接口
 	 */
 	public function addAction(){
-		$data = I('get.routes');
+		$data = I('post.routes');
 		$route = new RouteModel();
 		$delMsg = $route->doSave($data);
 		if($delMsg->status == false){
@@ -43,5 +42,14 @@ class RouteController extends Base
 		}else{
 			$this->success($delMsg->content,U('Admin/route/list'));
 		}
+	}
+
+	/**
+	 * 返回试试刷新数据json
+	 */
+	public function refreshAction(){
+		$route = new RouteModel();
+		$result = $route->getRoutes();
+		$this->success($result->data,U('Admin/Route/list'));
 	}
 }
