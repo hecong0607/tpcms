@@ -13,7 +13,6 @@ use Think\Controller;
 class Base extends Controller
 {
 	function __construct() {
-		var_dump('　　　0.249252');die;
 		parent::__construct();
 		$this->checkIsLogin();
 	}
