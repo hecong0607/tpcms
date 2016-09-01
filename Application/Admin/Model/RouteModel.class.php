@@ -60,7 +60,7 @@ class RouteModel extends Model
 		if (empty($data)) {
 			$result = false;
 		} else {
-			$result = $this->where(array('id'=>array('in',$data)))->delete();
+			$result = $this->where(array('id' => array('in', $data)))->delete();
 		}
 		if ($result == false) {
 			$this->msg->status = false;
@@ -73,21 +73,33 @@ class RouteModel extends Model
 	}
 
 	/**
-	 * 返回当前系统所有路由
+	 * 获取当前数据库中所有路由
 	 * @return \Common\Controls\Msg
 	 */
-	public function getRoutes(){
+	public function getRoutesByDb() {
+		$this->msg->data = $this->field('id,route')->order('route')->select();
+		$this->msg->status = empty($this->msg->data) ? false : true;
+		return $this->msg;
+	}
+
+	/**
+	 * 获取当前系统所有路由
+	 * 分两个数组，分别存储当前本地未存入数据库的路由和数据库已存储的路由
+	 * 返回数组
+	 * @return \Common\Controls\Msg
+	 */
+	public function getRoutes() {
 		$data['database'] = $this->field('id,route')->order('route')->select();
 		$databaseStr = '';
-		foreach($data['database'] as $k=>$v){
+		foreach ($data['database'] as $k => $v) {
 			$databaseStr .= $v['route'];
 		}
-		$dir = __DIR__.'/../Controller/';
+		$dir = __DIR__ . '/../Controller/';
 		$controllerFile = scandir($dir);
 		$routes = array();
 		$module = MODULE_NAME;
 		$actionSuffix = C('ACTION_SUFFIX');
-		foreach($controllerFile as $k=>$v) {
+		foreach ($controllerFile as $k => $v) {
 			$temp = explode('Controller.class.', $v);
 			if (!empty($temp[1]) && $temp[0] != 'Empty') {
 				$controller = $temp[0];
@@ -97,7 +109,7 @@ class RouteModel extends Model
 					if (substr($value, -strlen($actionSuffix)) == $actionSuffix) {
 						$action = substr($value, 0, strlen($value) - strlen($actionSuffix));
 						$route = '/' . $module . '/' . $controller . '/' . $action;
-						if (stripos($databaseStr, $route) === false){
+						if (stripos($databaseStr, $route) === false) {
 							$routes[] = $route;
 						}
 
@@ -110,7 +122,6 @@ class RouteModel extends Model
 		$this->msg->data = $data;
 		return $this->msg;
 	}
-
 
 
 }

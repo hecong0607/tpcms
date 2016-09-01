@@ -1,3 +1,24 @@
+<style>
+	.select{
+		position: absolute;
+		width: 222px;
+		list-style: none;
+		box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.44);
+		-webkit-margin-before: 0em;
+		-webkit-margin-after: 0em;
+		-webkit-margin-start: 0px;
+		-webkit-margin-end: 0px;
+		-webkit-padding-start: 0px;
+	}
+	.select li{text-align: left;
+		padding: 5px;
+		font-family: inherit;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+		height: 25px;
+		line-height: 25px;
+		background-color: rgba(255, 255, 255, 0.8);
+		cursor: pointer;}
+</style>
 <div class="wrap">
 	<ul class="nav nav-tabs">
 		<li><a href="{:U('Admin/Menu/list')}">菜单列表</a></li>
@@ -33,8 +54,8 @@
 			</div>
 			<div class="control-group">
 				<label class="control-label">路由：</label>
-				<div class="controls">
-					<input type="text" name="route" value="{$data['route']}">
+				<div class="controls" >
+					<input id="route" type="text" name="route" value="{$data['route']}">
 					<span class="form-required">*</span>
 				</div>
 			</div>
@@ -98,6 +119,46 @@
 				});
 			});
 		});
+		<?php
+			$data = [] ;
+			foreach($route as $k=>$v){
+				$data[] = $v['route'];
+			};
+			$words = json_encode($data,false);
+		?>
 
+		$(document).ready(function(){
+			var proposalList = $('<ul class="select"></ul>');
+
+			var words = <?= $words;?>;
+			var input = $('#route');
+			input.bind("change paste keyup", function(e){
+				if(e.which != 13 && e.which != 27
+					&& e.which != 38 && e.which != 40){
+					currentProposals = [];
+					currentSelection = -1;
+					proposalList.empty();
+					if(input.val() != ''){
+							var word = "^" + $('#route').val() + ".*";
+						proposalList.empty();
+						for(var test in words){
+							if(words[test].match(word)){
+								var temp = words[test];
+								currentProposals.push(words[test]);
+								var element = $('<li></li>')
+									.html(words[test])
+									.click(function(){
+										input.val($(this).html());
+										proposalList.empty();
+									});
+								proposalList.append(element);
+							}
+						}
+					}
+					input.after(proposalList);
+				}
+			});
+		});
 	</script>
+
 </div>

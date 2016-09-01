@@ -2,6 +2,7 @@
 namespace Admin\Controller;
 
 use Admin\Model\MenuRuleModel;
+use Admin\Model\RouteModel;
 
 /**
  * 菜单规则类
@@ -123,10 +124,13 @@ class MenuController extends Base
 	 */
 	protected function save($id = '') {
 		$MenuModel = new MenuRuleModel();
+		$routeModel = new RouteModel();
 		$menu = $MenuModel->getMenuAllForSelect();
-		$msgData = $MenuModel->getData($id);
-		$this->assign('data', $msgData->data);
+		$msgMsg = clone $MenuModel->getData($id);
+		$routeMsg = clone $routeModel->getRoutesByDb();
+		$this->assign('data', $msgMsg->data);
 		$this->assign('menu', $menu);
+		$this->assign('route',$routeMsg->data);
 		$this->display('Menu/save');
 	}
 
