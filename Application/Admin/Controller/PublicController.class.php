@@ -19,7 +19,7 @@ class PublicController extends Base
 	public function doLoginAction() {
 		$msgVerify = Check::verify(I('post.verify'));
 		if ($msgVerify->status == false) {
-			$this->error($msgVerify->content, U('Admin/Public/login'));
+			$this->error($msgVerify->content);
 			die();
 		} else {
 			$username = I('post.username');
@@ -30,7 +30,7 @@ class PublicController extends Base
 				$this->success($msgDoLogin->content, U('Admin/Home/index'));
 				die();
 			} else {
-				$this->error($msgDoLogin->content, U('Admin/Public/login'));
+				$this->error($msgDoLogin->content);
 				die();
 			}
 		}
@@ -42,7 +42,7 @@ class PublicController extends Base
 	public function logoutAction() {
 		$userModel = new UserModel();
 		$userModel->logout();
-		$this->success('退出成功', U('Public/login'));
+		header('location: '.U('Public/login'));die;
 	}
 
 	/**
@@ -52,8 +52,9 @@ class PublicController extends Base
 		$Verify = new \Think\Verify();
 		// 开启验证码背景图片功能 随机使用 ThinkPHP/Library/Think/Verify/bgs 目录下面的图片
 		$Verify->useImgBg = true;
-		$Verify->length = 5;
+		$Verify->length = 4;
 		$Verify->expire = 600;
+		$Verify->imageW = 248;
 		$Verify->entry();
 	}
 

@@ -28,12 +28,21 @@
 					}, 0);
 			}
 		</script>
-		
+		<script type="text/javascript">
+			//全局变量
+			var GV = {
+				DIMAUB: "__ROOT__",
+				JS_ROOT: "__PUBLIC__/admin/js/",
+				TOKEN: ""
+			};
+		</script>
+		<script src="__PUBLIC__/admin/js/jquery.js"></script>
+		<script src="__PUBLIC__/admin/js/wind.js"></script>
 	</head>
 <body>
 	<div class="wrap">
 		<h1><a href="">CMS</a></h1>
-		<form method="post" name="login" action="{:U('Public/doLogin')}" autoComplete="off" class="js-ajax-form">
+		<form method="post" name="login" action="{:U('Public/doLogin')}" autoComplete="off" class="form-horizontal js-ajax-form">
 			<div class="login">
 				<ul>
 					<li>
@@ -56,6 +65,6 @@
 			</div>
 		</form>
 	</div>
-
+	<script src="__PUBLIC__/admin/js/common.js"></script>
 </body>
 </html>
