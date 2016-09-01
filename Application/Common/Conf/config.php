@@ -16,7 +16,6 @@ $config = array(
 //	'SESSION_OPTIONS' =>array(
 //		'expire'=>7200,
 //	),
-
 );
 
 
