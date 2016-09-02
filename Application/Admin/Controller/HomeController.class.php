@@ -4,6 +4,11 @@ namespace Admin\Controller;
 use Admin\Model\MenuRuleModel;
 use Admin\Model\SystemModel;
 
+/**
+ * 后台主控制器
+ * Class HomeController
+ * @package Admin\Controller
+ */
 class HomeController extends Base
 {
     /**

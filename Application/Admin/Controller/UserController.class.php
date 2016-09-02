@@ -7,6 +7,11 @@ use Admin\Model\Form\User\InfoForm;
 use Admin\Model\RoleModel;
 use Admin\Model\UserModel;
 
+/**
+ * 管理员用户类
+ * Class UserController
+ * @package Admin\Controller
+ */
 class UserController extends Base
 {
 

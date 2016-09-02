@@ -4,6 +4,11 @@ namespace Admin\Controller;
 use Admin\Model\UserModel;
 use \Common\Controls\Check;
 
+/**
+ * 公共控制器
+ * Class PublicController
+ * @package Admin\Controller
+ */
 class PublicController extends Base
 {
 

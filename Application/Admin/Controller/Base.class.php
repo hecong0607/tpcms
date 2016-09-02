@@ -36,17 +36,27 @@ class Base extends Controller
         }
     }
 
+    /**
+     * 所有已知类的不存在方法
+     */
     public function _empty()
     {
         $this->noFund();
     }
 
+    /**
+     * 展示404页面
+     */
     protected function noFund()
     {
         $this->assign('error', '页面未找到！');
         $this->display('Public/error');
     }
 
+    /**
+     * 展示错误页面
+     * @param $content
+     */
     private function noPermissions($content)
     {
         $this->assign('error', $content);
@@ -55,6 +65,7 @@ class Base extends Controller
 
     /**
      * 权限验证
+     * @param $url
      */
     private function authority($url)
     {

@@ -4,6 +4,11 @@ namespace Admin\Controller;
 use Admin\Model\MenuRuleModel;
 use Admin\Model\RoleModel;
 
+/**
+ * 角色类
+ * Class RoleController
+ * @package Admin\Controller
+ */
 class RoleController extends Base
 {
     /**

@@ -3,6 +3,11 @@ namespace Admin\Controller;
 
 use Admin\Model\RouteModel;
 
+/**
+ * 路由类
+ * Class RouteController
+ * @package Admin\Controller
+ */
 class RouteController extends Base
 {
     /**
