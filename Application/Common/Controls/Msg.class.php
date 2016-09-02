@@ -11,8 +11,8 @@ namespace Common\Controls;
  */
 class Msg
 {
-	public $status = false;
-	public $data = array();
-	public $content = '';
+    public $status = false;
+    public $data = array();
+    public $content = '';
 
 }

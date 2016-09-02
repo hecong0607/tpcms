@@ -9,11 +9,12 @@ namespace Common\Controls;
  */
 class Logic
 {
-	public $msg;
+    public $msg;
 
-	function __construct() {
-		//初始化消息类成员
-		$this->msg = new Msg();
-	}
+    function __construct()
+    {
+        //初始化消息类成员
+        $this->msg = new Msg();
+    }
 
 }

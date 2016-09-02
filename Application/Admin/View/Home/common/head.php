@@ -13,32 +13,60 @@
 <![endif]-->
 <link rel="stylesheet" href="__PUBLIC__/admin/simpleboot/themes/flat/simplebootadminindex.min.css?">
 <!--[if lte IE 8]>
-<link rel="stylesheet" href="__PUBLIC__/admin/css/simplebootadminindex-ie.css?" />
+<link rel="stylesheet" href="__PUBLIC__/admin/css/simplebootadminindex-ie.css?"/>
 <![endif]-->
 <style>
-	.navbar .nav_shortcuts .btn{margin-top: 5px;}
-	.macro-component-tabitem{width:101px;}
+    .navbar .nav_shortcuts .btn {
+        margin-top: 5px;
+    }
 
-	/*-----------------导航hack--------------------*/
-	.nav-list>li.open{position: relative;}
-	.nav-list>li.open .back {display: none;}
-	.nav-list>li.open .normal {display: inline-block !important;}
-	.nav-list>li.open a {padding-left: 7px;}
-	.nav-list>li .submenu>li>a {background: #fff;}
-	.nav-list>li .submenu>li a>[class*="fa-"]:first-child{left:20px;}
-	.nav-list>li ul.submenu ul.submenu>li a>[class*="fa-"]:first-child{left:30px;}
-	/*----------------导航hack--------------------*/
+    .macro-component-tabitem {
+        width: 101px;
+    }
+
+    /*-----------------导航hack--------------------*/
+    .nav-list > li.open {
+        position: relative;
+    }
+
+    .nav-list > li.open .back {
+        display: none;
+    }
+
+    .nav-list > li.open .normal {
+        display: inline-block !important;
+    }
+
+    .nav-list > li.open a {
+        padding-left: 7px;
+    }
+
+    .nav-list > li .submenu > li > a {
+        background: #fff;
+    }
+
+    .nav-list > li .submenu > li a > [class*="fa-"]:first-child {
+        left: 20px;
+    }
+
+    .nav-list > li ul.submenu ul.submenu > li a > [class*="fa-"]:first-child {
+        left: 30px;
+    }
+
+    /*----------------导航hack--------------------*/
 </style>
 <script>
-	//全局变量
-	var GV = {
-		DIMAUB: "__ROOT__",
-		JS_ROOT: "__PUBLIC__/admin/js/",
-		TOKEN: ""
-	};
+    //全局变量
+    var GV = {
+        DIMAUB: "__ROOT__",
+        JS_ROOT: "__PUBLIC__/admin/js/",
+        TOKEN: ""
+    };
 </script>
 <style>
-	#think_page_trace_open{left: 0 !important;
-		right: initial !important;}
+    #think_page_trace_open {
+        left: 0 !important;
+        right: initial !important;
+    }
 </style>
 

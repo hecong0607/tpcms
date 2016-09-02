@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<include file="Layout:common/head"/>
+    <include file="Layout:common/head"/>
 </head>
 <body>
 {__CONTENT__}

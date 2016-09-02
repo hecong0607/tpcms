@@ -1,5 +1,6 @@
 <?php
 namespace Common\Controls;
+
 use Think\Model as TpModel;
 
 /**
@@ -10,15 +11,16 @@ use Think\Model as TpModel;
  */
 class Model extends TpModel
 {
-	public $msg;
-	public $default_page = 30;
-	public static $ddefault_page = 30;
+    public $msg;
+    public $default_page = 30;
+    public static $ddefault_page = 30;
 
-	function __construct() {
-		parent::__construct();
-		//初始化消息类成员
-		$this->msg = new Msg();
-	}
+    function __construct()
+    {
+        parent::__construct();
+        //初始化消息类成员
+        $this->msg = new Msg();
+    }
 
 
 }
