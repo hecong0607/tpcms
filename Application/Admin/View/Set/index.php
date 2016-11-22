@@ -23,6 +23,6 @@
     </form>
 </div>
 
-<link rel="stylesheet" href="__PUBLIC__/Admin/css/index.css">
-<script src="__PUBLIC__/Admin/js/index.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/admin/css/index.css">
+<script src="__PUBLIC__/admin/js/index.js"></script>
 
