@@ -8,7 +8,7 @@ use Common\Controls\Model;
  * @package Admin\Model
  *
  * @property integer $id
- * @property string $name
+ * @property string $name1
  * @property string $power
  * @property integer $status
  * @property string $remark
@@ -25,7 +25,7 @@ class RoleModel extends Model
     protected function checkSave()
     {
         $this->msg->status = true;
-        if (empty($this->name)) {
+        if (empty($this->name1)) {
             $this->msg->status = false;
             $this->msg->content = '角色名称不可为空！';
             return;
@@ -41,7 +41,7 @@ class RoleModel extends Model
         $this->checkSave();
         if ($this->msg->status == true) {
             $data = array(
-                'name'        => $this->name,
+                'name'        => $this->name1,
                 'status'      => $this->status,
                 'remark'      => $this->remark,
                 'create_time' => $this->create_time,

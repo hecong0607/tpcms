@@ -125,7 +125,7 @@ class RoleController extends Base
      */
     protected function postData(RoleModel &$roleModel)
     {
-        $roleModel->name = I('post.name');
+        $roleModel->name1 = I('post.name');
         $roleModel->status = I('post.status');
         $roleModel->remark = I('post.remark');
     }
