@@ -46,7 +46,7 @@ class ConfigModel extends Model
                 if($type == 'text'){
                     $config_html .= '<div class="control-group"><label class="control-label">' . $v['info'] . '</label><div class="controls">';
                     $config_html .= '<input type="text" '.$option.' name="options[' . $v['name'] . ']" value="' . $v['value'] . '" style="'.$style.'">';
-                    $config_html .= '<img src="/Public/Home/images/help.gif" class="tips_img" data-title="' . $v['desc'] . '"></div></div>';
+                    $config_html .= '<img src="/Public/Admin/images/help.gif" class="tips_img" data-title="' . $v['desc'] . '"></div></div>';
                 }elseif($type == 'select'){
                     $config_html .= '<div class="control-group"><label class="control-label">' . $v['info'] . '</label><div class="controls">';
                     $config_html .= '<select '.$option.' name="options[' . $v['name'] . ']">';
@@ -56,15 +56,15 @@ class ConfigModel extends Model
                         $config_html .= '<option value="'.$option_one[0].'" '.($v['value']==$option_one[0] ? 'selected="selected"' : '').'>'.$option_one[1].'</option>';
                     }
                     $config_html .= '</select>';
-                    $config_html .= '<img src="/Public/Home/images/help.gif" class="tips_img" data-title="' . $v['desc'] . '"></div></div>';
+                    $config_html .= '<img src="/Public/Admin/images/help.gif" class="tips_img" data-title="' . $v['desc'] . '"></div></div>';
                 }elseif($type == 'textarea'){
                     $config_html .= '<div class="control-group"><label class="control-label">' . $v['info'] . '</label><div class="controls">';
                     $config_html .= '<textarea '.$option.' name="options[' . $v['name'] . ']" >' . $v['value'] . '</textarea>';
-                    $config_html .= '<img src="/Public/Home/images/help.gif" class="tips_img" data-title="' . $v['desc'] . '"></div></div>';
+                    $config_html .= '<img src="/Public/Admin/images/help.gif" class="tips_img" data-title="' . $v['desc'] . '"></div></div>';
                 }elseif($type == 'radio'){
                     $config_html .= '<div class="control-group"><label class="control-label">' . $v['info'] . '</label><div class="controls">';
                     $config_html .= '<label class="checkbox inline"><input '.$option.' type="checkbox" name="options[' . $v['name'] . ']" '. ($v['value'] == 'true' ? 'checked':'') . '></label>';
-                    $config_html .= '<img src="/Public/Home/images/help.gif" class="tips_img" data-title="' . $v['desc'] . '"></div></div>';
+                    $config_html .= '<img src="/Public/Admin/images/help.gif" class="tips_img" data-title="' . $v['desc'] . '"></div></div>';
                 }
             }
         }
