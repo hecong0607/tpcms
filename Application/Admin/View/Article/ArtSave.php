@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Editor/dist/css/wangEditor.min.css">
 
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
@@ -22,12 +23,14 @@
                     </tr>
                     <tr>
                         <th>摘要</th>
-                        <td><textarea name="post[post_excerpt]" id="description" style='width: 98%; height: 200px;'></textarea></td>
+                        <td><textarea name="post[post_excerpt]" id="description" style='width: 98%; height: 50px;'></textarea></td>
                     </tr>
                     <tr>
                         <th>内容</th>
                         <td>
-                            <script type="text/plain" id="content" name="post[post_content]"></script>
+                            <textarea id="div1" style="width: 100%;height: 500px;">
+                                <p>请输入内容...</p>
+                            </textarea>
                         </td>
                     </tr>
                 </table>
@@ -66,12 +69,59 @@
         <input type="file" id="file" name="face" onchange="doUpload();">
     </form>
 </div>
+
+<!--<script type="text/javascript" src="__PUBLIC__/Editor/js/lib/jquery-1.10.2.min.js"></script>-->
+<script type="text/javascript" src="__PUBLIC__/Editor/dist/js/wangEditor.min.js"></script>
 <script type="text/javascript">
-    //编辑器路径定义
-    var editorURL = GV.DIMAUB;
+    $(function () {
+        var editor = new wangEditor('div1');
+        // 普通的自定义菜单
+        editor.config.menus = [
+            'source',
+            '|',
+            'bold',
+            'underline',
+            'italic',
+            'strikethrough',
+            'eraser',
+            'forecolor',
+            'bgcolor',
+            '|',
+            'quote',
+            'fontfamily',
+            'fontsize',
+            'head',
+            'unorderlist',
+            'orderlist',
+            'alignleft',
+            'aligncenter',
+            'alignright',
+            '|',
+            'link',
+            'unlink',
+            'table',
+            'emotion',
+            '|',
+            'img',
+            'video',
+            'location',
+            'insertcode',
+            '|',
+            'undo',
+            'redo',
+            'fullscreen'
+        ];
+        editor.create();
+    });
 </script>
-<script type="text/javascript" src="__PUBLIC__/admin/js/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" src="__PUBLIC__/admin/js/ueditor/ueditor.all.min.js"></script>
+<!---->
+<!--<script type="text/javascript">-->
+<!--    //编辑器路径定义-->
+<!--    var editorURL = GV.DIMAUB;-->
+<!--</script>-->
+<!---->
+<!--<script type="text/javascript" src="__PUBLIC__/admin/js/ueditor/ueditor.config.js"></script>-->
+<!--<script type="text/javascript" src="__PUBLIC__/admin/js/ueditor/ueditor.all.min.js"></script>-->
 <script type="text/javascript">
     $(function() {
         $(".js-ajax-close-btn").on('click', function(e) {
