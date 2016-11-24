@@ -9,7 +9,9 @@
         </if>
 
     </ul>
-    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Admin/User/doSave')}">
+    <?php $url = empty($data['id'])?U('Admin/User/doAdd'):U('Admin/User/doSave');?>
+    <form method="post" class="form-horizontal js-ajax-form" action="{$url}">
+
         <fieldset>
             <div class="control-group">
                 <label class="control-label">用户名：</label>

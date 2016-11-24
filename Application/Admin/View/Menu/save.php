@@ -33,7 +33,8 @@
         </if>
 
     </ul>
-    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Admin/Menu/doSave')}">
+    <?php $url = empty($data['id'])?U('Admin/Menu/doAdd'):U('Admin/Menu/doSave');?>
+    <form method="post" class="form-horizontal js-ajax-form" action="{$url}">
         <fieldset>
             <div class="control-group">
                 <label class="control-label">上级：</label>

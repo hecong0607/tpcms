@@ -76,4 +76,14 @@ class Base extends Controller
             die;
         }
     }
+
+    /**
+     * 获取登录者信息
+     * @return string
+     */
+    public function getMyInfo(){
+        $user = new UserModel();
+        $data = $user->getMyData()->data;
+        return $data;
+    }
 }

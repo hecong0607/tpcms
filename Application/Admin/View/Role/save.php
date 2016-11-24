@@ -9,7 +9,8 @@
         </if>
 
     </ul>
-    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Admin/Role/doSave')}">
+    <?php $url = empty($data['id'])?U('Admin/Role/doAdd'):U('Admin/Role/doSave');?>
+    <form method="post" class="form-horizontal js-ajax-form" action="{$url}">
         <fieldset>
             <div class="control-group">
                 <label class="control-label">角色名称</label>
