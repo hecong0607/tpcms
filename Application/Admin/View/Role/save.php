@@ -4,7 +4,7 @@
         <if condition="empty($data['id'])">
             <li class="active"><a href="javascript:void(0);">角色添加</a></li>
             <else/>
-            <li><a href="{:U('Admin/Role/save')}">角色添加</a></li>
+            <li><a href="{:U('Admin/Role/add')}">角色添加</a></li>
             <li class="active"><a href="javascript:void(0);">角色修改</a></li>
         </if>
 

@@ -1,5 +1,5 @@
 <?php
-namespace Admin\Model;
+namespace Article\Model;
 
 use Common\Controls\Model;
 

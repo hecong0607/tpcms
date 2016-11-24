@@ -160,7 +160,7 @@ class UserModel extends Model
      * 获取登录者id
      * @return int
      */
-    protected function getMyId()
+    public function getMyId()
     {
         $admin = session('admin');
         return empty($admin['id']) ? 0 : $admin['id'];

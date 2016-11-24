@@ -28,7 +28,7 @@
         <if condition="empty($data['id'])">
             <li class="active"><a href="javascript:void(0);">菜单添加</a></li>
             <else/>
-            <li><a href="{:U('Admin/Menu/save')}">菜单添加</a></li>
+            <li><a href="{:U('Admin/Menu/add')}">菜单添加</a></li>
             <li class="active"><a href="javascript:void(0);">菜单编辑</a></li>
         </if>
 
