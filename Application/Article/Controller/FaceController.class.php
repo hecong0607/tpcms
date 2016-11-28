@@ -2,7 +2,6 @@
 namespace Article\Controller;
 
 use Admin\Controller\Base;
-use Admin\Model\UserModel;
 use Article\Model\ArticleFaceModel;
 
 class FaceController extends Base
@@ -14,8 +13,7 @@ class FaceController extends Base
     public function uploadAction()
     {
         if (IS_POST) {
-            $user = new UserModel();
-            $uid = $user->getMyId();
+            $uid = $this->getMyInfo()['id'];
             $face = new ArticleFaceModel();
             $result = $face->doUpload($uid);
             $jsonArr = array(
