@@ -11,6 +11,7 @@ use Common\Controls\Model;
  * @property integer $section_id
  * @property string $face
  * @property string $title
+ * @property string $summary
  * @property string $content
  * @property string $tags
  * @property integer $view
@@ -37,6 +38,10 @@ class ArticleModel extends Model
         }
     }
 
+    /**
+     * 文章保存操作
+     * @return \Common\Controls\Msg
+     */
     public function doSave()
     {
         $this->checkSave();
@@ -44,23 +49,42 @@ class ArticleModel extends Model
             $data = array(
                 'title'    => $this->title,
                 'content' => $this->content,
+                'summary' => $this->summary,
                 'face' => $this->face,
                 'tags' => $this->tags,
                 'section_id' => $this->section_id,
-                'status'  => self::Enabled,
+                'status'  => ((int)$this->status==1)?self::Enabled:self::Disable,
             );
+            $newArr = explode('，',$data['tags']);
             if (empty($this->id)) {
                 $data['create_time'] = time();
                 $data['user_id'] = $this->user_id;
                 $result = $this->add($data);
+                $articleId = $result;
+                $tagsDel = array();
+                $tagsAdd = $newArr;
             } else {
                 $data['update_time'] = time();
-                $result = $this->where(array('id' => $this->id,'user_id'=>$this->user_id))->save($data);
+                $where = array('id' => $this->id,'user_id'=>$this->user_id);
+                $res = $this->where($where)->find();
+                $result = $this->where($where)->save($data);
+                $oldArr = explode('，',$res['tags']);
+                $same = array_intersect($oldArr,$newArr);
+                $tagsDel = array_diff($oldArr,$same);
+                $tagsAdd = array_diff($newArr,$same);
+                $articleId = $res['id'];
             }
             if ($result === false) {
                 $this->msg->status = false;
                 $this->msg->content = '保存失败！';
+
             } else {
+                //标签新增
+                $tagsMapModel = new ArticleTagsMapModel();
+                $tagsMapModel->doSave($tagsAdd,$articleId);
+                //删除旧标签
+                $tagsMapModel->delByData($tagsDel,$articleId);
+
                 $this->msg->status = true;
                 $this->msg->content = '保存成功';
             }
@@ -97,7 +121,6 @@ class ArticleModel extends Model
     {
         $where = array();
         $where['id'] = $id;
-        $where['status'] = self::Enabled;
         if(!empty($uid)){
             $where['user_id'] = $uid;
         }
@@ -109,6 +132,36 @@ class ArticleModel extends Model
         } else {
             $this->msg->status = true;
             $this->msg->data = $data;
+        }
+        return $this->msg;
+    }
+
+    /**
+     * 删除数据逻辑，返回删除结果
+     * @param $uid
+     * @param $id
+     * @return \Common\Controls\Msg
+     */
+    public function del($uid, $id)
+    {
+        $where = array(
+            'id' =>$id,
+            'user_id' =>$uid,
+        );
+        $data = $this->where($where)->find();
+        $result = $this->where($where)->delete();
+
+        if ($result == false) {
+            $this->msg->status = false;
+            $this->msg->content = '删除失败！';
+        } else {
+            //删除旧标签
+            $oldArr = explode('，',$data['tags']);
+            $tagsMapModel = new ArticleTagsMapModel();
+            $tagsMapModel->delByData($oldArr,$id);
+
+            $this->msg->status = true;
+            $this->msg->content = '删除成功！';
         }
         return $this->msg;
     }

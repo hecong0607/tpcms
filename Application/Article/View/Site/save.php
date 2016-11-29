@@ -36,6 +36,12 @@
                         <td><input type="text" name="tags" id="tags" value="{$data['tags']}" style="width: 280px" placeholder="请输入标签"> 多标签之间用“，”隔开</td>
                     </tr>
                     <tr>
+                        <th>摘要</th>
+                        <td>
+                            <textarea name="summary" id="summary" style="width: 98%;height: 80px;">{$data['summary']}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
                         <th>内容</th>
                         <td>
                             <textarea name="content" id="content" style="width: 100%;height: 500px;">{$data['content']}</textarea>
@@ -46,18 +52,25 @@
 
             <div class="span3">
                 <table class="table table-bordered">
-                    <tr>
-                        <th>封面</th>
+                    <tr >
+                        <th colspan="2">封面</th>
                     </tr>
                     <tr>
-                        <td>
+                        <td colspan="2">
                             <div style="text-align: center;">
                                 <input type="hidden" name="face" id="face" value="{$data['face']}">
                                 <a href="javascript:void(0);" onclick="$('#file').click();">
-                                    <img src="__PUBLIC__/admin/assets/images/default-thumbnail.png" id="thumb_preview" width="135" style="cursor: hand"/>
+                                    <img src="{$data['face']|default='__PUBLIC__/admin/assets/images/default-thumbnail.png'}" id="thumb_preview" width="135" style="cursor: hand"/>
                                 </a>
                             </div>
                         </td>
+                    </tr>
+                    <tr>
+                        <th>发布</th>
+                        <td><select name="status">
+                                <option value="1" <?=($data['status']==1)?'selected':''?>>发布</option>
+                                <option value="0" <?=($data['status']!=1)?'selected':''?>>待发布</option>
+                            </select></td>
                     </tr>
                 </table>
             </div>

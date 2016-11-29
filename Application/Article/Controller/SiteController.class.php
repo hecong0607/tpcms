@@ -55,7 +55,15 @@ class SiteController extends Base
     //文章删除
     public function delAction()
     {
-
+        $id = I('get.id');
+        $articleModel = new ArticleModel();
+        $uid = $this->getMyInfo()['id'];
+        $msgDel = $articleModel->del($uid, $id);
+        if ($msgDel->status == false) {
+            $this->error($msgDel->content);
+        } else {
+            $this->success($msgDel->content);
+        }
     }
 
     /**
@@ -76,7 +84,9 @@ class SiteController extends Base
         $articleModel->section_id = I('post.section_id',0);
         $articleModel->tags = I('post.tags','');
         $articleModel->content = I('post.content','');
+        $articleModel->summary = I('post.summary','');
         $articleModel->face = I('post.face','');
+        $articleModel->status = I('post.status','');
     }
 
     /**
