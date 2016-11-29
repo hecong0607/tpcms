@@ -110,6 +110,7 @@
             processData: false,
             success: function (data){
                 var json = eval("(" + data.info + ")");
+                console.log(json);
                 $('#thumb_preview').attr('src',json.url);
                 $('#face').val(json.url);
             },
