@@ -49,7 +49,7 @@ class SiteController extends Base
         $uid = $this->getMyInfo()['id'];
         $msgData = $articleModel->getList($uid);
         $this->assign(array('list' => $msgData->data['list'], 'page' => $msgData->data['page']));
-        $this->display('site/list');
+        $this->display('Site/list');
     }
 
     //文章删除
