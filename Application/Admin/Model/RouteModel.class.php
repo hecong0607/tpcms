@@ -98,25 +98,35 @@ class RouteModel extends Model
         foreach ($data['database'] as $k => $v) {
             $databaseStr .= $v['route'];
         }
-        $dir = __DIR__ . '/../Controller/';
-        $controllerFile = scandir($dir);
+        $modules = C('param.adminModules');
+        $configs = array();
+        foreach($modules as $k=>$v){
+            $configTemp['dir'] = __DIR__.'/../../'.$v.'/Controller/';
+            $configTemp['modules'] = $v;
+            $configTemp['controllerFile'] = scandir($configTemp['dir']);
+            $configs[] = $configTemp;
+        }
+//        $dir = __DIR__ . '/../Controller/';
+//        $controllerFile = scandir($dir);
         $routes = array();
-        $module = MODULE_NAME;
-        $actionSuffix = C('ACTION_SUFFIX');
-        foreach ($controllerFile as $k => $v) {
-            $temp = explode('Controller.class.', $v);
-            if (!empty($temp[1]) && $temp[0] != 'Empty') {
-                $controller = $temp[0];
-                $class = $module . '\\Controller\\' . $controller . 'Controller';
-                $methods = get_class_methods($class);
-                foreach ($methods as $key => $value) {
-                    if (substr($value, -strlen($actionSuffix)) == $actionSuffix) {
-                        $action = substr($value, 0, strlen($value) - strlen($actionSuffix));
-                        $route = '/' . $module . '/' . $controller . '/' . $action;
-                        if (stripos($databaseStr, $route) === false) {
-                            $routes[] = $route;
-                        }
+        foreach($configs as $keyC =>$valueC) {
+            $module = $valueC['modules'];
+            $actionSuffix = C('ACTION_SUFFIX');
+            foreach ($valueC['controllerFile'] as $k => $v) {
+                $temp = explode('Controller.class.', $v);
+                if (!empty($temp[1]) && $temp[0] != 'Empty') {
+                    $controller = $temp[0];
+                    $class = $module . '\\Controller\\' . $controller . 'Controller';
+                    $methods = get_class_methods($class);
+                    foreach ($methods as $key => $value) {
+                        if (substr($value, -strlen($actionSuffix)) == $actionSuffix) {
+                            $action = substr($value, 0, strlen($value) - strlen($actionSuffix));
+                            $route = '/' . $module . '/' . $controller . '/' . $action;
+                            if (stripos($databaseStr, $route) === false) {
+                                $routes[] = $route;
+                            }
 
+                        }
                     }
                 }
             }

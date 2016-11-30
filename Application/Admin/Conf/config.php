@@ -33,6 +33,10 @@ $config = array(
             '/Admin/Home/index',
             '/Admin/Home/main',
         ),
+        'adminModules' => array(
+            'Admin',
+            'Article',
+        ),
     ),
 );
 return array_merge($config, $config_local);
