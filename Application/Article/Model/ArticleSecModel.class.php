@@ -20,20 +20,17 @@ class ArticleSecModel extends Model
     const Enabled = 1;
     const Disable = 0;
 
+
     /**
-     * 获取数据，根据id或者uid和id
-     * @param string $uid
+     * 获取数据，根据id
      * @param $id
      * @return \Common\Controls\Msg
      */
-    public function getDataById($uid='',$id)
+    public function getDataById($id)
     {
         $where = array();
         $where['id'] = $id;
         $where['status'] = self::Enabled;
-        if(!empty($uid)){
-            $where['user_id'] = $uid;
-        }
 
         $data = $this->where($where)->find();
         if (empty($data)) {
@@ -74,7 +71,7 @@ class ArticleSecModel extends Model
                 $result = $this->add($data);
             } else {
                 $data['update_time'] = time();
-                $result = $this->where(array('id' => $this->id,'user_id'=>$this->user_id))->save($data);
+                $result = $this->where(array('id' => $this->id, 'user_id' => $this->user_id))->save($data);
             }
             if ($result === false) {
                 $this->msg->status = false;
@@ -94,10 +91,10 @@ class ArticleSecModel extends Model
      */
     public function getList($uid)
     {
-        $where = array('user_id'=>$uid);
+        $where = array('status' => self::Enabled);
         $count = (int)$this->where($where)->count();
         $Page = new \Think\Page($count, $this->default_page);// 实例化分页类 传入总记录数和每页显示的记录数(30)
-        $list = $this->where($where)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $list = $this->where($where)->field(array('content'), true)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
         $data = array(
             'page' => $Page->show(),
             'list' => $list,
@@ -116,8 +113,8 @@ class ArticleSecModel extends Model
     {
 
         $where = array(
-            'id' =>$id,
-            'user_id' =>$uid,
+            'id'      => $id,
+            'user_id' => $uid,
         );
         $result = $this->where($where)->delete();
 
@@ -132,24 +129,11 @@ class ArticleSecModel extends Model
     }
 
     /**
-     * 获取自己的所有栏目
-     * @param $uid
-     * @return \Common\Controls\Msg
-     */
-    public function getDataByUid($uid){
-        $where = array(
-            'user_id' =>$uid,
-            'status' => self::Enabled,
-        );
-        $this->msg->data = $this->where($where)->select();
-        return $this->msg;
-    }
-
-    /**
      * 获取所有栏目
      * @return \Common\Controls\Msg
      */
-    public function getDataAll(){
+    public function getDataAll()
+    {
         $where = array(
             'status' => self::Enabled,
         );

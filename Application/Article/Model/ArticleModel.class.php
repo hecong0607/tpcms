@@ -47,15 +47,15 @@ class ArticleModel extends Model
         $this->checkSave();
         if ($this->msg->status == true) {
             $data = array(
-                'title'    => $this->title,
-                'content' => $this->content,
-                'summary' => $this->summary,
-                'face' => $this->face,
-                'tags' => $this->tags,
+                'title'      => $this->title,
+                'content'    => $this->content,
+                'summary'    => $this->summary,
+                'face'       => $this->face,
+                'tags'       => $this->tags,
                 'section_id' => $this->section_id,
-                'status'  => ((int)$this->status==1)?self::Enabled:self::Disable,
+                'status'     => ((int)$this->status == 1) ? self::Enabled : self::Disable,
             );
-            $newArr = explode('，',$data['tags']);
+            $newArr = explode('，', $data['tags']);
             if (empty($this->id)) {
                 $data['create_time'] = time();
                 $data['user_id'] = $this->user_id;
@@ -65,13 +65,13 @@ class ArticleModel extends Model
                 $tagsAdd = $newArr;
             } else {
                 $data['update_time'] = time();
-                $where = array('id' => $this->id,'user_id'=>$this->user_id);
+                $where = array('id' => $this->id, 'user_id' => $this->user_id);
                 $res = $this->where($where)->find();
                 $result = $this->where($where)->save($data);
-                $oldArr = explode('，',$res['tags']);
-                $same = array_intersect($oldArr,$newArr);
-                $tagsDel = array_diff($oldArr,$same);
-                $tagsAdd = array_diff($newArr,$same);
+                $oldArr = explode('，', $res['tags']);
+                $same = array_intersect($oldArr, $newArr);
+                $tagsDel = array_diff($oldArr, $same);
+                $tagsAdd = array_diff($newArr, $same);
                 $articleId = $res['id'];
             }
             if ($result === false) {
@@ -81,9 +81,9 @@ class ArticleModel extends Model
             } else {
                 //标签新增
                 $tagsMapModel = new ArticleTagsMapModel();
-                $tagsMapModel->doSave($tagsAdd,$articleId);
+                $tagsMapModel->doSave($tagsAdd, $articleId);
                 //删除旧标签
-                $tagsMapModel->delByData($tagsDel,$articleId);
+                $tagsMapModel->delByData($tagsDel, $articleId);
 
                 $this->msg->status = true;
                 $this->msg->content = '保存成功';
@@ -99,7 +99,7 @@ class ArticleModel extends Model
      */
     public function getList($uid)
     {
-        $where = array('user_id'=>$uid);
+        $where = array('user_id' => $uid);
         $count = (int)$this->where($where)->count();
         $Page = new \Think\Page($count, $this->default_page);// 实例化分页类 传入总记录数和每页显示的记录数(30)
         $list = $this->where($where)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
@@ -117,11 +117,11 @@ class ArticleModel extends Model
      * @param $id
      * @return \Common\Controls\Msg
      */
-    public function getDataById($uid='',$id)
+    public function getDataById($id, $uid = '')
     {
         $where = array();
         $where['id'] = $id;
-        if(!empty($uid)){
+        if (!empty($uid)) {
             $where['user_id'] = $uid;
         }
 
@@ -145,8 +145,8 @@ class ArticleModel extends Model
     public function del($uid, $id)
     {
         $where = array(
-            'id' =>$id,
-            'user_id' =>$uid,
+            'id'      => $id,
+            'user_id' => $uid,
         );
         $data = $this->where($where)->find();
         $result = $this->where($where)->delete();
@@ -156,13 +156,28 @@ class ArticleModel extends Model
             $this->msg->content = '删除失败！';
         } else {
             //删除旧标签
-            $oldArr = explode('，',$data['tags']);
+            $oldArr = explode('，', $data['tags']);
             $tagsMapModel = new ArticleTagsMapModel();
-            $tagsMapModel->delByData($oldArr,$id);
+            $tagsMapModel->delByData($oldArr, $id);
 
             $this->msg->status = true;
             $this->msg->content = '删除成功！';
         }
         return $this->msg;
+    }
+
+    /**
+     * 根据栏目id获取文章数量，返回数量
+     * @param $section_id
+     * @return int
+     */
+    public function getCountBySection($section_id)
+    {
+        $where = array(
+            'section_id' => (int)$section_id,
+            'status'     => self::Enabled,
+        );
+        $count = $this->where($where)->count();
+        return (int)$count;
     }
 }

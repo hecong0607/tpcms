@@ -125,10 +125,10 @@ class SiteController extends Base
     protected function save($uid = '',$id = '')
     {
         $articleModel = new ArticleModel();
-        $msgData = $articleModel->getDataById($uid,$id);
+        $msgData = $articleModel->getDataById($id, $uid);
         $data = $msgData->data;
         $section = new ArticleSecModel();
-        $secData = clone $section->getDataByUid($uid);
+        $secData = clone $section->getDataAll();
         $data['section'] = $secData->data;
         $this->assign('data', $data);
         $this->display('/Site/save');

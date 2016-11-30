@@ -43,15 +43,13 @@ class SectionController extends Base
         $this->doSave($uid, $id);
     }
 
-
-
     //栏目详情页面
     public function showAction()
     {
         $sectionModel = new ArticleSecModel();
         $id = I('get.id', 0);
         $uid = $this->getMyInfo()['id'];
-        $msgData = $sectionModel->getDataById($uid,$id);
+        $msgData = $sectionModel->getDataById($uid, $id);
         $this->assign('data', $msgData->data);
         $this->display('Section/show');
     }
@@ -86,8 +84,8 @@ class SectionController extends Base
      */
     protected function postData(ArticleSecModel &$sectionModel)
     {
-        $sectionModel->title = I('post.title','');
-        $sectionModel->content = I('post.content','');
+        $sectionModel->title = I('post.title', '');
+        $sectionModel->content = I('post.content', '');
     }
 
     /**
@@ -118,10 +116,10 @@ class SectionController extends Base
      * @param string $uid
      * @param string $id
      */
-    protected function save($uid = '',$id = '')
+    protected function save($uid = '', $id = '')
     {
         $sectionModel = new ArticleSecModel();
-        $msgData = clone $sectionModel->getDataById($uid,$id);
+        $msgData = clone $sectionModel->getDataById($uid, $id);
         $this->assign('data', $msgData->data);
         $this->display('/Section/save');
     }

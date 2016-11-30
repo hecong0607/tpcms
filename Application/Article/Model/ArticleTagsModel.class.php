@@ -69,4 +69,10 @@ class ArticleTagsModel extends Model
         return $result;
     }
 
+    /**
+     * 获取个人的标签
+     */
+    public function getMyList(){
+
+    }
 }

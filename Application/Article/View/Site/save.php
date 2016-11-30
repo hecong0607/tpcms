@@ -27,7 +27,7 @@
                         <td><select name="section_id">
                                 <option value="0">选择栏目</option>
                                 <?php foreach($data['section'] as $k=>$v){ ?>
-                                    <option value="{$v['id']}">{$v['name']}</option>
+                                    <option value="{$v['id']}" <?=$v['id']==$data['section_id']?'selected':'';?>>{$v['name']}</option>
                                 <?php } ?>
                             </select></td>
                     </tr>
