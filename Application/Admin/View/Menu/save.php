@@ -21,6 +21,9 @@
         background-color: rgba(255, 255, 255, 0.8);
         cursor: pointer;
     }
+    .select li.active {
+        background-color:rgba(0, 0, 0, 0.5);
+    }
 </style>
 <div class="wrap">
     <ul class="nav nav-tabs">
@@ -110,28 +113,6 @@
         </div>
     </form>
     <script>
-
-        $(function () {
-            $(".js-ajax-close-btn").on('click', function (e) {
-                e.preventDefault();
-                Wind.use("artDialog", function () {
-                    art.dialog({
-                        id: "question",
-                        icon: "question",
-                        fixed: true,
-                        lock: true,
-                        background: "#CCCCCC",
-                        opacity: 0,
-                        content: "您确定需要关闭当前页面嘛？",
-                        ok: function () {
-                            setCookie('Admin_Menu', 1);
-                            window.close();
-                            return true;
-                        }
-                    });
-                });
-            });
-        });
         <?php
             $data = [] ;
             foreach($route as $k=>$v){
@@ -145,30 +126,70 @@
 
             var words = <?= $words;?>;
             var input = $('#route');
+            var li = null;
             input.bind("change paste keyup", function (e) {
                 if (e.which != 13 && e.which != 27
                     && e.which != 38 && e.which != 40) {
-                    currentProposals = [];
-                    currentSelection = -1;
                     proposalList.empty();
                     if (input.val() != '') {
-                        var word = "^" + $('#route').val() + ".*";
+                        var word = $('#route').val();
                         proposalList.empty();
                         for (var test in words) {
-                            if (words[test].match(word)) {
-                                var temp = words[test];
-                                currentProposals.push(words[test]);
+                            if (words[test].toLowerCase().indexOf(word.toLowerCase())>-1) {
                                 var element = $('<li></li>')
                                     .html(words[test])
                                     .click(function () {
                                         input.val($(this).html());
                                         proposalList.empty();
+                                        li = null;
+                                    })
+                                    .mousemove(function(){
+                                        $(this).siblings('.active').removeClass('active');
+                                        $(this).addClass('active');
+                                        li = $(this);
                                     });
                                 proposalList.append(element);
                             }
                         }
                     }
                     input.after(proposalList);
+                }
+
+
+            });
+            input.bind('keydown',function(e){
+                var temp = null;
+                if (e.which == 38) {
+                    if(li == null){
+                        li = $('.select li:first-child');
+                    } else {
+                        temp = li.prev();
+                        if (temp.length != 0) {
+                            li = temp;
+                        }
+                    }
+                    li.siblings('.active').removeClass('active');
+                    li.addClass('active');
+                    return false;
+                }
+                if (e.which == 40) {
+                    if(li == null){
+                        li = $('.select li:first-child');
+                    } else {
+                        temp = li.next();
+                        if(temp.length!=0){
+                            li = temp;
+                        }
+                    }
+                    li.siblings('.active').removeClass('active');
+                    li.addClass('active');
+                    return false;
+                }
+                if(e.which == 13){
+                    $(this).val($('.select li.active').html());
+                    $('.select').empty();
+                    li = null;
+                    return false;
                 }
             });
         });

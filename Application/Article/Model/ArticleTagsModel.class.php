@@ -70,9 +70,22 @@ class ArticleTagsModel extends Model
     }
 
     /**
-     * 获取个人的标签
+     * 获取标签列表
+     * @return \Common\Controls\Msg
      */
-    public function getMyList(){
-
+    public function getList($select){
+        $where = array();
+        if($select['name']!=''){
+            $where['name'] = array('like','%'.$select['name'].'%');
+        }
+        $count = (int)$this->where($where)->count();
+        $Page = new \Think\Page($count, $this->default_page);// 实例化分页类 传入总记录数和每页显示的记录数(30)
+        $list = $this->where($where)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $data = array(
+            'page' => $Page->show(),
+            'list' => $list,
+        );
+        $this->msg->data = $data;
+        return $this->msg;
     }
 }

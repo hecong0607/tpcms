@@ -2,7 +2,7 @@
 
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li><a href="{:U('Article/Section/list')}">栏目列表</a>
+        <li><a href="{:U('Article/Section/listAdmin')}">栏目列表</a>
             <if condition="empty($data['id'])">
                 <li class="active"><a href="javascript:void(0);">栏目添加</a></li>
                 <else/>

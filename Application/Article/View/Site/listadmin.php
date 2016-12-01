@@ -10,11 +10,12 @@
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
         <li class="active"><a href="javascript:void(0);">文章列表</a></li>
-        <li><a href="{:U('Article/Site/add')}">文章添加</a></li>
     </ul>
     <form class="well form-search" method="get" action="">
         标题：
         <input type="text" name="title" style="width: 200px;" value="{$_GET['title']}" placeholder="请输入标题...">
+        编辑者帐号：
+        <input type="text" name="editor" style="width: 200px;" value="{$_GET['editor']}" placeholder="请输入编辑者...">
         时间：
         <input type="text" name="start_time" class="js-date date" value="{$_GET['start_time']}" style="width: 80px;" autocomplete="off">-
         <input type="text" class="js-date date" name="end_time" value="{$_GET['end_time']}" style="width: 80px;" autocomplete="off"> &nbsp; &nbsp;
@@ -24,11 +25,12 @@
         <thead>
         <tr>
             <th>文章名称</th>
-            <th width="500">摘要</th>
-            <th width="90">发布</th>
-            <th width="90">审核状态</th>
+            <th width="450">摘要</th>
+            <th width="50">发布</th>
+            <th width="120">编辑人</th>
+            <th width="60">审核状态</th>
             <th width="120">创建时间</th>
-            <th width="180">操作</th>
+            <th width="120">操作</th>
         </tr>
         </thead>
         <?php if(!empty($list)){ ?>
@@ -43,24 +45,27 @@
                         <font color="red">╳</font>
                     </if>
                 </td>
-                <td><?php if ($value['flag'] == Article\Model\ArticleModel::Pended) {
+                <td>{$value['realname']}({$value['username']})</td>
+                <td><?php if($value['flag'] == Article\Model\ArticleModel::Pended){
                         echo '通过';
-                    } elseif ($value['flag'] == Article\Model\ArticleModel::PendingEdited) {
+                     } elseif($value['flag'] == Article\Model\ArticleModel::PendingEdited) {
                         echo '已修改';
-                    } else {
+                     } else {
                         echo '待修改';
-                    } ?></td>
+                     } ?></td>
                 <td><?= date('Y-m-d H:i', $value['create_time']); ?></td>
                 <td>
                     <a href="javascript:void(0);">查看</a> |
-                    <a href="{:U('Article/Site/save',array('id'=>$value['id']))}">修改</a> |
-                    <a href="{:U('Article/Site/del',array('id'=>$value['id']))}">删除</a> |
-                    <a href="{:U('Article/Site/release',array('id'=>$value['id']))}"><?= $value['status'] == Article\Model\ArticleModel::Enabled ? '待发布' : '发布' ?></a>
+                    <?php if ($value['flag'] == Article\Model\ArticleModel::Pended) { ?>
+                        <a href="{:U('Article/Site/setPend',array('id'=>$value['id'],'flag'=>Article\\Model\\ArticleModel::PendingEditing))}">设为未通过</a>
+                    <?php } else { ?>
+                        <a href="{:U('Article/Site/setPend',array('id'=>$value['id'],'flag'=>Article\\Model\\ArticleModel::Pended   ))}">设为通过</a>
+                    <?php } ?>
                 </td>
             </tr>
         </foreach>
         <?php } else { ?>
-            <tr><td colspan="5" >暂无信息</td></tr>
+            <tr><td colspan="6" >暂无信息</td></tr>
         <?php } ?>
         <tbody>
         </tbody>

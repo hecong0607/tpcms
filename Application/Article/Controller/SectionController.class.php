@@ -6,6 +6,50 @@ use Article\Model\ArticleSecModel;
 
 class SectionController extends Base
 {
+
+
+    /**
+     * 普通人员应用
+     */
+
+
+    //栏目列表
+    public function listAction()
+    {
+        $sectionModel = new ArticleSecModel();
+        $select = $this->getSelect();
+        $msgData = $sectionModel->getList($select);
+        $this->assign(array('list' => $msgData->data['list'], 'page' => $msgData->data['page'], 'admin' => 0));
+        $this->display('Section/list');
+    }
+
+
+    /**
+     * 管理人员应用
+     */
+
+    //栏目列表
+    public function listAdminAction()
+    {
+        $sectionModel = new ArticleSecModel();
+        $select = $this->getSelect();
+        $msgData = $sectionModel->getList($select);
+        $this->assign(array('list' => $msgData->data['list'], 'page' => $msgData->data['page'], 'admin' => 1));
+        $this->display('Section/list');
+    }
+
+    /**
+     * 获取筛选条件
+     * @return array
+     */
+    protected function getSelect()
+    {
+        $select = array(
+            'name'=>I('get.name',''),
+        );
+        return $select;
+    }
+
     /**
      * 栏目新增页面
      */
@@ -52,16 +96,6 @@ class SectionController extends Base
         $msgData = $sectionModel->getDataById($uid, $id);
         $this->assign('data', $msgData->data);
         $this->display('Section/show');
-    }
-
-    //栏目列表
-    public function listAction()
-    {
-        $sectionModel = new ArticleSecModel();
-        $uid = $this->getMyInfo()['id'];
-        $msgData = $sectionModel->getList($uid);
-        $this->assign(array('list' => $msgData->data['list'], 'page' => $msgData->data['page']));
-        $this->display('Section/list');
     }
 
     //栏目删除

@@ -86,12 +86,15 @@ class ArticleSecModel extends Model
 
     /**
      * 获取数据，并分页，返回数据
-     * @param $uid
+     * @param $select
      * @return \Common\Controls\Msg
      */
-    public function getList($uid)
+    public function getList($select)
     {
         $where = array('status' => self::Enabled);
+        if($select['name']!=''){
+            $where['name'] = array('like','%' .$select['name'] . '%');
+        }
         $count = (int)$this->where($where)->count();
         $Page = new \Think\Page($count, $this->default_page);// 实例化分页类 传入总记录数和每页显示的记录数(30)
         $list = $this->where($where)->field(array('content'), true)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
@@ -116,14 +119,20 @@ class ArticleSecModel extends Model
             'id'      => $id,
             'user_id' => $uid,
         );
-        $result = $this->where($where)->delete();
-
-        if ($result == false) {
+        $article = new ArticleModel();
+        $count = $article->getCountBySection(($id));
+        if($count>0) {
             $this->msg->status = false;
-            $this->msg->content = '删除失败！';
+            $this->msg->content = '删除失败,栏目下有文章！';
         } else {
-            $this->msg->status = true;
-            $this->msg->content = '删除成功！';
+            $result = $this->where($where)->delete();
+            if ($result == false) {
+                $this->msg->status = false;
+                $this->msg->content = '删除失败！';
+            } else {
+                $this->msg->status = true;
+                $this->msg->content = '删除成功！';
+            }
         }
         return $this->msg;
     }

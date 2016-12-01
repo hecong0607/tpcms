@@ -7,11 +7,12 @@ use Article\Model\ArticleSecModel;
 
 /**
  * 文章控制器
- * Class ArticleController
+ * Class SiteController
  * @package Admin\Controller
  */
 class SiteController extends Base
 {
+
     //文章添加页面
     public function addAction()
     {
@@ -47,7 +48,8 @@ class SiteController extends Base
     {
         $articleModel = new ArticleModel();
         $uid = $this->getMyInfo()['id'];
-        $msgData = $articleModel->getList($uid);
+        $select = $this->getSelect();
+        $msgData = $articleModel->getList($uid, $select);
         $this->assign(array('list' => $msgData->data['list'], 'page' => $msgData->data['page']));
         $this->display('Site/list');
     }
@@ -55,7 +57,7 @@ class SiteController extends Base
     //文章删除
     public function delAction()
     {
-        $id = I('get.id');
+        $id = I('get.id', 0);
         $articleModel = new ArticleModel();
         $uid = $this->getMyInfo()['id'];
         $msgDel = $articleModel->del($uid, $id);
@@ -67,11 +69,19 @@ class SiteController extends Base
     }
 
     /**
-     * 文章详情
+     * 发布和下架文章
      */
-    public function showAction()
+    public function releaseAction()
     {
-
+        $id = I('get.id', 0);
+        $uid = $this->getMyInfo()['id'];
+        $articleModel = new ArticleModel();
+        $msgDel = $articleModel->setStatus($id, $uid);
+        if ($msgDel->status == false) {
+            $this->error($msgDel->content);
+        } else {
+            $this->success($msgDel->content);
+        }
     }
 
     /**
@@ -80,21 +90,21 @@ class SiteController extends Base
      */
     protected function postData(ArticleModel &$articleModel)
     {
-        $articleModel->title = I('post.title','');
-        $articleModel->section_id = I('post.section_id',0);
-        $articleModel->tags = I('post.tags','');
-        $articleModel->content = I('post.content','');
-        $articleModel->summary = I('post.summary','');
-        $articleModel->face = I('post.face','');
-        $articleModel->status = I('post.status','');
+        $articleModel->title = I('post.title', '');
+        $articleModel->section_id = I('post.section_id', 0);
+        $articleModel->tags = I('post.tags', '');
+        $articleModel->content = I('post.content', '');
+        $articleModel->summary = I('post.summary', '');
+        $articleModel->face = I('post.face', '');
+        $articleModel->status = I('post.status', '');
     }
 
     /**
      * 修改和保存操作封装
-     * @param string $uid
-     * @param string $id
+     * @param int $uid
+     * @param int $id
      */
-    protected function doSave($uid = '', $id = '')
+    protected function doSave($uid = 0, $id = 0)
     {
         if (IS_POST) {
             $articleModel = new ArticleModel();
@@ -102,8 +112,8 @@ class SiteController extends Base
             $articleModel->user_id = $uid;
             $this->postData($articleModel);
             $sectionModel = new ArticleSecModel();
-            $msgData = clone $sectionModel->getDataById($uid,$id);
-            if($msgData->status == false){
+            $msgData = clone $sectionModel->getDataById($id);
+            if ($msgData->status == false) {
                 $articleModel->section_id = 0;
             }
             $msgSave = clone $articleModel->doSave();
@@ -119,10 +129,10 @@ class SiteController extends Base
 
     /**
      * 修改和保存页面封装
-     * @param string $uid
-     * @param string $id
+     * @param int $uid
+     * @param int $id
      */
-    protected function save($uid = '',$id = '')
+    protected function save($uid = 0, $id = 0)
     {
         $articleModel = new ArticleModel();
         $msgData = $articleModel->getDataById($id, $uid);
@@ -134,5 +144,51 @@ class SiteController extends Base
         $this->display('/Site/save');
     }
 
+    /***
+     * 管理员操作
+     */
+
+    /**
+     * 文章列表
+     */
+    public function listAdminAction()
+    {
+        $articleModel = new ArticleModel();
+        $select = $this->getSelect();
+        $msgData = $articleModel->getLisBytAdmin($select);
+        $this->assign(array('list' => $msgData->data['list'], 'page' => $msgData->data['page']));
+        $this->display('Site/listadmin');
+    }
+
+    /**
+     * 文章审核设置
+     */
+    public function setPendAction()
+    {
+        $id = I('get.id', 0);
+        $flag = I('get.flag', 0);
+        $articleModel = new ArticleModel();
+        $msgDel = $articleModel->setPendAdmin($id, $flag);
+        if ($msgDel->status == false) {
+            $this->error($msgDel->content);
+        } else {
+            $this->success($msgDel->content);
+        }
+    }
+
+    /**
+     * 获取筛选条件
+     * @return array
+     */
+    protected function getSelect()
+    {
+        $select = array(
+            'title'      => I('get.title', ''),
+            'editor'     => I('get.editor', ''),
+            'start_time' => strtotime(I('get.start_time', '')),
+            'end_time'   => strtotime(I('get.end_time', '')),
+        );
+        return $select;
+    }
 
 }

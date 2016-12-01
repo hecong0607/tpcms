@@ -18,12 +18,19 @@ use Common\Controls\Model;
  * @property integer $create_time
  * @property integer $update_time
  * @property integer $status
+ * @property integer $flag
  */
 class ArticleModel extends Model
 {
     protected $tableName = 'article';
-    const Enabled = 1;
-    const Disable = 0;
+    const Enabled = 1;      //发布
+    const Disable = 0;      //待发布
+
+    const AdminUid = -1;    //管理员id
+
+    const Pended = 0;    //审核通过
+    const PendingEditing = 1;    //待审核-未修改
+    const PendingEdited = 0;   //待审核已经修改
 
     /**
      * 验证保存的数据（新增和修改）
@@ -56,17 +63,21 @@ class ArticleModel extends Model
                 'status'     => ((int)$this->status == 1) ? self::Enabled : self::Disable,
             );
             $newArr = explode('，', $data['tags']);
-            if (empty($this->id)) {
+            if (empty($this->id)) {             //新增
+                $data['flag'] = self::Pended;
                 $data['create_time'] = time();
                 $data['user_id'] = $this->user_id;
                 $result = $this->add($data);
                 $articleId = $result;
                 $tagsDel = array();
                 $tagsAdd = $newArr;
-            } else {
+            } else {                            //修改
                 $data['update_time'] = time();
                 $where = array('id' => $this->id, 'user_id' => $this->user_id);
                 $res = $this->where($where)->find();
+                if ($res['flag'] == self::PendingEditing) {   //待审核未修改
+                    $data['flag'] = self::PendingEdited;    //待审核已修改
+                }
                 $result = $this->where($where)->save($data);
                 $oldArr = explode('，', $res['tags']);
                 $same = array_intersect($oldArr, $newArr);
@@ -95,14 +106,26 @@ class ArticleModel extends Model
     /**
      * 获取数据，并分页，返回数据
      * @param $uid
+     * @param $select
      * @return \Common\Controls\Msg
      */
-    public function getList($uid)
+    public function getList($uid, $select)
     {
-        $where = array('user_id' => $uid);
+
+        $where = array('user_id' => (int)$uid);
+        if (!empty($select['title'])) {
+            $where['title'] = array('like','%' . $select['title'] . '%');
+        }
+        if (!empty($select['start_time'])) {
+            $where['create_time'] = array('EGT',$select['start_time']);
+        }
+        if (!empty($select['end_time'])) {
+            $where['create_time'] = array('ELT',$select['end_time']);
+        }
+
         $count = (int)$this->where($where)->count();
         $Page = new \Think\Page($count, $this->default_page);// 实例化分页类 传入总记录数和每页显示的记录数(30)
-        $list = $this->where($where)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $list = $this->where($where)->field(array('content'), true)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
         $data = array(
             'page' => $Page->show(),
             'list' => $list,
@@ -117,13 +140,11 @@ class ArticleModel extends Model
      * @param $id
      * @return \Common\Controls\Msg
      */
-    public function getDataById($id, $uid = '')
+    public function getDataById($id, $uid)
     {
         $where = array();
-        $where['id'] = $id;
-        if (!empty($uid)) {
-            $where['user_id'] = $uid;
-        }
+        $where['id'] = (int)$id;
+        $where['user_id'] = (int)$uid;
 
         $data = $this->where($where)->find();
         if (empty($data)) {
@@ -179,5 +200,101 @@ class ArticleModel extends Model
         );
         $count = $this->where($where)->count();
         return (int)$count;
+    }
+
+    /**
+     * 设置发布状态
+     * @param $id
+     * @param $uid
+     * @return \Common\Controls\Msg
+     */
+    public function setStatus($id, $uid)
+    {
+        $where = array('id' => $id, 'user_id' => $uid);
+        $article = $this->where($where)->field(array('content'), true)->find();
+        if ($article['flag'] != self::Pended) {
+            $this->msg->status = false;
+            $this->msg->content = '审核未通过，设置失败！';
+        } else {
+            $data = array();
+            if ($article['status'] == self::Enabled) {
+                $data['status'] = self::Disable;
+            } else {
+                $data['status'] = self::Enabled;
+            }
+            $result = $this->where($where)->save($data);
+            if ($result == false) {
+                $this->msg->status = false;
+                $this->msg->content = '设置失败！';
+            } else {
+                $this->msg->status = true;
+                $this->msg->content = '设置成功！';
+            }
+        }
+        return $this->msg;
+    }
+
+    /**
+     * 设置审核(通过与未通过待修改)
+     * @param $id
+     * @param $flag
+     * @return \Common\Controls\Msg
+     */
+    public function setPendAdmin($id, $flag)
+    {
+        $where = array('id' => $id);
+        $data = array();
+        if ($flag == self::Pended) {
+            $data['flag'] = self::Pended;
+        } else {
+            $data['flag'] = self::PendingEditing;
+        }
+        $data['status'] = self::Disable;
+        $result = $this->where($where)->save($data);
+        if ($result == false) {
+            $this->msg->status = false;
+            $this->msg->content = '设置失败！';
+        } else {
+            $this->msg->status = true;
+            $this->msg->content = '设置成功！';
+        }
+        return $this->msg;
+    }
+
+    /**
+     * 获取数据，并分页，返回数据
+     * @param $select
+     * @return \Common\Controls\Msg
+     */
+    public function getLisBytAdmin($select)
+    {
+        $where = array();
+        if (!empty($select['title'])) {
+            $where['a.title'] = array('like','%' . $select['title'] . '%');
+        }
+        if (!empty($select['editor'])) {
+            $where['b.username'] = $select['editor'];
+        }
+        if (!empty($select['start_time'])) {
+            $where['a.create_time'] = array('EGT',$select['start_time']);
+        }
+        if (!empty($select['end_time'])) {
+            $where['a.create_time'] = array('ELT',$select['end_time']);
+        }
+
+        $db_prefix = C('DB_PREFIX');
+        $join = 'left join ' . $db_prefix . 'admin_user as b on a.user_id=b.id ';
+        $alias = 'a';
+        $count = (int)$this->where($where)->alias($alias)->join($join)->count();
+
+        $field = array('a.id', 'a.title', 'a.summary', 'a.status', 'a.flag', 'a.create_time', 'b.username', 'b.realname');
+        $Page = new \Think\Page($count, $this->default_page);// 实例化分页类 传入总记录数和每页显示的记录数(30)
+        $list = $this->where($where)->field($field)->alias($alias)->join($join)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $data = array(
+            'page' => $Page->show(),
+            'list' => $list,
+        );
+        $this->msg->data = $data;
+        return $this->msg;
     }
 }
