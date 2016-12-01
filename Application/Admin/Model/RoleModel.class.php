@@ -111,12 +111,19 @@ class RoleModel extends Model
             $this->id = $id;
             $result = $this->delete($id);
         }
-        if ($result == false) {
+        $user = new UserModel();
+        $count = $user->getCountByRole($id);
+        if($count > 0) {
             $this->msg->status = false;
-            $this->msg->content = '删除失败！';
+            $this->msg->content = '删除失败,该角色有用户！';
         } else {
-            $this->msg->status = true;
-            $this->msg->content = '删除成功！';
+            if ($result == false) {
+                $this->msg->status = false;
+                $this->msg->content = '删除失败！';
+            } else {
+                $this->msg->status = true;
+                $this->msg->content = '删除成功！';
+            }
         }
         return $this->msg;
     }

@@ -265,4 +265,16 @@ class UserModel extends Model
         return $this->msg;
     }
 
+    /**
+     * 获取管理员数量，根据角色id
+     * @param $role
+     * @return int
+     */
+    public function getCountByRole($role)
+    {
+        $where = array('role' => (int)$role);
+        $count = $this->where($where)->count();
+        return (int)$count;
+    }
+
 }
