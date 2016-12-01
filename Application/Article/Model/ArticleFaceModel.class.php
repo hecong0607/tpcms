@@ -28,7 +28,7 @@ class ArticleFaceModel extends Model
             'savePath' => $savepath,
             'maxSize' => 11048576,
             'saveName'   =>    array('uniqid',''),
-            'exts'       =>    array('jpg', 'gif', 'png', 'jpeg',"txt",'zip'),
+            'exts'       =>    array('jpg', 'gif', 'png', 'jpeg'),
             'autoSub'    =>    false,
         );
         $upload = new \Think\Upload($config);//

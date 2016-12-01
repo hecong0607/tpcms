@@ -10,6 +10,7 @@ use Common\Controls\Model;
  * @property integer $user_id
  * @property string $title as $name
  * @property string $content
+ * @property string $face
  * @property integer $status
  * @property integer $create_time
  * @property integer $update_time
@@ -63,6 +64,8 @@ class ArticleSecModel extends Model
             $data = array(
                 'name'    => $this->title,
                 'content' => $this->content,
+                'face' => $this->face,
+                'status' => $this->status,
                 'status'  => self::Enabled,
             );
             if (empty($this->id)) {

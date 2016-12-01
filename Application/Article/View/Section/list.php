@@ -16,6 +16,7 @@
             <th >栏目名称</th>
             <th width="180">已发布文章</th>
             <th width="120">创建时间</th>
+            <th width="120">发布</th>
             <th width="180">操作</th>
         </tr>
         </thead>
@@ -26,6 +27,13 @@
                 <td>{$value['name']}</td>
                 <td><?=$article->getCountBySection($value['id']);?></td>
                 <td>{:date('Y-m-d H:i',$value['create_time'])}</td>
+                <td>
+                    <if condition="$value['status'] eq 1">
+                        <font color="red">√</font>
+                        <else/>
+                        <font color="red">╳</font>
+                    </if>
+                </td>
                 <td>
                     <a href="{:U('Article/Section/show',array('id'=>$value['id']))}">查看</a>
                     <?php if($admin==1){ ?>

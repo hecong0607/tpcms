@@ -120,6 +120,8 @@ class SectionController extends Base
     {
         $sectionModel->title = I('post.title', '');
         $sectionModel->content = I('post.content', '');
+        $sectionModel->face = I('post.face', '');
+        $sectionModel->status = I('post.status', '');
     }
 
     /**
