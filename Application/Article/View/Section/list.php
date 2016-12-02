@@ -1,3 +1,6 @@
+<style type="text/css">
+    .thumb{width: 50px;height: auto;max-height: 50px;}
+</style>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
         <li class="active"><a href="javascript:void(0);">栏目列表</a></li>
@@ -14,6 +17,7 @@
         <thead>
         <tr>
             <th >栏目名称</th>
+            <th width="50">封面</th>
             <th width="180">已发布文章</th>
             <th width="120">创建时间</th>
             <th width="120">发布</th>
@@ -25,6 +29,7 @@
         <foreach name="list" item="value">
             <tr>
                 <td>{$value['name']}</td>
+                <td><img class="thumb"  src="{$value['thumb']}"></td>
                 <td><?=$article->getCountBySection($value['id']);?></td>
                 <td>{:date('Y-m-d H:i',$value['create_time'])}</td>
                 <td>

@@ -53,12 +53,13 @@
             <div class="span3">
                 <table class="table table-bordered">
                     <tr >
-                        <th colspan="2">封面</th>
+                        <th colspan="2">封面(272*100)</th>
                     </tr>
                     <tr>
                         <td colspan="2">
                             <div style="text-align: center;">
                                 <input type="hidden" name="face" id="face" value="{$data['face']}">
+                                <input type="hidden" name="thumb" id="thumb" value="{$data['thumb']}">
                                 <a href="javascript:void(0);" onclick="$('#file').click();">
                                     <img src="{$data['face']|default='__PUBLIC__/admin/assets/images/default-thumbnail.png'}" id="thumb_preview" width="135" style="cursor: hand"/>
                                 </a>
@@ -110,9 +111,13 @@
             processData: false,
             success: function (data){
                 var json = eval("(" + data.info + ")");
-                console.log(json);
-                $('#thumb_preview').attr('src',json.url);
-                $('#face').val(json.url);
+                if(data.status==1) {
+                    $('#thumb_preview').attr('src', json.url);
+                    $('#face').val(json.url);
+                    $('#thumb').val(json.thumb);
+                } else {
+                    alert(json.msg);
+                }
             },
             error: function (data) {
                 console.log(data);

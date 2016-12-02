@@ -17,7 +17,8 @@ class FaceController extends Base
             $face = new ArticleFaceModel();
             $result = $face->doUpload($uid);
             $jsonArr = array(
-                'url' => $result->data,
+                'url' => $result->data['url'],
+                'thumb' => $result->data['thumb'],
                 'msg' => $result->content,
             );
             $json = json_encode($jsonArr);

@@ -73,8 +73,7 @@ class SectionController extends Base
     public function saveAction()
     {
         $id = I('get.id', 0);
-        $uid = $this->getMyInfo()['id'];
-        $this->save($uid, $id);
+        $this->save($id);
     }
 
     /**
@@ -121,7 +120,8 @@ class SectionController extends Base
         $sectionModel->title = I('post.title', '');
         $sectionModel->content = I('post.content', '');
         $sectionModel->face = I('post.face', '');
-        $sectionModel->status = I('post.status', '');
+        $sectionModel->thumb = I('post.thumb', '');
+        $sectionModel->status = I('post.status', 0);
     }
 
     /**
@@ -140,7 +140,7 @@ class SectionController extends Base
             if ($msgSave->status == false) {
                 $this->error($msgSave->content);
             } else {
-                $this->success($msgSave->content, U('Article/Section/list'));
+                $this->success($msgSave->content, U('Article/Section/listAdmin'));
             }
         } else {
             $this->error('保存失败！', U('Article/Section/save'));
@@ -149,13 +149,12 @@ class SectionController extends Base
 
     /**
      * 修改和保存页面封装
-     * @param string $uid
      * @param string $id
      */
-    protected function save($uid = '', $id = '')
+    protected function save($id = '')
     {
         $sectionModel = new ArticleSecModel();
-        $msgData = clone $sectionModel->getDataById($uid, $id);
+        $msgData = clone $sectionModel->getDataById($id);
         $this->assign('data', $msgData->data);
         $this->display('/Section/save');
     }

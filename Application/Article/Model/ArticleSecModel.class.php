@@ -11,6 +11,7 @@ use Common\Controls\Model;
  * @property string $title as $name
  * @property string $content
  * @property string $face
+ * @property string $thumb
  * @property integer $status
  * @property integer $create_time
  * @property integer $update_time
@@ -65,8 +66,8 @@ class ArticleSecModel extends Model
                 'name'    => $this->title,
                 'content' => $this->content,
                 'face' => $this->face,
-                'status' => $this->status,
-                'status'  => self::Enabled,
+                'thumb' => $this->thumb,
+                'status' => ((int)$this->status == 1) ? self::Enabled : self::Disable,
             );
             if (empty($this->id)) {
                 $data['create_time'] = time();
@@ -74,7 +75,8 @@ class ArticleSecModel extends Model
                 $result = $this->add($data);
             } else {
                 $data['update_time'] = time();
-                $result = $this->where(array('id' => $this->id, 'user_id' => $this->user_id))->save($data);
+//                $result = $this->where(array('id' => $this->id, 'user_id' => $this->user_id))->save($data);
+                $result = $this->where(array('id' => $this->id))->save($data);
             }
             if ($result === false) {
                 $this->msg->status = false;
@@ -94,7 +96,7 @@ class ArticleSecModel extends Model
      */
     public function getList($select)
     {
-        $where = array('status' => self::Enabled);
+        $where = array();
         if($select['name']!=''){
             $where['name'] = array('like','%' .$select['name'] . '%');
         }

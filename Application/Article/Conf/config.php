@@ -14,5 +14,9 @@ $config = array(
         'PATH'  =>  '/Public/images/face/',
         'ROOT' => __ROOT__.'/Public/images/face/',
     ),
+    'THUMB'                => array(
+        'PATH'  =>  '/Public/images/thumb/',
+        'ROOT' => __ROOT__.'/Public/images/thumb/',
+    ),
 );
 return array_merge($config, $config_local);

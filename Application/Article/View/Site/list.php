@@ -6,6 +6,7 @@
         white-space: nowrap;
         display: block;
     }
+    .thumb{width: 50px;height: auto;max-height: 50px;}
 </style>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
@@ -24,9 +25,10 @@
         <thead>
         <tr>
             <th>文章名称</th>
-            <th width="500">摘要</th>
-            <th width="90">发布</th>
-            <th width="90">审核状态</th>
+            <th width="50">封面</th>
+            <th width="300">摘要</th>
+            <th width="60">发布</th>
+            <th width="60">审核状态</th>
             <th width="120">创建时间</th>
             <th width="180">操作</th>
         </tr>
@@ -35,6 +37,7 @@
         <foreach name="list" item="value">
             <tr>
                 <td>{$value['title']}</td>
+                <td><img class="thumb"  src="{$value['thumb']}"></td>
                 <td><span class="over">{$value['summary']}</span></td>
                 <td>
                     <if condition="$value['status'] eq 1">

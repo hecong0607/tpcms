@@ -96,6 +96,7 @@ class SiteController extends Base
         $articleModel->content = I('post.content', '');
         $articleModel->summary = I('post.summary', '');
         $articleModel->face = I('post.face', '');
+        $articleModel->thumb = I('post.thumb', '');
         $articleModel->status = I('post.status', '');
     }
 

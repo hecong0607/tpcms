@@ -10,6 +10,7 @@ use Common\Controls\Model;
  * @property integer $user_id
  * @property integer $section_id
  * @property string $face
+ * @property string $thumb
  * @property string $title
  * @property string $summary
  * @property string $content
@@ -58,6 +59,7 @@ class ArticleModel extends Model
                 'content'    => $this->content,
                 'summary'    => $this->summary,
                 'face'       => $this->face,
+                'thumb'       => $this->thumb,
                 'tags'       => $this->tags,
                 'section_id' => $this->section_id,
                 'status'     => ((int)$this->status == 1) ? self::Enabled : self::Disable,

@@ -11,7 +11,7 @@
             </if>
     </ul>
     <?php $url = empty($data['id']) ? U('Article/Section/doAdd') : U('Article/Section/doSave'); ?>
-    <form action="{$url}" method="post" class="form-horizontal js-ajax-form" enctype="multipart/form-data">
+    <form action="{$url}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
         <div class="row-fluid">
             <div class="span9">
                 <table class="table table-bordered">
@@ -33,12 +33,13 @@
             <div class="span3">
                 <table class="table table-bordered">
                     <tr >
-                        <th colspan="2">封面</th>
+                        <th colspan="2">封面(960*540)</th>
                     </tr>
                     <tr>
                         <td colspan="2">
                             <div style="text-align: center;">
                                 <input type="hidden" name="face" id="face" value="{$data['face']}">
+                                <input type="hidden" name="thumb" id="thumb" value="{$data['thumb']}">
                                 <a href="javascript:void(0);" onclick="$('#file').click();">
                                     <img src="{$data['face']|default='__PUBLIC__/admin/assets/images/default-thumbnail.png'}" id="thumb_preview" width="135" style="cursor: hand"/>
                                 </a>
@@ -58,7 +59,7 @@
         <div class="form-actions">
             <input type="hidden" name="id" value="{$data['id']}">
             <button class="btn btn-primary js-ajax-submit" type="submit">保存</button>
-            <a class="btn" href="{:U('Article/Section/list')}">返回</a>
+            <a class="btn" href="{:U('Article/Section/listAdmin')}">返回</a>
         </div>
     </form>
     <form id="image" style="display: none;">
@@ -84,9 +85,13 @@
             processData: false,
             success: function (data){
                 var json = eval("(" + data.info + ")");
-                console.log(json);
-                $('#thumb_preview').attr('src',json.url);
-                $('#face').val(json.url);
+                if(data.status==1) {
+                    $('#thumb_preview').attr('src', json.url);
+                    $('#face').val(json.url);
+                    $('#thumb').val(json.thumb);
+                } else {
+                    alert(json.msg);
+                }
             },
             error: function (data) {
                 console.log(data);

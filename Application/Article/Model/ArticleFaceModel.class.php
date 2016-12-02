@@ -11,6 +11,7 @@ use Common\Controls\Model;
  * @property integer $id
  * @property string $user_id
  * @property string $url
+ * @property string $thumb
  * @property integer $path
  */
 class ArticleFaceModel extends Model
@@ -33,6 +34,7 @@ class ArticleFaceModel extends Model
         );
         $upload = new \Think\Upload($config);//
         $info=$upload->upload();
+        $data = array('url' => '', 'thumb' => '');
         //开始上传
         if ($info) {
             //上传成功
@@ -43,14 +45,16 @@ class ArticleFaceModel extends Model
             }else{
                 $url=C("FACE.ROOT").$savepath.$first['savename'];
             }
+            $thumb = $this->thumb('.' .$url, $first['savename']);
+            $data = array('url' => $url, 'thumb' => $thumb);
             $this->msg->status = true;
-            $this->msg->data = $url;
+            $this->msg->data = $data;
             $this->msg->content = '上传成功';
-            $this->doSave($url,$uid);
+            $this->doSave($url, $thumb, $uid);
         } else {
             //上传失败，返回错误
             $this->msg->status = false;
-            $this->msg->data = '';
+            $this->msg->data = $data;
             $this->msg->content = $upload->getError();
         }
         return $this->msg;
@@ -62,9 +66,10 @@ class ArticleFaceModel extends Model
      * @param $uid
      * @return mixed
      */
-    protected function doSave($url,$uid){
+    protected function doSave($url, $thumb, $uid){
         $data = array(
             'url' =>$url,
+            'thumb' =>$thumb,
             'user_id' =>$uid,
             'time'  => time(),
         );
@@ -72,4 +77,18 @@ class ArticleFaceModel extends Model
         return $result;
     }
 
+    /**
+     * 存放缩略图
+     * @param $path
+     * @param $name
+     */
+    public function thumb($path, $name)
+    {
+        $image = new \Think\Image();
+        $image->open($path);
+        $savePath = C('THUMB.ROOT').$name;
+        // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.jpg
+        $image->thumb(150, 150)->save('.' .$savePath);
+        return $savePath;
+    }
 }
