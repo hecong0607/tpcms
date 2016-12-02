@@ -1,3 +1,7 @@
+<?php
+$sectionModel = new \Article\Model\ArticleSecModel();
+$header_sections = $sectionModel->getDataAll()->data;
+?>
 <header id="vmaig-header" class="navbar navbar-inverse navbar-fixed-top navbar-vmaig">
     <div class="container">
         <div class="navbar-header">
@@ -18,18 +22,15 @@
                         首页
                     </a>
                 </li>
-                <li>
-                    <a href="/article/all/">
+                <li class="article_all">
+                    <a href="{:U('articles/all')}">
                         <span class="glyphicon glyphicon-globe"></span>
                         全部文章
                     </a>
                 </li>
-                
-                <li>
-                    <a href="/section/linux">
-                        linux环境编程-栏目
-                    </a>
-                </li>
+                <?php foreach($header_sections as $k=>$v){ ?>
+                <li class="section_{$v['id']}"><a href="{:U('Section/'.$v['id'])}">{$v['name']}</a></li>
+                <?php } ?>
 
 
             </ul>

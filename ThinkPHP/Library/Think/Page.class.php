@@ -36,10 +36,11 @@ class Page{
     /**
      * 架构函数
      * @param array $totalRows  总的记录数
-     * @param array $listRows  每页显示记录数
+     * @param int $listRows  每页显示记录数
      * @param array $parameter  分页跳转的参数
+     * @param string $url  分页跳转的路由
      */
-    public function __construct($totalRows, $listRows=20, $parameter = array()) {
+    public function __construct($totalRows, $listRows=20, $parameter = array(), $url = '') {
         C('VAR_PAGE') && $this->p = C('VAR_PAGE'); //设置分页参数名称
         /* 基础设置 */
         $this->totalRows  = $totalRows; //设置总记录数
@@ -48,6 +49,7 @@ class Page{
         $this->nowPage    = empty($_GET[$this->p]) ? 1 : intval($_GET[$this->p]);
         $this->nowPage    = $this->nowPage>0 ? $this->nowPage : 1;
         $this->firstRow   = $this->listRows * ($this->nowPage - 1);
+        !empty($url)? ($this->url = $url):'';
     }
 
     /**
@@ -79,7 +81,20 @@ class Page{
 
         /* 生成URL */
         $this->parameter[$this->p] = '[PAGE]';
-        $this->url = U(ACTION_NAME, $this->parameter);
+        if(empty($this->url)){
+            $this->parameter[$this->p] = '[PAGE]';
+            $this->url = U(ACTION_NAME, $this->parameter);
+        }else{
+            $this->parameter[$this->p] = '[PAGE]';
+
+            $this->url = U($this->url.'/'.urlencode('[PAGE]'));
+//            var_dump($this->url);die;
+        }
+
+////        if(empty($this->url)) {
+//            $this->url = U(ACTION_NAME, $this->parameter);
+////        }
+//        var_dump(ACTION_NAME, $this->parameter);die;
         /* 计算分页信息 */
         $this->totalPages = ceil($this->totalRows / $this->listRows); //总页数
         if(!empty($this->totalPages) && $this->nowPage > $this->totalPages) {
@@ -89,7 +104,7 @@ class Page{
         /* 计算分页临时变量 */
         $now_cool_page      = $this->rollPage/2;
 		$now_cool_page_ceil = ceil($now_cool_page);
-		$this->lastSuffix && $this->config['last'] = $this->totalPages;
+		$this->lastSuffix && ($this->config['last'] = $this->totalPages);
 
         //上一页
         $up_row  = $this->nowPage - 1;
@@ -141,5 +156,14 @@ class Page{
             array($this->config['header'], $this->nowPage, $up_page, $down_page, $the_first, $link_page, $the_end, $this->totalRows, $this->totalPages),
             $this->config['theme']);
         return "<div>{$page_str}</div>";
+    }
+
+    /**
+     * 设置特定链接
+     * @param $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
     }
 }

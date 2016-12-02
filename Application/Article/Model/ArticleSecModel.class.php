@@ -155,4 +155,30 @@ class ArticleSecModel extends Model
         return $this->msg;
     }
 
+
+    /***
+     * 前台获取
+     */
+    /**
+     * 获取数据，根据id
+     * @param $id
+     * @return \Common\Controls\Msg
+     */
+    public function getHomeDataById($id)
+    {
+        $where = array();
+        $where['id'] = $id;
+        $where['status'] = self::Enabled;
+
+        $data = $this->where($where)->find();
+        if (empty($data)) {
+            $this->msg->status = false;
+            $this->msg->content = '栏目不存在！';
+        } else {
+            $this->msg->status = true;
+            $this->msg->data = $data;
+        }
+        return $this->msg;
+    }
+
 }

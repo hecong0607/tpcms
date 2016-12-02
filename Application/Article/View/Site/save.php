@@ -53,7 +53,7 @@
             <div class="span3">
                 <table class="table table-bordered">
                     <tr >
-                        <th colspan="2">封面(272*100)</th>
+                        <th colspan="2">封面(272*200)</th>
                     </tr>
                     <tr>
                         <td colspan="2">

@@ -59,7 +59,7 @@ class ArticleModel extends Model
                 'content'    => $this->content,
                 'summary'    => $this->summary,
                 'face'       => $this->face,
-                'thumb'       => $this->thumb,
+                'thumb'      => $this->thumb,
                 'tags'       => $this->tags,
                 'section_id' => $this->section_id,
                 'status'     => ((int)$this->status == 1) ? self::Enabled : self::Disable,
@@ -116,13 +116,13 @@ class ArticleModel extends Model
 
         $where = array('user_id' => (int)$uid);
         if (!empty($select['title'])) {
-            $where['title'] = array('like','%' . $select['title'] . '%');
+            $where['title'] = array('like', '%' . $select['title'] . '%');
         }
         if (!empty($select['start_time'])) {
-            $where['create_time'] = array('EGT',$select['start_time']);
+            $where['create_time'] = array('EGT', $select['start_time']);
         }
         if (!empty($select['end_time'])) {
-            $where['create_time'] = array('ELT',$select['end_time']);
+            $where['create_time'] = array('ELT', $select['end_time']);
         }
 
         $count = (int)$this->where($where)->count();
@@ -272,16 +272,16 @@ class ArticleModel extends Model
     {
         $where = array();
         if (!empty($select['title'])) {
-            $where['a.title'] = array('like','%' . $select['title'] . '%');
+            $where['a.title'] = array('like', '%' . $select['title'] . '%');
         }
         if (!empty($select['editor'])) {
             $where['b.username'] = $select['editor'];
         }
         if (!empty($select['start_time'])) {
-            $where['a.create_time'] = array('EGT',$select['start_time']);
+            $where['a.create_time'] = array('EGT', $select['start_time']);
         }
         if (!empty($select['end_time'])) {
-            $where['a.create_time'] = array('ELT',$select['end_time']);
+            $where['a.create_time'] = array('ELT', $select['end_time']);
         }
 
         $db_prefix = C('DB_PREFIX');
@@ -299,4 +299,42 @@ class ArticleModel extends Model
         $this->msg->data = $data;
         return $this->msg;
     }
+
+    /******
+     * 前台获取数据
+     */
+    /**
+     * 根据$select获取文章数据
+     * @param array $select
+     * @param array $pageConfig
+     * @return \Common\Controls\Msg
+     */
+    public function getHomeData($select = array(), $pageConfig = array())
+    {
+
+        $where = array(
+            'a.status' => self::Enabled,
+            'a.flag' => self::Pended,
+        );
+        if(!empty($select['section_id'])){
+            $where['a.section_id'] = (int)$select['section_id'];
+        }
+
+        $db_prefix = C('DB_PREFIX');
+        $join = 'left join ' . $db_prefix . 'article_section as b on a.section_id=b.id ';
+        $alias = 'a';
+        $count = (int)$this->where($where)->alias($alias)->join($join)->count();
+
+        $field = 'a.id, a.section_id, a.title, a.face, a.summary, a.tags, a.status, a.flag, a.create_time, b.name';
+        $url = empty($pageConfig['url']) ? '' : $pageConfig['url'];
+        $Page = new \Think\Page($count, $this->default_page, array(), $url);// 实例化分页类 传入总记录数和每页显示的记录数(30)
+        $list = $this->where($where)->alias($alias)->join($join)->field($field)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $data = array(
+            'page' => $Page->show(),
+            'list' => $list,
+        );
+        $this->msg->data = $data;
+        return $this->msg;
+    }
+
 }

@@ -21,27 +21,23 @@
         <!-- 首页轮播 -->
         <div id="myCarousel" class="carousel slide clearfix">
             <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <?php $num = 0; foreach($section as $k=>$v){ ?>
+                <li data-target="#myCarousel" data-slide-to="{$num}" class="<?=$num==0?'active':''?>"></li>
+                <?php $num++; } ?>
             </ol>
+
             <!-- 轮播（Carousel）项目 -->
-            <div class="carousel-inner">
-                <div class="item active">
+            <div class="carousel-inner" style="height: 490px;">
+                <?php $num = 0; foreach($section as $k=>$v){ ?>
+                <div  class="item <?=$num==0?'active':''?>">
                     <a href="javascript:void(0);">
-                        <img src="__PUBLIC__/Home/images/linux-carousel.jpg" alt="测试1">
+                        <img src="{$v['face']}" alt="{$v['name']}">
                         <div class="carousel-caption">
                             <h4>测试1</h4>
                         </div>
                     </a>
                 </div>
-                <div class="item">
-                    <a href="javascript:void(0);">
-                        <img src="__PUBLIC__/Home/images/ollydbg-carousel.jpg" alt="测试2">
-                        <div class="carousel-caption">
-                            <h4>测试2</h4>
-                        </div>
-                    </a>
-                </div>
+                <?php $num++; } ?>
             </div>
             <!-- 轮播（Carousel）导航 -->
             <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">

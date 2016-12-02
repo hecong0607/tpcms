@@ -20,15 +20,11 @@ $config = array(
     'DATA_CACHE_SUBDIR'   => false,    // 使用子目录缓存 (自动根据缓存标识的哈希创建子目录)
     'DATA_PATH_LEVEL'     => 1,        // 子目录缓存级别
 
-    'URL_ADMIN_HOME'      => U('Home/Home/index'),
-    'URL_ADMIN_LOGIN'     => U('Home/Public/login'),
-    'param'               => array(
-        'allowActions' => array(        //直接开放的路由，不用管登录
-            '/Home/Public/login',
-            '/Home/Public/doLogin',
-            '/Home/Public/verify',
-            '/Home/Public/logout',
-        ),
+    'URL_ROUTER_ON'   => true,
+    'URL_ROUTE_RULES'=>array(
+        'Section/[:id]/[:p]' => 'Section/index',
+        'Articles/all/[:p]' => 'Articles/all',
+        'Articles/:id\d' => 'Articles/detail',
     ),
 );
 return array_merge($config, $config_local);
