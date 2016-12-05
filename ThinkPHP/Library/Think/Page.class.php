@@ -84,9 +84,12 @@ class Page{
         if(empty($this->url)){
             $this->parameter[$this->p] = '[PAGE]';
             $this->url = U(ACTION_NAME, $this->parameter);
+        }elseif($this->url == '/') {
+            $this->parameter[$this->p] = '[PAGE]';
+            $this->url = U('/'.urlencode('[PAGE]'));
+//            var_dump($this->url);die;
         }else{
             $this->parameter[$this->p] = '[PAGE]';
-
             $this->url = U($this->url.'/'.urlencode('[PAGE]'));
 //            var_dump($this->url);die;
         }

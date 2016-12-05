@@ -17,6 +17,7 @@
                             <?php } ?>
 
                             <h1><a href="{:U('articles/'.$v['id'])}">{$v['title']}</a></h1>
+                            <span class="visible-xs-inline-block" style="margin-top:7px;">{:date('Y-m-d',$v['create_time'])}</span>
                             <div class="post-tags"><?php $tags = explode('，', $v['tags']);?>
                                 <?php $num=1; foreach($tags as $key=>$value){ ?>
                                     <a href="{:U('tag/'.$value)}">
@@ -55,7 +56,7 @@
                         </div>
                     </div>
                 <?php } ?>
-                <div class="manu">{$article['page']}</div>
+                <div class="manu">{$articles['page']}</div>
             <?php } else { ?>
                 <h1 style="text-align: center;">暂无信息</h1>
             <?php }?>

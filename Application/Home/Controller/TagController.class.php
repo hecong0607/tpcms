@@ -1,20 +1,19 @@
 <?php
 namespace Home\Controller;
+use Article\Model\ArticleModel;
+
 class TagController extends Base
 {
-    public function _empty($name){
-        $name1 = C('ACTION_SUFFIX');
-        $len = strlen($name)-strlen($name1);
-        $name = mb_substr($name, 0,$len,'utf-8');
-        $this->tags($name);
-    }
-
-    /**
-     *
-     */
-    protected function tags($name){
-//        var_dump($name);
-        $this->display('tags');
-
-    }
+   public function indexAction()
+   {
+       $tags = I('get.tags');
+       $articleModel = new ArticleModel();
+       $pageConfig = array('url' => 'Tag/' . $tags );
+       $select = array(
+           'tags' => $tags,
+       );
+       $articles = $articleModel->getHomeData($select, $pageConfig)->data;
+       $this->assign('articles', $articles);
+       $this->display('tags');
+   }
 }

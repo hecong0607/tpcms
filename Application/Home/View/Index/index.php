@@ -30,10 +30,10 @@
             <div class="carousel-inner" style="height: 490px;">
                 <?php $num = 0; foreach($section as $k=>$v){ ?>
                 <div  class="item <?=$num==0?'active':''?>">
-                    <a href="javascript:void(0);">
+                    <a href="{:U('Section/'.$v['id'])}">
                         <img src="{$v['face']}" alt="{$v['name']}">
                         <div class="carousel-caption">
-                            <h4>测试1</h4>
+                            <h4>{$v['name']}</h4>
                         </div>
                     </a>
                 </div>
@@ -60,82 +60,52 @@
         </script>
         <!--首页文章列表 -->
         <div class="home-post well clearfix">
-            <div class="post-title underline clearfix">
-                <a href="javascript:void(0);">
-                    <div class="pre-cat">
-                        <div class="pre-catinner btn">
-                            tag
-                        </div>
-                        <div class="pre-catarrow">
-                        </div>
-                    </div>
-                </a>
-
-                <h1>
-                    <a href="javascript:void(0);">标题1</a>
-                </h1>
-
-                <div class="post-info">
-            <span>
-                <span class="glyphicon glyphicon-calendar"></span>
-                2015-05-15
-            </span>
-            <span class="hidden">
-                <span class="glyphicon glyphicon-comment"></span>
-                70
-            </span>
-            <span>
-                <span class="glyphicon glyphicon-eye-open"></span>
-                6139
-            </span>
-                    <div class="post-tags">
-                        <a href="/tag/tag1/" class=" ">
-                            <span class="label label-vmaig-1 btn">tag1</span>
-                        </a>
-                        <a href="/tag/tag2/" class="hidden-xs ">
-                            <span class="label label-vmaig-2 btn">tag2</span>
-                        </a>
-                        <a class="visible-xs-inline-block">
-                            <span class="label label-vmaig-2 btn ">...</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="post-content">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <figure class="thumbnail">
-                            <a href="javascript:void(0);">
-                                <img src="__PUBLIC__/Home/images/default.jpg" height="300" alt="">
+        <?php if(!empty($articles['list'])){ ?>
+            <?php foreach($articles['list'] as $k=>$v){ ?>
+                    <div class="post-title underline clearfix">
+                        <?php if(!empty($v['section_id'])){ ?>
+                            <a href="{:U('Section/'.$v['section_id'])}">
+                                <div class="pre-cat">
+                                    <div class="pre-catinner btn">{$v['name']}</div>
+                                    <div class="pre-catarrow">
+                                    </div>
+                                </div>
                             </a>
-                        </figure>
+                        <?php } ?>
+                        <h1><a href="{:U('articles/'.$v['id'])}">{$v['title']}</a></h1>
+                        <div class="post-info"><?php $tags = explode('，', $v['tags']);?>
+                            <span><span class="glyphicon glyphicon-calendar"></span> {:date('Y-m-d',$v['create_time'])}</span>
+                            <span class="hidden"><span class="glyphicon glyphicon-comment"></span>70</span>
+                            <span class="hidden"><span class="glyphicon glyphicon-eye-open"></span>6139</span>
+                            <div class="post-tags"><?php $tags = explode('，', $v['tags']);?>
+                                <?php $num=1; foreach($tags as $key=>$value){ ?>
+                                    <a href="{:U('tag/'.$value)}">
+                                        <span class="label label-vmaig-{$num} btn">{$value}</span>
+                                    </a>
+                                    <?php $num ++; if($num>6){break;}} ?>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-8">
-                        <p>更新日志</p>
-                        <a type="button" class="btn btn-vmaig pull-right hidden-xs"
-                           href="javascript:void(0);">阅读全文</a>
+                    <div class="post-content">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <figure class="thumbnail">
+                                    <a href="{:U('articles/'.$v['id'])}">
+                                        <img  src="{$v['face']|default='/Public/Home/images/default_article.png'}" height="300" alt="">
+                                    </a>
+                                </figure>
+                            </div>
+                            <div class="col-sm-8">
+                                <p>{$v['summary']}</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+            <?php } ?>
+            <div class="manu">{$articles['page']}</div>
+        <?php } else { ?>
+            <h1 style="text-align: center;">暂无信息</h1>
+        <?php }?>
         </div>
-
-
-        <!--分页 -->
-
-        <ul class="pager">
-
-            <li class="previous disabled">
-                <a>&larr; 上一页</a>
-            </li>
-
-            <li class="page-number">1/9</li>
-
-            <li class="next">
-                <a href="?page=2">下一页 &rarr;</a>
-            </li>
-
-        </ul>
-
     </div>
 </div>
 

@@ -304,14 +304,15 @@ class ArticleModel extends Model
      * 前台获取数据
      */
     /**
-     * 根据$select获取文章数据
+     * 根据$select获取文章列表数据
      * @param array $select
      * @param array $pageConfig
      * @return \Common\Controls\Msg
      */
     public function getHomeData($select = array(), $pageConfig = array())
     {
-
+        $db_prefix = C('DB_PREFIX');
+        $join = 'left join ' . $db_prefix . 'article_section as b on a.section_id=b.id ';
         $where = array(
             'a.status' => self::Enabled,
             'a.flag' => self::Pended,
@@ -319,21 +320,54 @@ class ArticleModel extends Model
         if(!empty($select['section_id'])){
             $where['a.section_id'] = (int)$select['section_id'];
         }
+        if(!empty($select['tags'])){
+            $where['d.name'] = $select['tags'];
+            $join .= ' left join ' . $db_prefix . 'article_tags_map as c on c.article_id=a.id ';
+            $join .= ' left join ' . $db_prefix . 'article_tags as d on d.id=c.tag_id ';
+        }
 
-        $db_prefix = C('DB_PREFIX');
-        $join = 'left join ' . $db_prefix . 'article_section as b on a.section_id=b.id ';
         $alias = 'a';
         $count = (int)$this->where($where)->alias($alias)->join($join)->count();
 
         $field = 'a.id, a.section_id, a.title, a.face, a.summary, a.tags, a.status, a.flag, a.create_time, b.name';
         $url = empty($pageConfig['url']) ? '' : $pageConfig['url'];
+//        $this->default_page = 1;
         $Page = new \Think\Page($count, $this->default_page, array(), $url);// 实例化分页类 传入总记录数和每页显示的记录数(30)
         $list = $this->where($where)->alias($alias)->join($join)->field($field)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+//        var_dump($this->getLastSql());die;
         $data = array(
             'page' => $Page->show(),
             'list' => $list,
         );
         $this->msg->data = $data;
+        return $this->msg;
+    }
+
+    /**
+     * 根据$select获取文章列表数据
+     * @param array $select
+     * @return \Common\Controls\Msg
+     */
+    public function getHomeDetail($select = array())
+    {
+        $where = array(
+            'a.status' => self::Enabled,
+            'a.flag' => self::Pended,
+            'a.id' => (int)$select['articleId'],
+        );
+        $db_prefix = C('DB_PREFIX');
+        $join = 'left join ' . $db_prefix . 'article_section as b on a.section_id=b.id ';
+        $join .= 'left join ' . $db_prefix . 'admin_user as c on c.id=a.user_id ';
+        $alias = 'a';
+        $field = 'a.id, a.section_id, a.title, a.face, a.summary, a.content, a.tags, a.status, a.flag, a.create_time, b.name,c.realname';
+        $data = $this->where($where)->alias($alias)->join($join)->field($field)->order('id desc')->find();
+        if(empty($data)){
+            $this->msg->status = false;
+            $this->msg->data = array();
+        } else {
+            $this->msg->status = true;
+            $this->msg->data = $data;
+        }
         return $this->msg;
     }
 

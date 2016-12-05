@@ -14,7 +14,7 @@ class ArticlesController extends Base
     {
         //文章数据
         $articleModel = new ArticleModel();
-        $pageConfig = array('url' => 'Article/all' );
+        $pageConfig = array('url' => 'Articles/all' );
         $select = array();
         $articles = $articleModel->getHomeData($select, $pageConfig)->data;
         $this->assign('articles', $articles);
@@ -23,6 +23,13 @@ class ArticlesController extends Base
 
     public function detailAction()
     {
+         //文章数据
+        $articleModel = new ArticleModel();
+        $select = array(
+            'articleId' => (int)I('get.id'),
+        );
+        $article = $articleModel->getHomeDetail($select)->data;
+        $this->assign('article', $article);
         $this->display('detail');
     }
 }

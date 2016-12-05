@@ -1,6 +1,7 @@
 <?php
 namespace Home\Controller;
 
+use Article\Model\ArticleModel;
 use Article\Model\ArticleSecModel;
 use Think\Controller;
 
@@ -11,8 +12,15 @@ class IndexController extends Controller
     {
         echo 'wait';die;
         $sectionModel = new ArticleSecModel();
-        $section = clone $sectionModel->getDataAll();
-        $this->assign('section', $section->data);
+        $section = $sectionModel->getDataAll()->data;
+        $this->assign('section', $section);
+
+        $articleModel = new ArticleModel();
+        $pageConfig = array('url' => '/' );
+        $select = array();
+        $articles = $articleModel->getHomeData($select, $pageConfig)->data;
+        $this->assign('articles', $articles);
+
         $this->display('index');
     }
 }

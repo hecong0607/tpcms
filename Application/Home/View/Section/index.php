@@ -20,6 +20,7 @@
                     </a>
 
                     <h1><a href="{:U('articles/'.$v['id'])}">{$v['title']}</a></h1>
+                    <span class="visible-xs-inline-block" style="margin-top:7px;">{:date('Y-m-d',$v['create_time'])}</span>
                     <div class="post-tags"><?php $tags = explode('，', $v['tags']);?>
                         <?php $num=1; foreach($tags as $key=>$value){ ?>
                         <a href="{:U('tag/'.$value)}">

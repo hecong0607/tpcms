@@ -22,9 +22,11 @@ $config = array(
 
     'URL_ROUTER_ON'   => true,
     'URL_ROUTE_RULES'=>array(
-        'Section/[:id]/[:p]' => 'Section/index',
-        'Articles/all/[:p]' => 'Articles/all',
+        'Section/[:id\d]/[:p\d]' => 'Section/index',
+        'Tag/[:tags]/[:p\d]' => 'Tag/index',
+        'Articles/all/[:p\d]' => 'Articles/all',
         'Articles/:id\d' => 'Articles/detail',
+        ':p\d' => 'Index/index',
     ),
 );
 return array_merge($config, $config_local);
