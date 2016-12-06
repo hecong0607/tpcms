@@ -74,7 +74,7 @@
                      } ?></td>
                 <td><?= date('Y-m-d H:i', $value['create_time']); ?></td>
                 <td>
-                    <a href="javascript:void(0);">查看</a> |
+                    <a href="{:U('/Articles/'.$value['id'])}" target="_blank">查看</a> |
                     <a href="{:U('Article/Site/setPopular',array('id'=>$value['id']))}"><?= empty($value['popular'])?'设为':'取消';?>热门</a> |
                     <a href="{:U('Article/Site/setRecommend',array('id'=>$value['id']))}"><?= empty($value['recommend'])?'设为':'取消';?>推荐</a> |
                     <?php if ($value['flag'] == Article\Model\ArticleModel::Pended) { ?>

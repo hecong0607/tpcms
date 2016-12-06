@@ -35,8 +35,9 @@ class ChangePasswordForm extends UserModel
 			$this->msg->content = $this->getError();
 		} else {
 			$this->password = md5(md5(md5($this->password)));
+            $this->id = session('admin')['id'];
 			$result = $this->save();
-			if ($result !== false) {
+			if ($result === false) {
 				$this->msg->status = false;
 				$this->msg->content = '保存失败！';
 			} else {

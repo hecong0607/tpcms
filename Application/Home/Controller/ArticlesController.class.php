@@ -29,7 +29,11 @@ class ArticlesController extends Base
             'articleId' => (int)I('get.id'),
         );
         $article = $articleModel->getHomeDetail($select)->data;
-        $this->assign('article', $article);
-        $this->display('detail');
+        if(!empty($article)) {
+            $this->assign('article', $article);
+            $this->display('detail');
+        } else {
+            $this->display('empty');
+        }
     }
 }
