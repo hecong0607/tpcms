@@ -142,7 +142,8 @@
                         } else if (data.status == 0) {
                         	var $verify_img=form.find(".verify_img");
                         	if($verify_img.length){
-                        		$verify_img.attr("src",$verify_img.attr("src")+"&refresh="+Math.random()); 
+                                $verify_img.click();
+                        		//$verify_img.attr("src",$verify_img.attr("src")+"&refresh="+Math.random());
                         	}
                         	
                         	var $verify_input=form.find("[name='verify']");

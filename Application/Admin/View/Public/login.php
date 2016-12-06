@@ -62,8 +62,9 @@
                 </li>
 
                 <li class="verifycode-wrapper">
-                    <img style="cursor:pointer" class="img" src="{:U('Admin/Public/verify')}"
-                         onClick="this.src=this.src+'?'+Math.random();" title="看不清楚?点击刷新验证码?">
+                    <?php $src = U('Admin/Public/verify');?>
+                    <img style="cursor:pointer" class="verify_img" src="<?=$src;?>"
+                         onClick="this.src='<?=$src;?>'+'?'+Math.random();" title="看不清楚?点击刷新验证码?">
                 </li>
                 <li>
                     <input class="input" type="text" required name="verify" placeholder="验证码"/>
