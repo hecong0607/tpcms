@@ -10,7 +10,7 @@ class IndexController extends Controller
 
     public function IndexAction()
     {
-        echo 'wait';die;
+//        echo 'wait';die;
         $sectionModel = new ArticleSecModel();
         $section = $sectionModel->getDataAll()->data;
         $this->assign('section', $section);

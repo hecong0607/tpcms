@@ -29,10 +29,12 @@
             <th width="50">封面</th>
             <th width="300">摘要</th>
             <th width="60">发布</th>
+            <th width="60">热门</th>
+            <th width="60">推荐</th>
             <th width="120">编辑人</th>
             <th width="60">审核状态</th>
             <th width="120">创建时间</th>
-            <th width="120">操作</th>
+            <th width="180">操作</th>
         </tr>
         </thead>
         <?php if(!empty($list)){ ?>
@@ -43,6 +45,20 @@
                 <td><span class="over">{$value['summary']}</span></td>
                 <td>
                     <if condition="$value['status'] eq 1">
+                        <font color="red">√</font>
+                        <else/>
+                        <font color="red">╳</font>
+                    </if>
+                </td>
+                <td>
+                    <if condition="$value['popular'] eq 1">
+                        <font color="red">√</font>
+                        <else/>
+                        <font color="red">╳</font>
+                    </if>
+                </td>
+                <td>
+                    <if condition="$value['recommend'] eq 1">
                         <font color="red">√</font>
                         <else/>
                         <font color="red">╳</font>
@@ -59,10 +75,12 @@
                 <td><?= date('Y-m-d H:i', $value['create_time']); ?></td>
                 <td>
                     <a href="javascript:void(0);">查看</a> |
+                    <a href="{:U('Article/Site/setPopular',array('id'=>$value['id']))}"><?= empty($value['popular'])?'设为':'取消';?>热门</a> |
+                    <a href="{:U('Article/Site/setRecommend',array('id'=>$value['id']))}"><?= empty($value['recommend'])?'设为':'取消';?>推荐</a> |
                     <?php if ($value['flag'] == Article\Model\ArticleModel::Pended) { ?>
                         <a href="{:U('Article/Site/setPend',array('id'=>$value['id'],'flag'=>Article\\Model\\ArticleModel::PendingEditing))}">设为未通过</a>
                     <?php } else { ?>
-                        <a href="{:U('Article/Site/setPend',array('id'=>$value['id'],'flag'=>Article\\Model\\ArticleModel::Pended   ))}">设为通过</a>
+                        <a href="{:U('Article/Site/setPend',array('id'=>$value['id'],'flag'=>Article\\Model\\ArticleModel::Pended))}">设为通过</a>
                     <?php } ?>
                 </td>
             </tr>

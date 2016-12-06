@@ -14,8 +14,8 @@
     <script>
         var fill = d3.scale.category20();
         //在tags数组中存放blog的tags,用于在标签云中显示
-        <?php $tags = new \Article\Model\ArticleTagsModel();$data = $tags->getHomeData();?>
-        var tags = [<?=$data;?>];
+        <?php $tags_right = new \Article\Model\ArticleTagsModel();$tags_right_data = $tags_right->getHomeData();?>
+        var tags = [<?=$tags_right_data;?>];
         var words = tags.concat(tags).concat(tags);
 
         d3.layout.cloud().size([250, 250])
@@ -73,11 +73,14 @@
                                       data-toggle="collapse" data-target="#hotest-post-list"></span>
                 </h3>
             </div>
+            <?php $popular_right = new \Article\Model\ArticleModel(); $popular_right_data = $popular_right->getPopularData();?>
             <ul id="hotest-post-list" class="list-group collapse in">
+                <?php foreach($popular_right_data as $k => $v){ ?>
                 <li class="list-group-item">
-                    <span class="hotest-post-title"><a href="javascript:void(0);">本网站</a> </span>
-                    <span class="badge">6139</span>
+                    <span class="hotest-post-title"><a href="{:U('articles/'.$v['id'])}"><?=$v['title'];?></a> </span>
+                    <span class="badge hidden">6139</span>
                 </li>
+                <?php } ?>
             </ul>
         </div>
     </div>
@@ -111,7 +114,7 @@
             </ul>
         </div>
     </div>
-    <div id="vmaig-links">
+    <div id="vmaig-links" class="hidden">
         <div class="panel panel-vmaig">
             <div class="panel-heading">
                 <h3 class="panel-title">

@@ -264,6 +264,37 @@ class ArticleModel extends Model
     }
 
     /**
+     * 设置属性
+     * @param $id
+     * @param $AttributesArray
+     * @return \Common\Controls\Msg
+     */
+    public function setAttributesAdmin($id, $AttributesArray)
+    {
+        $where = array('id' => $id);
+        $article = $this->where($where)->field(array('content'), true)->find();
+
+        $data = array();
+        foreach($AttributesArray as $k => $v) {
+            if ($article[$v] == self::Enabled) {
+                $data[$v] = self::Disable;
+            } else {
+                $data[$v] = self::Enabled;
+            }
+        }
+        $result = $this->where($where)->save($data);
+        if ($result == false) {
+            $this->msg->status = false;
+            $this->msg->content = '设置失败！';
+        } else {
+            $this->msg->status = true;
+            $this->msg->content = '设置成功！';
+        }
+
+        return $this->msg;
+    }
+
+    /**
      * 获取数据，并分页，返回数据
      * @param $select
      * @return \Common\Controls\Msg
@@ -289,7 +320,7 @@ class ArticleModel extends Model
         $alias = 'a';
         $count = (int)$this->where($where)->alias($alias)->join($join)->count();
 
-        $field = array('a.id', 'a.title', 'a.summary', 'a.status', 'a.flag', 'a.create_time', 'b.username', 'b.realname');
+        $field = array('a.id', 'a.title', 'a.summary', 'a.thumb', 'a.status', 'a.flag', 'a.popular', 'a.recommend', 'a.create_time', 'b.username', 'b.realname');
         $Page = new \Think\Page($count, $this->default_page);// 实例化分页类 传入总记录数和每页显示的记录数(30)
         $list = $this->where($where)->field($field)->alias($alias)->join($join)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
         $data = array(
@@ -370,5 +401,38 @@ class ArticleModel extends Model
         }
         return $this->msg;
     }
+
+    /**
+     * 获取推荐的文章
+     * @return mixed
+     */
+    public function getRecommendData()
+    {
+        $where = array(
+            'status' => self::Enabled,
+            'flag' => self::Pended,
+            'recommend' => self::Enabled,
+        );
+        $limit = 10;
+        $data = $this->where($where)->field(array('content'), true)->limit($limit)->select();
+        return $data;
+    }
+
+    /**
+     * 获取热门的文章
+     * @return mixed
+     */
+    public function getPopularData()
+    {
+        $where = array(
+            'status' => self::Enabled,
+            'flag' => self::Pended,
+            'popular' => self::Enabled,
+        );
+        $limit = 10;
+        $data = $this->where($where)->field(array('content'), true)->limit($limit)->select();
+        return $data;
+    }
+
 
 }

@@ -178,6 +178,38 @@ class SiteController extends Base
     }
 
     /**
+     * 文章热门设置
+     */
+    public function setPopularAction()
+    {
+        $id = I('get.id', 0);
+        $Attributes = array('popular',);
+        $articleModel = new ArticleModel();
+        $msgSet = $articleModel->setAttributesAdmin($id, $Attributes);
+        if ($msgSet->status == false) {
+            $this->error($msgSet->content);
+        } else {
+            $this->success($msgSet->content);
+        }
+    }
+
+    /**
+     * 文章推荐设置
+     */
+    public function setRecommendAction()
+    {
+        $id = I('get.id', 0);
+        $Attributes = array('recommend',);
+        $articleModel = new ArticleModel();
+        $msgSet = $articleModel->setAttributesAdmin($id, $Attributes);
+        if ($msgSet->status == false) {
+            $this->error($msgSet->content);
+        } else {
+            $this->success($msgSet->content);
+        }
+    }
+
+    /**
      * 获取筛选条件
      * @return array
      */
