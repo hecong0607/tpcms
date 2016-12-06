@@ -109,7 +109,7 @@
         <div class="form-actions">
             <input type="hidden" name="id" value="{$data['id']}"/>
             <button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
-            <button class="btn js-ajax-close-btn" type="submit">关闭</button>
+<!--            <button class="btn js-ajax-close-btn" type="button">关闭</button>-->
         </div>
     </form>
     <script>
