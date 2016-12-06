@@ -1,6 +1,6 @@
 <!-- 右边的widgets -->
 <div id="vmaig-side" class="col-md-4 col-lg-3 hidden-xs">
-    <div id="tags_cloud" class="hidden">
+    <div id="tags_cloud" class="">
     </div>
     <style>
         #tags_cloud {
@@ -14,7 +14,8 @@
     <script>
         var fill = d3.scale.category20();
         //在tags数组中存放blog的tags,用于在标签云中显示
-        var tags = ["爬虫",];
+        <?php $tags = new \Article\Model\ArticleTagsModel();$data = $tags->getHomeData();?>
+        var tags = [<?=$data;?>];
         var words = tags.concat(tags).concat(tags);
 
         d3.layout.cloud().size([250, 250])
@@ -39,7 +40,7 @@
                 .attr("transform", "translate(125,125)");
             for (var i = 0; i < words.length; ++i) {
                 var str = words[i];
-                d3.select("g").append("a").attr("xlink:href", "/tag/" + words[i].text)
+                d3.select("g").append("a").attr("xlink:href", "/tag/" + words[i].text + ".html")
                     .append("text").text(words[i].text).style("font-size", words[i].size + "px")
                     .style("font-family", "'Microsoft YaHei','WenQuanYi Micro Hei','tohoma,sans-serif'")
                     .style("fill", fill(i))

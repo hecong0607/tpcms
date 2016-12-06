@@ -24,9 +24,9 @@ class ArticleTagsModel extends Model
     {
         $data = $this->where(array('name' => $name))->find();
         if (empty($data)) {
-            $id = $this->data(array('name'=>$name,'num'=>1))->add();
+            $id = $this->data(array('name' => $name, 'num' => 1))->add();
         } else {
-            $this->where(array('id'=>$data['id']))->setInc('num',1);
+            $this->where(array('id' => $data['id']))->setInc('num', 1);
             $id = $data['id'];
         }
         return $id;
@@ -38,7 +38,7 @@ class ArticleTagsModel extends Model
      */
     public function delByMap($data)
     {
-        if(is_array($data)) {
+        if (is_array($data)) {
             foreach ($data as $k => $v) {
                 $where = array('id' => $v['tag_id']);
                 $result = $this->where($where)->find();
@@ -60,7 +60,7 @@ class ArticleTagsModel extends Model
         $where = array('name' => $name);
         $res = $this->where($where)->find();
         if (!empty($res)) {
-            $where = array('id'=>$res['id']);
+            $where = array('id' => $res['id']);
             $this->where($where)->setDec('num', 1);
             $result = $res['id'];
         } else {
@@ -71,12 +71,14 @@ class ArticleTagsModel extends Model
 
     /**
      * 获取标签列表
+     * @param $select
      * @return \Common\Controls\Msg
      */
-    public function getList($select){
+    public function getList($select)
+    {
         $where = array();
-        if($select['name']!=''){
-            $where['name'] = array('like','%'.$select['name'].'%');
+        if ($select['name'] != '') {
+            $where['name'] = array('like', '%' . $select['name'] . '%');
         }
         $count = (int)$this->where($where)->count();
         $Page = new \Think\Page($count, $this->default_page);// 实例化分页类 传入总记录数和每页显示的记录数(30)
@@ -87,5 +89,30 @@ class ArticleTagsModel extends Model
         );
         $this->msg->data = $data;
         return $this->msg;
+    }
+
+    /**
+     * 获取标签
+     * @return mixed
+     */
+    public function getData()
+    {
+        $where = array(
+            'num' => array('gt', 0),
+        );
+        $limit = 30;
+        $data = $this->where($where)->field('name')->limit($limit)->select();
+        return $data;
+    }
+
+    public function getHomeData()
+    {
+        $data = $this->getData();
+        $newData = array();
+        foreach ($data as $k => $v) {
+            $newData[] = $v['name'];
+        }
+        $data = '"' . implode('","', $newData) . '"';
+        return $data;
     }
 }
