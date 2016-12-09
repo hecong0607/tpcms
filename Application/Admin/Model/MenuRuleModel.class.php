@@ -125,15 +125,15 @@ class MenuRuleModel extends Model
      * @param string $base
      * @param string $before
      * @param int $type
+     * @param array $whereTemp
      * @param int $level
      * @return null
      */
-    protected function recursion($id = 0, &$data, $base = '&nbsp;&nbsp;&nbsp;', $before = '&nbsp;&nbsp;&nbsp;', $type = 2, $level = 1)
+    protected function recursion($id = 0, &$data, $base = '&nbsp;&nbsp;&nbsp;', $before = '&nbsp;&nbsp;&nbsp;', $type = 2, $whereTemp = array(), $level = 1)
     {
-        $where = [
-            'parent_id' => $id,
-            'type'      => array('ELT', $type),
-        ];
+        $where = $whereTemp ;
+        $where['parent_id'] = $id;
+        $where['type'] = array('ELT', $type);
         $result = $this->where($where)->order('list_order')->select();
         if (empty($result)) {
             return null;
@@ -144,11 +144,11 @@ class MenuRuleModel extends Model
                 if ($count == $k) {
                     $v['left'] = $before . $base['end'];
                     $data[] = $v;
-                    $this->recursion($v['id'], $data, $base, $before . $base['void'], $type, $level + 1);
+                    $this->recursion($v['id'], $data, $base, $before . $base['void'], $type, $whereTemp, $level + 1);
                 } else {
                     $v['left'] = $before . $base['continue'];
                     $data[] = $v;
-                    $this->recursion($v['id'], $data, $base, $before . $base['left'], $type, $level + 1);
+                    $this->recursion($v['id'], $data, $base, $before . $base['left'], $type, $whereTemp, $level + 1);
                 }
             }
         }
@@ -195,9 +195,10 @@ class MenuRuleModel extends Model
 
     /**
      * 获取上级选择列表
-     * @return mixed
+     * @param int $id
+     * @return array
      */
-    public function getMenuAllForSelect()
+    public function getMenuAllForSelect($id = 0)
     {
 
         $data = [];
@@ -210,7 +211,8 @@ class MenuRuleModel extends Model
 //		$base = '&nbsp;├&nbsp;';
         $before = '&nbsp;';
         $type = 2;
-        $this->recursion(0, $data, $base, $before, $type);
+        $where = array('id' => array('neq', (int)($id)),);
+        $this->recursion(0, $data, $base, $before, $type, $where);
         return $data;
     }
 

@@ -62,8 +62,13 @@ class ConfigModel extends Model
                     $config_html .= '<textarea '.$option.' name="options[' . $v['name'] . ']" >' . $v['value'] . '</textarea>';
                     $config_html .= '<img src="/Public/admin/images/help.gif" class="tips_img" data-title="' . $v['desc'] . '"></div></div>';
                 }elseif($type == 'radio'){
+
                     $config_html .= '<div class="control-group"><label class="control-label">' . $v['info'] . '</label><div class="controls">';
-                    $config_html .= '<label class="checkbox inline"><input '.$option.' type="checkbox" name="options[' . $v['name'] . ']" '. ($v['value'] == 'true' ? 'checked':'') . '></label>';
+                    $select_option = explode('|',$value);
+                    foreach($select_option as $select_k=>$select_v){
+                        $option_one = explode(':',$select_v);
+                        $config_html .= '<span>' .$option_one[1] .'</span> '. '<input '.$option.' type="radio" value="'.$option_one[0].'" name="options[' . $v['name'] . ']" '. ($v['value'] == $option_one[0] ? 'checked':'') . '> &nbsp;&nbsp;';
+                    }
                     $config_html .= '<img src="/Public/admin/images/help.gif" class="tips_img" data-title="' . $v['desc'] . '"></div></div>';
                 }
             }

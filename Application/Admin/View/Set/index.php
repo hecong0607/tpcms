@@ -4,7 +4,7 @@
             <li class="<?=($gid==$v['gid'])?'active':'';?>"><a href="{:U('Admin/Set/index',array('gid'=>$v['gid']))}"><?=$v['gname']?></a></li>
         <?php } ?>
     </ul>
-    <form class="form-horizontal js-ajax-form" action="{:U('Admin/Set/Update')}" method="post">
+    <form class="form-horizontal js-ajax-forms" action="{:U('Admin/Set/Update')}" method="post">
         <fieldset>
 
             <div class="tabbable">

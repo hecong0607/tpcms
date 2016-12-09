@@ -136,7 +136,7 @@ class MenuController extends Base
     {
         $MenuModel = new MenuRuleModel();
         $routeModel = new RouteModel();
-        $menu = $MenuModel->getMenuAllForSelect();
+        $menu = $MenuModel->getMenuAllForSelect($id);
         $msgMsg = clone $MenuModel->getData($id);
         $routeMsg = clone $routeModel->getRoutesByDb();
         $this->assign('data', $msgMsg->data);
