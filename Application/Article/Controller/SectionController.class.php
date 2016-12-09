@@ -17,9 +17,8 @@ class SectionController extends Base
     public function listAction()
     {
         $sectionModel = new ArticleSecModel();
-        $select = $this->getSelect();
-        $msgData = $sectionModel->getList($select);
-        $this->assign(array('list' => $msgData->data['list'], 'page' => $msgData->data['page'], 'admin' => 0));
+        $msgData = $sectionModel->getList();
+        $this->assign(array('list' => $msgData->data, 'admin' => 0));
         $this->display('Section/list');
     }
 
@@ -32,9 +31,8 @@ class SectionController extends Base
     public function listAdminAction()
     {
         $sectionModel = new ArticleSecModel();
-        $select = $this->getSelect();
-        $msgData = $sectionModel->getList($select);
-        $this->assign(array('list' => $msgData->data['list'], 'page' => $msgData->data['page'], 'admin' => 1));
+        $msgData = $sectionModel->getList();
+        $this->assign(array('list' => $msgData->data, 'admin' => 1));
         $this->display('Section/list');
     }
 
@@ -91,9 +89,19 @@ class SectionController extends Base
     {
         $sectionModel = new ArticleSecModel();
         $id = I('get.id', 0);
-        $uid = $this->getMyInfo()['id'];
-        $msgData = $sectionModel->getDataById($uid, $id);
+        $msgData = $sectionModel->getDataByIdSave($id);
         $this->assign('data', $msgData->data);
+        $this->assign('admin', 0);
+        $this->display('Section/show');
+    }
+    //栏目详情页面--管理员
+    public function showAdminAction()
+    {
+        $sectionModel = new ArticleSecModel();
+        $id = I('get.id', 0);
+        $msgData = $sectionModel->getDataByIdSave($id);
+        $this->assign('data', $msgData->data);
+        $this->assign('admin', 1);
         $this->display('Section/show');
     }
 
@@ -118,10 +126,13 @@ class SectionController extends Base
     protected function postData(ArticleSecModel &$sectionModel)
     {
         $sectionModel->title = I('post.title', '');
+        $sectionModel->list_order = (int)I('post.list_order', '');
+        $sectionModel->parent_id = (int)I('post.parent_id', '');
         $sectionModel->content = I('post.content', '');
         $sectionModel->face = I('post.face', '');
         $sectionModel->thumb = I('post.thumb', '');
-        $sectionModel->status = I('post.status', 0);
+        $sectionModel->status = (int)I('post.status', 0);
+        $sectionModel->type = (int)I('post.type', 0);
     }
 
     /**
@@ -132,6 +143,7 @@ class SectionController extends Base
     protected function doSave($uid = '', $id = '')
     {
         if (IS_POST) {
+
             $sectionModel = new ArticleSecModel();
             $sectionModel->id = $id;
             $sectionModel->user_id = $uid;
@@ -154,8 +166,13 @@ class SectionController extends Base
     protected function save($id = '')
     {
         $sectionModel = new ArticleSecModel();
-        $msgData = clone $sectionModel->getDataById($id);
+        //本栏目数据
+        $msgData = clone $sectionModel->getDataByIdSave($id);
         $this->assign('data', $msgData->data);
+        //栏目所有数据
+        $msgSections = clone $sectionModel->getSectionAll($msgData->data['id']);
+//        var_dump($msgSections->data);die;
+        $this->assign('sections', $msgSections->data);
         $this->display('/Section/save');
     }
 }

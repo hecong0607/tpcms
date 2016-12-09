@@ -11,10 +11,23 @@
             </if>
     </ul>
     <?php $url = empty($data['id']) ? U('Article/Section/doAdd') : U('Article/Section/doSave'); ?>
-    <form action="{$url}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+    <form action="{$url}" method="post" class="form-horizontal js-ajax-form" enctype="multipart/form-data">
         <div class="row-fluid">
             <div class="span9">
                 <table class="table table-bordered">
+                    <tr>
+                        <th width="80">上级</th>
+                        <td>
+                            <select name="parent_id">
+                                <option vlaue="0">作为一级栏目</option>
+                                <foreach name="sections" item="v">
+                                    <option value="{$v['id']}" <?= $data['parent_id'] == $v['id'] ? 'selected' : ''; ?>>
+                                        {$v.left}{$v.name}
+                                    </option>
+                                </foreach>
+                            </select>
+                        </td>
+                    </tr>
                     <tr>
                         <th width="80">栏目名称</th>
                         <td>
@@ -51,6 +64,17 @@
                         <td><select name="status">
                                 <option value="1" <?=($data['status']==1)?'selected':''?>>发布</option>
                                 <option value="0" <?=($data['status']!=1)?'selected':''?>>待发布</option>
+                            </select></td>
+                    </tr>
+                    <tr>
+                        <th>排序</th>
+                        <td>  <input type="text" style="width: 400px;" name="list_order" id="list_order" value="{$data['list_order']}" /></td>
+                    </tr>
+                    <tr>
+                        <th>类型</th>
+                        <td><select name="type">
+                                <option value="1" <?=($data['type']==1)?'selected':''?>>图片</option>
+                                <option value="0" <?=($data['type']!=1)?'selected':''?>>文章</option>
                             </select></td>
                     </tr>
                 </table>

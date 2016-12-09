@@ -124,6 +124,9 @@ class ArticleModel extends Model
         if (!empty($select['end_time'])) {
             $where['create_time'] = array('ELT', $select['end_time']);
         }
+        if (!empty($select['section_id'])) {
+            $where['section_id'] = $select['section_id'];
+        }
 
         $count = (int)$this->where($where)->count();
         $Page = new \Think\Page($count, $this->default_page);// 实例化分页类 传入总记录数和每页显示的记录数(30)
@@ -313,6 +316,9 @@ class ArticleModel extends Model
         }
         if (!empty($select['end_time'])) {
             $where['a.create_time'] = array('ELT', $select['end_time']);
+        }
+        if (!empty($select['section_id'])) {
+            $where['a.section_id'] = $select['section_id'];
         }
 
         $db_prefix = C('DB_PREFIX');

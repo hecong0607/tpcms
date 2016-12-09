@@ -46,11 +46,16 @@ class SiteController extends Base
     //文章列表
     public function listAction()
     {
+        //获取文章列表
         $articleModel = new ArticleModel();
         $uid = $this->getMyInfo()['id'];
         $select = $this->getSelect();
-        $msgData = $articleModel->getList($uid, $select);
+        $msgData = clone $articleModel->getList($uid, $select);
         $this->assign(array('list' => $msgData->data['list'], 'page' => $msgData->data['page']));
+        //获取栏目列表作为筛选
+        $sectionModel = new ArticleSecModel();
+        $mgsSec = clone $sectionModel->getDataAll();
+        $this->assign('sections', $mgsSec->data);
         $this->display('Site/list');
     }
 
@@ -97,7 +102,7 @@ class SiteController extends Base
         $articleModel->summary = I('post.summary', '');
         $articleModel->face = I('post.face', '');
         $articleModel->thumb = I('post.thumb', '');
-        $articleModel->status = I('post.status', '');
+        $articleModel->status = I('post.status', 0);
     }
 
     /**
@@ -113,7 +118,7 @@ class SiteController extends Base
             $articleModel->user_id = $uid;
             $this->postData($articleModel);
             $sectionModel = new ArticleSecModel();
-            $msgData = clone $sectionModel->getDataById($id);
+            $msgData = clone $sectionModel->getDataById($articleModel->section_id);
             if ($msgData->status == false) {
                 $articleModel->section_id = 0;
             }
@@ -136,11 +141,12 @@ class SiteController extends Base
     protected function save($uid = 0, $id = 0)
     {
         $articleModel = new ArticleModel();
-        $msgData = $articleModel->getDataById($id, $uid);
+        $msgData = clone $articleModel->getDataById($id, $uid);
         $data = $msgData->data;
         $section = new ArticleSecModel();
         $secData = clone $section->getDataAll();
         $data['section'] = $secData->data;
+
         $this->assign('data', $data);
         $this->display('/Site/save');
     }
@@ -154,10 +160,15 @@ class SiteController extends Base
      */
     public function listAdminAction()
     {
+        //获取文章列表
         $articleModel = new ArticleModel();
         $select = $this->getSelect();
         $msgData = $articleModel->getLisBytAdmin($select);
         $this->assign(array('list' => $msgData->data['list'], 'page' => $msgData->data['page']));
+        //获取栏目列表作为筛选
+        $sectionModel = new ArticleSecModel();
+        $mgsSec = clone $sectionModel->getDataAll();
+        $this->assign('sections', $mgsSec->data);
         $this->display('Site/listadmin');
     }
 
@@ -217,6 +228,7 @@ class SiteController extends Base
     {
         $select = array(
             'title'      => I('get.title', ''),
+            'section_id'      => I('get.section_id', ''),
             'editor'     => I('get.editor', ''),
             'start_time' => strtotime(I('get.start_time', '')),
             'end_time'   => strtotime(I('get.end_time', '')),
