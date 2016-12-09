@@ -229,18 +229,18 @@ class ArticleSecModel extends Model
      */
     public function getSectionAll($id = 0)
     {
-//        $data = [];
-//        $base = array(
-//            'void'     => '&nbsp;&nbsp;&nbsp;',
-//            'end'      => '└&nbsp;&nbsp;',
-//            'continue' => '├&nbsp;&nbsp;',
-//            'left'     => '│&nbsp;&nbsp;',
-//        );
-//        $before = '&nbsp;&nbsp;&nbsp;';
-//        $field = 'id,name';
-        $where = array('id' => array('neq', (int)($id)),'parent_id' => 0);
-//        $this->recursion(0, $data, $base, $before, $where, $field);
-        $data = $this->where($where)->select();
+        $data = [];
+        $base = array(
+            'void'     => '&nbsp;&nbsp;&nbsp;',
+            'end'      => '└&nbsp;&nbsp;',
+            'continue' => '├&nbsp;&nbsp;',
+            'left'     => '│&nbsp;&nbsp;',
+        );
+        $before = '&nbsp;&nbsp;&nbsp;';
+        $field = 'id,name';
+        $where = array('id' => array('neq', (int)($id)));
+        $this->recursion(0, $data, $base, $before, $where, $field);
+//        $data = $this->where($where)->select();
         $this->msg->data = $data;
         return $this->msg;
     }
