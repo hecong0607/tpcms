@@ -45,7 +45,7 @@ class Base extends Controller
         foreach ($this->layout as $k => $v) {
             foreach ($v as $key => $value) {
                 if((strcasecmp($value, CONTROLLER_NAME) == 0)){
-                    layout('layout/' . $k);
+                    layout('Layout/' . $k);
                 }
             }
         }
