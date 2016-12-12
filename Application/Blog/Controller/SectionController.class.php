@@ -1,6 +1,7 @@
 <?php
 namespace Blog\Controller;
 
+use Admin\Model\ConfigModel;
 use Blog\Model\ArticleModel;
 use Blog\Model\ArticleSecModel;
 
@@ -20,6 +21,12 @@ class SectionController extends Base
         $section = clone $sectionModel->isBlogSec($id);
         if ($section->status == true) {
             $this->assign('section', $section->data);
+
+            //栏目标题等信息
+            $pageInfo = $this->pageInfo;
+            $pageNum = empty($_GET['p'])? 1:$_GET['p'];
+            $pageInfo['title'] = $section->data['name'] . ' - 第' . $pageNum .  '页 --' . ConfigModel::getDataByName('site_name');
+            $this->assign('pageInfo',$pageInfo);
 
             //该栏目下的所有文章
             $articleMode = new ArticleModel();

@@ -1,6 +1,7 @@
 <?php
 namespace Blog\Controller;
 
+use Admin\Model\ConfigModel;
 use Think\Controller;
 
 class Base extends Controller
@@ -9,11 +10,21 @@ class Base extends Controller
         'main' => array('index', 'home'),
         'blog' => array('article', 'section', 'tag'),
     );
+    protected $pageInfo = array();
 
     public function __construct()
     {
         parent::__construct();
         $this->setLayouts();
+        $pageInfo = array(
+            'title' => ConfigModel::getDataByName('site_title'),
+            'keywords' => ConfigModel::getDataByName('site_keywords'),
+            'description' => ConfigModel::getDataByName('site_description'),
+            'record' => ConfigModel::getDataByName('site_record'),
+            'name' => ConfigModel::getDataByName('site_name'),
+        );
+        $this->pageInfo = $pageInfo;
+        $this->assign('pageInfo', $pageInfo);
     }
 
     public function _empty()

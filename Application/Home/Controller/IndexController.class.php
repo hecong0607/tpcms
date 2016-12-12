@@ -1,25 +1,25 @@
 <?php
 namespace Home\Controller;
 
-use Article\Model\ArticleModel;
-use Article\Model\ArticleSecModel;
-use Think\Controller;
+use Blog\Model\ArticleSecModel;
+use Blog\Model\ArticleModel;
 
-class IndexController extends Controller
+class IndexController extends Base
 {
-
-    public function IndexAction()
+    public function indexAction()
     {
-//        echo 'wait';die;
+        //获取博客数据
         $sectionModel = new ArticleSecModel();
-        $section = $sectionModel->getDataAll()->data;
-        $this->assign('section', $section);
+        $msgBlog = clone $sectionModel->getSectionByBlog();
+        $this->assign('blog', $msgBlog->data);
 
+        //获取动态数据--图赏
         $articleModel = new ArticleModel();
-        $pageConfig = array('url' => '/' );
-        $select = array();
-        $articles = $articleModel->getHomeData($select, $pageConfig)->data;
-        $this->assign('articles', $articles);
+        $msgPhoto = clone $articleModel->getDataByPhoto();
+        $this->assign('photo', $msgPhoto->data);
+        //获取动态数据--最新
+        $msgNew = clone $articleModel->getDataByNew();
+        $this->assign('new', $msgNew->data);
 
         $this->display('index');
     }

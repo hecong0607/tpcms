@@ -1,6 +1,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<title>{$title|default='河淙'}</title>
+<title>{$pageInfo['title']}</title>
+<meta name="keywords" content="{$pageInfo['keywords']}">
+<meta name="description" content="{$pageInfo['description']}">
 <link rel="stylesheet" href="__PUBLIC__/blog/css/jd.gallery.css" type="text/css" media="screen" charset="utf-8">
 <link rel="stylesheet" href="__PUBLIC__/blog/css/MenuMatic.css" type="text/css" media="screen" charset="utf-8">
 <link rel="shortcut icon" href="/favicon.ico">

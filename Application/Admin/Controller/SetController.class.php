@@ -38,4 +38,14 @@ class SetController extends Base
         $this->success('保存成功！', U('Admin/Set/Index',array('gid'=>$gid)));
     }
 
+    /**
+     * 刷新配置缓存信息
+     */
+    public function refreshDataAction()
+    {
+        $configModel = new ConfigModel();
+        $configModel->refreshData();
+        echo '刷新成功！';
+    }
+
 }

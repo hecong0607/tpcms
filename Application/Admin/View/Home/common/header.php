@@ -1,7 +1,7 @@
 <div id="loading" style="display: none;"><i class="loadingicon"></i><span>正在加载...</span></div>
 <div id="right_tools_wrapper">
-	<span id="right_tools_clearcache" title="清除缓存"
-          onclick="javascript:openapp('/index.php?g=admin&m=setting&a=clearcache','right_tool_clearcache','清除缓存');">
+	<span id="right_tools_clearcache" title="刷新配置缓存"
+          onclick="javascript:openapp('{:U('Set/refreshData')}','right_tool_clearcache','刷新配置缓存');">
 		<i class="fa fa-trash-o right_tool_icon"></i>
 	</span>
 	<span id="refresh_wrapper" title="刷新">

@@ -1,11 +1,20 @@
 <?php
 namespace Blog\Controller;
 
+use Admin\Model\ConfigModel;
 use Blog\Model\ArticleModel;
 use Blog\Model\ArticleSecModel;
 
 class IndexController extends Base
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $pageInfo = $this->pageInfo;
+        $pageInfo['title'] = '博客频道——' . ConfigModel::getDataByName('site_name');
+        $this->assign('pageInfo',$pageInfo);
+    }
+
     public function indexAction()
     {
         //获取博客数据

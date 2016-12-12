@@ -1,61 +1,92 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>错误</title>
+
+<!-- saved from url=(0064)http://www.nowamagic.net/librarys/veda1/channel/ProgramAndLife/1 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>404 Page Not Found</title>
+
     <style type="text/css">
-        * {
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,
+        form,fieldset,input,textarea,p,blockquote,th,td {
             padding: 0;
             margin: 0;
         }
 
-        body {
-            background: #fff;
-            font-family: '微软雅黑';
-            color: #333;
-            font-size: 16px;
+        table
+        {
+            border-collapse: collapse;
+            border-spacing: 0;
         }
 
-        .system-message {
-            padding: 24px 48px;
+        fieldset,img
+        {
+            border: 0;
         }
 
-        .system-message h1 {
-            font-size: 100px;
+        address,caption,cite,code,dfn,em,strong,th,var
+        {
             font-weight: normal;
-            line-height: 120px;
-            margin-bottom: 12px;
+            font-style: normal;
         }
 
-        .system-message .jump {
-            padding-top: 10px
+        ol,ul
+        {
+            list-style: none;
         }
 
-        .system-message .jump a {
-            color: #333;
+        caption,th
+        {
+            text-align: left;
         }
 
-        .system-message .success, .system-message .error {
-            line-height: 1.8em;
-            font-size: 36px
+        h1,h2,h3,h4,h5,h6
+        {
+            font-weight: normal;
+            font-size: 100%;
         }
 
-        .system-message .detail {
-            font-size: 12px;
-            line-height: 20px;
-            margin-top: 12px;
-            display: none
+        q:before,q:after
+        {
+            content:'';
         }
+
+        abbr,acronym
+        {
+            border: 0;
+        }
+
+        body {
+            background-color:	#fff;
+            font-family:		Lucida Grande, Verdana, Sans-serif;
+            font-size:			12px;
+            color:				#000;
+        }
+
+        #content  {
+            text-align:center;
+            background-color:	#fff;
+            padding:			20px 20px 12px 20px;
+        }
+
+        h1 {
+            font-weight:		normal;
+            font-size:			14px;
+            color:				#990000;
+            margin:				0 0 4px 0;
+        }
+        .tips { font-family:"PT Serif", Georgia, Times, "Times New Roman", "Heiti SC", "Microsoft Yahei", "微软雅黑", "宋体", serif; margin:2em 0 2em 0; font-size:14px;  }
     </style>
 </head>
 <body>
-<div class="system-message">
-    <h1>:(</h1>
-
-    <p class="error">{$error}</p>
-
-    <p class="detail"></p>
+<div class="tips" align="center"> [这是什么节奏？] 服务器君目前很忙，刷新下看看？</div>
+<div id="content">
+    <img src="__PUBLIC__/blog/images/404.jpg">
 </div>
-</body>
-</html>
+<div align="center" style="margin-top:2em;">
+    <p style="margin-bottom:1em;">或者继续访问：</p>
+    <span><a href="http://www.nowamagic.net/">网站首页</a></span> |
+    <span><a href="http://www.nowamagic.net/librarys/veda/">新博客</a></span> |
+    <span><a href="http://www.nowamagic.net/librarys/news/">互联网资讯</a></span> |
+    <span><a href="http://www.nowamagic.net/librarys/">魔法图书馆</a></span> |
+    <span><a href="http://www.nowamagic.net/librarys/eight/">晚八点</a></span>
+</div>
+
+</body></html>
