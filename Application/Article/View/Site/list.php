@@ -68,7 +68,7 @@
                     } ?></td>
                 <td><?= date('Y-m-d H:i', $value['create_time']); ?></td>
                 <td>
-                    <a href="{:U('/Articles/'.$value['id'])}" target="_blank">查看</a> |
+                    <a href="{:U('/Blog/Article/'.$value['id'])}" target="_blank">查看</a> |
                     <a href="{:U('Article/Site/save',array('id'=>$value['id']))}">修改</a> |
                     <a href="{:U('Article/Site/del',array('id'=>$value['id']))}">删除</a> |
                     <a href="{:U('Article/Site/release',array('id'=>$value['id']))}"><?= $value['status'] == Article\Model\ArticleModel::Enabled ? '待发布' : '发布' ?></a>
