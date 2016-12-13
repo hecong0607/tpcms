@@ -23,9 +23,7 @@ $config = array(
     'URL_ROUTER_ON'   => true,
     'URL_ROUTE_RULES'=>array(
         'Section/[:id\d]/[:p\d]' => 'Section/index',
-        'Tag/[:tags]/[:p\d]' => 'Tag/index',
-        'Articles/all/[:p\d]' => 'Articles/all',
-        'Articles/:id\d' => 'Articles/detail',
+        'Tag/[:tags|urldecode]/[:p\d]' => 'Tag/index',
         'Article/:id\d' => 'Article/index',
         ':p\d' => 'Index/index',
     ),
