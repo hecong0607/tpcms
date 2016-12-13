@@ -208,9 +208,10 @@ class ArticleModel extends Model
             $where['a.section_id'] = (int)$select['section_id'];
         }
         if(!empty($select['tag_name'])){
-            $where['d.name'] = $select['tag_name'];
-            $join .= ' left join ' . $db_prefix . 'article_tags_map as c on c.article_id=a.id ';
-            $join .= ' left join ' . $db_prefix . 'article_tags as d on d.id=c.tag_id ';
+            $where['a.tags'] = array('like','%'.$select['tag_name'].'%');
+//            $where['d.name'] = $select['tag_name'];
+//            $join .= ' left join ' . $db_prefix . 'article_tags_map as c on c.article_id=a.id ';
+//            $join .= ' left join ' . $db_prefix . 'article_tags as d on d.id=c.tag_id ';
         }
 
         $alias = 'a';
@@ -221,6 +222,7 @@ class ArticleModel extends Model
 //        $this->default_page = 1;
         $Page = new \Think\Page($count, $this->default_page, array(), $url);// 实例化分页类 传入总记录数和每页显示的记录数(30)
         $list = $this->where($where)->alias($alias)->join($join)->field($field)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+//        var_dump($this->getLastSql());die;
         $data = array(
             'page' => $Page->show(),
             'list' => $list,
