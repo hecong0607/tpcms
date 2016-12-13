@@ -19,7 +19,7 @@ class SectionController extends Base
         //查看是否博客栏目
         $sectionModel = new ArticleSecModel();
         $section = clone $sectionModel->isBlogSec($id);
-        if ($section->status == true) {
+        if (empty($id) || $section->status == true) {
             $this->assign('section', $section->data);
 
             //栏目标题等信息

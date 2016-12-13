@@ -202,6 +202,7 @@ class ArticleModel extends Model
         $where = array(
             'a.status' => self::Enabled,
             'a.flag' => self::Pended,
+            'b.parent_id' => ArticleSecModel::BlogId,
         );
         if(!empty($select['section_id'])){
             $where['a.section_id'] = (int)$select['section_id'];
