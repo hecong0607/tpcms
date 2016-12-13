@@ -40,11 +40,11 @@
                         <font color="#cccccc">拉黑</font>
                         <else/>
                         <a href="{:U('Admin/User/save',array('id'=>$value['id']))}">编辑</a> |
-                        <a href="{:U('Admin/User/del',array('id'=>$value['id']))}">删除</a> |
+                        <a class="js-ajax-delete" href="{:U('Admin/User/del',array('id'=>$value['id']))}">删除</a> |
                         <if condition="$value['status'] eq 1">
-                            <a href="{:U('Admin/User/setBlack',array('id'=>$value['id']))}">拉黑</a>
+                            <a class="js-ajax-delete" href="{:U('Admin/User/setBlack',array('id'=>$value['id']))}">拉黑</a>
                             <else/>
-                            <a href="{:U('Admin/User/setEnable',array('id'=>$value['id']))}">启用</a>
+                            <a class="js-ajax-delete" href="{:U('Admin/User/setEnable',array('id'=>$value['id']))}">启用</a>
                         </if>
                     </if>
                 </td>

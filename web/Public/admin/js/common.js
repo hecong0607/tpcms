@@ -202,6 +202,7 @@
     if ($('a.js-ajax-delete').length) {
         Wind.use('artDialog', function () {
             $('.js-ajax-delete').on('click', function (e) {
+                var messign = $(this).html();
                 e.preventDefault();
                 var $_this = this,
                     $this = $($_this),
@@ -210,7 +211,7 @@
                 art.dialog({
                     title: false,
                     icon: 'question',
-                    content: '确定要删除吗？',
+                    content: '确定要' + messign + '吗？',
                     follow: $_this,
                     close: function () {
                         $_this.focus();; //关闭时让触发弹窗的元素获取焦点
@@ -220,13 +221,13 @@
                     ok: function () {
                     	
                         $.getJSON(href).done(function (data) {
-                            if (data.state === 'success') {
+                            if (data.status === 1) {
                                 if (data.referer) {
                                     location.href = data.referer;
                                 } else {
                                     reloadPage(window);
                                 }
-                            } else if (data.state === 'fail') {
+                            } else if (data.status === 0) {
                                 //art.dialog.alert(data.info);
                             	//alert(data.info);//暂时处理方案
 				art.dialog({   

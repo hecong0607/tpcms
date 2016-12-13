@@ -25,7 +25,7 @@
                 <td>
                     <a href="{:U('Admin/Menu/show',array('id'=>$value['id']))}">查看</a> |
                     <a href="{:U('Admin/Menu/save',array('id'=>$value['id']))}">编辑</a> |
-                    <a href="{:U('Admin/Menu/del',array('id'=>$value['id']))}">删除</a>
+                    <a class="js-ajax-delete" href="{:U('Admin/Menu/del',array('id'=>$value['id']))}">删除</a>
                 </td>
             </tr>
         </foreach>

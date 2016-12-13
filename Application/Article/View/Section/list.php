@@ -44,7 +44,7 @@
                     <?php if($admin==1){ ?>
                     <a href="{:U('Article/Section/showAdmin',array('id'=>$value['id']))}">查看</a>
                     | <a href="{:U('Article/Section/save',array('id'=>$value['id']))}">修改</a>
-                    | <a href="{:U('Article/Section/del',array('id'=>$value['id']))}">删除</a>
+                    | <a class="js-ajax-delete" href="{:U('Article/Section/del',array('id'=>$value['id']))}">删除</a>
                     <?php } else { ?>
                         <a href="{:U('Article/Section/show',array('id'=>$value['id']))}">查看</a>
                     <?php } ?>

@@ -35,7 +35,7 @@
                         <a href="{:U('Admin/Role/show',array('id'=>$value['id']))}">查看</a> |
                         <a href="{:U('Admin/Role/setPower',array('id'=>$value['id']))}">权限设置</a> |
                         <a href="{:U('Admin/Role/save',array('id'=>$value['id']))}">修改</a> |
-                        <a href="{:U('Admin/Role/del',array('id'=>$value['id']))}">删除</a>
+                        <a class="js-ajax-delete" href="{:U('Admin/Role/del',array('id'=>$value['id']))}">删除</a>
                     </if>
                 </td>
             </tr>
