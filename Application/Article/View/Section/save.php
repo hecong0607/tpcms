@@ -94,6 +94,7 @@
 <script type="text/javascript">
     $(function () {
         var editor = new wangEditor('content');
+        editor.config.pasteFilter = false;
         editor.config.menus = ['source', '|', 'bold', 'underline', 'italic', 'strikethrough', 'eraser', 'forecolor', 'bgcolor', '|', 'quote', 'fontfamily', 'fontsize', 'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright', '|', 'link', 'unlink', 'table', '|', 'img', 'video', '|', 'undo', 'redo', 'fullscreen'];//'location','emotion',
         editor.create();
     });
