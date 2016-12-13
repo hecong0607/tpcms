@@ -59,13 +59,17 @@ class ArticleModel extends Model
      */
     public function getDataByNew()
     {
-        //已发布，并且已经审核
+        $db_prefix = C('DB_PREFIX');
+        $join = 'left join ' . $db_prefix . 'article_section as b on a.section_id=b.id ';
         $where = array(
-            'status' => self::Enabled,
-            'flag' => self::Pended,
+            'a.status' => self::Enabled,
+            'a.flag' => self::Pended,
+            'b.parent_id' => ArticleSecModel::BlogId,
         );
+        $alias = 'a';
         $limit = 10;
-        $data = $this->where($where)->field(array('content'), true)->order('create_time desc')->limit($limit)->select();
+        $field = 'a.id, a.title, a.create_time';
+        $data = $this->where($where)->alias($alias)->join($join)->field($field)->order('a.create_time desc')->limit($limit)->select();
         $this->msg->data = $data;
         return $this->msg;
     }
@@ -225,7 +229,7 @@ class ArticleModel extends Model
     }
 
     /**
-     * 根据$select获取文章列表数据
+     * 根据$select获取文章详情数据
      * @param array $select
      * @return \Common\Controls\Msg
      */
@@ -235,6 +239,7 @@ class ArticleModel extends Model
             'a.status' => self::Enabled,
             'a.flag' => self::Pended,
             'a.id' => (int)$select['articleId'],
+            'b.parent_id' => ArticleSecModel::BlogId,
         );
         $db_prefix = C('DB_PREFIX');
         $join = 'left join ' . $db_prefix . 'article_section as b on a.section_id=b.id ';

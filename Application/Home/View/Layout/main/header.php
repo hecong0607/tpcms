@@ -15,7 +15,7 @@
     <div id="global-nav">
         <div id="global-nav-inner">
             <ul class="clearfix">
-                <li class="order-reload reload"><a id="reload-topics" href="/" title="<?= \Admin\Model\ConfigModel::getDataByName('site_head_right_title');?>"><?= \Admin\Model\ConfigModel::getDataByName('site_head_right_title');?></a></li>
+                <li class="order-reload "><a style="padding:0;" href="/" title="<?= \Admin\Model\ConfigModel::getDataByName('site_head_right_title');?>"><img style="height: 39px;vertical-align: top;display: block;" src="<?= \Admin\Model\ConfigModel::getDataByName('site_logo');?>"></a></li>
                 <li class="order order-new"><a href="/"><span class="png">首页</span></a></li>
                 <li class="order order-hot"><a href="{:U('/Blog')}"><span class="png">博客</span></a></li>
             </ul>

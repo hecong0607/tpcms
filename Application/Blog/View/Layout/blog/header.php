@@ -11,8 +11,7 @@
 <div id="header">
     <div id="header_content">
         <div id="logo">
-            <h1><a href="{:U('/Blog')}">愿青龙指引你</a></h1>
-            <h2>成功，唯有积累，没有奇迹</h2>
+            <h1><a href="{:U('/Blog')}" title="<?= \Admin\Model\ConfigModel::getDataByName('site_head_right_title');?>"><img style="height: 42px;" src="<?= \Admin\Model\ConfigModel::getDataByName('site_logo');?>"></a><span style="margin-left:10px;;margin-top: 10px;position: absolute;"><?= \Admin\Model\ConfigModel::getDataByName('site_head_right_title');?></span></h1>
         </div>
 
     </div>
