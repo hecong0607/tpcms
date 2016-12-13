@@ -16,6 +16,14 @@ class ArticleController extends Base
         );
         $article = $articleModel->getHomeDetail($select)->data;
         if(!empty($article)) {
+            //阅读量+1，当前设置cookie，2分钟
+            $cookieName = md5($article['id']);
+            $cookie = $_COOKIE[$cookieName];
+            if(empty($cookie)){
+                $value = md5('value');
+                setcookie($cookieName,$value, time()+ArticleModel::ViewTime*60);
+                $articleModel->viewAdd($article['id']);
+            }
 
             //文章详情的标题等信息
             $pageInfo = $this->pageInfo;

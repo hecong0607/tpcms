@@ -35,6 +35,8 @@ class ArticleModel extends Model
     const PendingEditing = 1;    //待审核-未修改
     const PendingEdited = 0;   //待审核已经修改
 
+    const ViewTime = 5;     //cookie存储分钟数，之后才继续增加阅读量
+
     /**
      * 根据栏目id获取数据，详情除外，限制10
      * @param $section_id
@@ -258,6 +260,18 @@ class ArticleModel extends Model
             $this->msg->data = $data;
         }
         return $this->msg;
+    }
+
+    /**
+     * 文章阅读量+1
+     * @param $article_id
+     */
+    public function viewAdd($article_id)
+    {
+        $where = array(
+          'id' => (int)$article_id,
+        );
+        $this->where($where)->setInc('view'); // 用户的积分加1
     }
 
 }
