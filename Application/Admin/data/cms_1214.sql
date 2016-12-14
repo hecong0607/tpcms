@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-12-09 11:21:36
+-- Generation Time: 2016-12-14 02:28:29
 -- 服务器版本： 5.6.17-log
 -- PHP Version: 5.5.12
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `cms_admin_menu_rule` (
   `logo` varchar(50) NOT NULL COMMENT '图标',
   PRIMARY KEY (`id`),
   KEY `parentid` (`parent_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='后台菜单权限表' AUTO_INCREMENT=77 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='后台菜单权限表' AUTO_INCREMENT=78 ;
 
 --
 -- 转存表中的数据 `cms_admin_menu_rule`
@@ -109,7 +109,8 @@ INSERT INTO `cms_admin_menu_rule` (`id`, `parent_id`, `route`, `type`, `left_nam
 (73, 49, '/Article/Tags/list', 0, '', '标签管理--管理员', '', '', 3, 'caret-right'),
 (74, 73, '/Article/Tags/list', 1, '', '标签列表', '', '', 1, 'angle-double-right'),
 (75, 68, '/Article/Site/setPopular', 2, '', '设置热门', '', '', 1, 'angle-right'),
-(76, 68, '/Article/Site/setRecommend', 2, '', '设置推荐', '', '', 2, 'angle-right');
+(76, 68, '/Article/Site/setRecommend', 2, '', '设置推荐', '', '', 2, 'angle-right'),
+(77, 48, '/Admin/Set/Update', 2, '', '菜单保存--操作', '', '', 1, 'angle-right');
 
 -- --------------------------------------------------------
 
@@ -282,13 +283,9 @@ CREATE TABLE IF NOT EXISTS `cms_article` (
 --
 
 INSERT INTO `cms_article` (`id`, `user_id`, `section_id`, `face`, `thumb`, `title`, `summary`, `content`, `tags`, `view`, `create_time`, `update_time`, `status`, `popular`, `recommend`, `flag`) VALUES
-(1, 1, 5, '/Public/images/face/20161124/5836bca04ae58.png', '', '测试标签2', '这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要', '&lt;p&gt;是否&lt;/p&gt;', '', 5, 1479982242, 1481186904, 1, 0, 0, 0),
 (3, 2, 7, '', '', '测试标签', '', '', '新的标签1，新的标签2', 0, 1480408982, 1480486214, 1, 0, 0, 0),
-(4, 1, 7, '/Public/images/face/20161202/5841306512829.jpg', '/Public/images/thumb/5841306512829.jpg', '打算', '这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要这里是摘要', '&lt;p style=&quot;text-align: center; &quot;&gt;&lt;b&gt;这里是测试&lt;/b&gt;&lt;/p&gt;&lt;p&gt;是的，这里是测试内容，&lt;font color=&quot;#ff0000&quot;&gt;红色&lt;/font&gt;，&lt;font color=&quot;#0000ff&quot;&gt;蓝色&lt;/font&gt;，&lt;font color=&quot;#ffcc00&quot;&gt;黄色&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;', '标签1，标签2，标签3，标签4，标签5，标签6，标签7，标签8，新的标签1', 0, 1480409379, 1481186876, 1, 1, 0, 0),
-(5, 1, 5, '', '', '打算', '', '', '', 0, 1480409421, 1481186916, 1, 0, 0, 0),
 (6, 1, 7, '', '', '打算', '', '', '', 0, 1480409437, 1481186852, 1, 1, 0, 0),
 (7, 1, 4, '/Public/images/face/20161208/5849234d0b16f.jpg', '/Public/images/thumb/5849234d0b16f.jpg', '打算', '', '', '', 0, 1480409452, 1481188175, 1, 0, 0, 0),
-(8, 1, 5, '', '', '打算', '今天发现系统后台的某个抓取页面突然失效了，Google了一下，大概意思就是，在主线程里使用同步的ajax请求对用户体验有影响，所以不让用了。先是把async: false注释掉，发现抓取依然是不行。照理这个是警告，不会阻止程序的运行才对的。于是加上$.ajax的error选项，发现jqXHR.status输出 200，就是网络是通的。而jqXHR.responseText返回了一处PHP报错，定位到错误处，发现$array file_get_contents($url); 报错了', '', '', 0, 1480409682, 1481186669, 1, 1, 0, 0),
 (9, 1, 9, '', '', '这是一个什么样的网站', '这是一个什么样的网站的摘要', '&lt;p&gt;这是一个什么样的网站的内容&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;http://www.baidu.com&quot; target=&quot;_blank&quot;&gt;@百度&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;', '', 0, 1481250641, 1481251304, 1, 0, 1, 0),
 (10, 1, 10, '', '', '现代简明魔法', 'http://www.nowamagic.net', '', '', 0, 1481252860, 1481255422, 1, 0, 0, 0),
 (11, 1, 11, '/Public/images/face/20161209/584a279629c0d.jpg', '/Public/images/thumb/584a279629c0d.jpg', '图赏一', '', '', '', 0, 1481254810, 0, 1, 0, 0, 0),
@@ -308,7 +305,7 @@ CREATE TABLE IF NOT EXISTS `cms_article_face` (
   `thumb` varchar(255) NOT NULL COMMENT '缩略图',
   `time` int(11) unsigned NOT NULL COMMENT '时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='文章封面图片列表' AUTO_INCREMENT=30 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='文章封面图片列表' AUTO_INCREMENT=45 ;
 
 --
 -- 转存表中的数据 `cms_article_face`
@@ -336,7 +333,22 @@ INSERT INTO `cms_article_face` (`id`, `user_id`, `url`, `thumb`, `time`) VALUES
 (26, 1, '/Public/images/face/20161208/5849234d0b16f.jpg', '/Public/images/thumb/5849234d0b16f.jpg', 1481188173),
 (27, 1, '/Public/images/face/20161209/584a279629c0d.jpg', '/Public/images/thumb/584a279629c0d.jpg', 1481254806),
 (28, 1, '/Public/images/face/20161209/584a2a3229273.jpg', '/Public/images/thumb/584a2a3229273.jpg', 1481255474),
-(29, 1, '/Public/images/face/20161209/584a559e42137.jpg', '/Public/images/thumb/584a559e42137.jpg', 1481266590);
+(29, 1, '/Public/images/face/20161209/584a559e42137.jpg', '/Public/images/thumb/584a559e42137.jpg', 1481266590),
+(30, 1, '/Public/images/face/20161212/584e1b06921e3.jpg', '/Public/images/thumb/584e1b06921e3.jpg', 1481513734),
+(31, 1, '/Public/images/face/20161212/584e1d4795c7e.jpg', '/Public/images/thumb/584e1d4795c7e.jpg', 1481514311),
+(32, 1, '/Public/images/face/20161212/584e1d66596b5.jpg', '/Public/images/thumb/584e1d66596b5.jpg', 1481514342),
+(33, 1, '/Public/images/face/20161212/584e1e1d14380.jpg', '/Public/images/thumb/584e1e1d14380.jpg', 1481514525),
+(34, 1, '/Public/images/face/20161212/584e1e407f5b3.jpg', '/Public/images/thumb/584e1e407f5b3.jpg', 1481514560),
+(35, 1, '/Public/images/face/20161212/584e1e63797ec.jpg', '/Public/images/thumb/584e1e63797ec.jpg', 1481514595),
+(36, 1, '/Public/images/face/20161212/584e20b6abf54.jpg', '/Public/images/thumb/584e20b6abf54.jpg', 1481515190),
+(37, 1, '/Public/images/face/20161212/584e217c3d098.jpg', '/Public/images/thumb/584e217c3d098.jpg', 1481515388),
+(38, 1, '/Public/images/face/20161212/584e21a585642.jpg', '/Public/images/thumb/584e21a585642.jpg', 1481515429),
+(39, 1, '/Public/images/face/20161212/584e21b611a7b.jpg', '/Public/images/thumb/584e21b611a7b.jpg', 1481515446),
+(40, 1, '/Public/images/face/20161212/584e5eefd4c65.jpg', '/Public/images/thumb/584e5eefd4c65.jpg', 1481531120),
+(41, 1, '/Public/images/face/20161212/584e5fcda843c.jpg', '/Public/images/thumb/584e5fcda843c.jpg', 1481531341),
+(42, 1, '/Public/images/face/20161212/584e6026256b8.jpg', '/Public/images/thumb/584e6026256b8.jpg', 1481531430),
+(43, 1, '/Public/images/face/20161212/584e605e83399.jpg', '/Public/images/thumb/584e605e83399.jpg', 1481531486),
+(44, 1, '/Public/images/face/20161213/584f5e671849b.png', '/Public/images/thumb/584f5e671849b.png', 1481596519);
 
 -- --------------------------------------------------------
 
@@ -400,25 +412,28 @@ CREATE TABLE IF NOT EXISTS `cms_article_tags` (
   `num` int(11) unsigned NOT NULL COMMENT '引用数量',
   PRIMARY KEY (`id`),
   KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='标签列表' AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='标签列表' AUTO_INCREMENT=16 ;
 
 --
 -- 转存表中的数据 `cms_article_tags`
 --
 
 INSERT INTO `cms_article_tags` (`id`, `name`, `num`) VALUES
-(1, '标签1', 1),
-(2, '标签3', 1),
-(3, '标签4', 1),
-(4, '新的标签1', 2),
+(1, '标签1', 0),
+(2, '标签3', 0),
+(3, '标签4', 0),
+(4, '新的标签1', 1),
 (5, '新的标签2', 1),
-(6, '标签2', 1),
-(7, '标签5', 1),
-(8, '标签6', 1),
-(9, '标签7', 1),
-(10, '标签8', 1),
+(6, '标签2', 0),
+(7, '标签5', 0),
+(8, '标签6', 0),
+(9, '标签7', 0),
+(10, '标签8', 0),
 (11, '标签8,标签', 0),
-(12, '', 5);
+(12, '', 2),
+(13, '中文', 0),
+(14, '中文zhongwen', 0),
+(15, '引文', 0);
 
 -- --------------------------------------------------------
 
@@ -437,17 +452,8 @@ CREATE TABLE IF NOT EXISTS `cms_article_tags_map` (
 --
 
 INSERT INTO `cms_article_tags_map` (`tag_id`, `article_id`) VALUES
-(1, 4),
-(2, 4),
-(3, 4),
 (4, 3),
-(4, 4),
 (5, 3),
-(6, 4),
-(7, 4),
-(8, 4),
-(9, 4),
-(10, 4),
 (12, 9),
 (12, 10),
 (12, 11),
@@ -479,14 +485,19 @@ CREATE TABLE IF NOT EXISTS `cms_config` (
 
 INSERT INTO `cms_config` (`name`, `type`, `value`, `info`, `desc`, `gid`, `sort`, `status`) VALUES
 ('article_name', 'type=text&style=width:240px', '文章2', '文章测试', '文章测试详情', 3, 0, 1),
-('hidden_description', 'type=textarea&rows=5&cols=93', '吾爱源码', '大的输入框', '这里是提示', 1, 0, 0),
-('hidden_logo', 'type=image', '图片地址', '上传图片', '这里是提示', 1, 0, 0),
+('hidden_description', 'type=textarea&rows=3&cols=20&style=width:240px', '这里是当前值', '大的输入框信息', '这里是提示', 1, 0, 0),
+('hidden_img', 'type=img&style=width:240px', '', '站点图片', '网站的站点图片', 1, 0, 0),
 ('hidden_name', 'type=text&style=width:240px', '这里是当前值', '输入框信息', '这里是提示', 1, 0, 0),
-('hidden_onoff', 'type=radio', 'false', '开启关闭按钮', '这里是提示', 1, 0, 0),
-('hidden_redirect', 'type=select&multiple=multiple&value=0:不跳转|1:自动跳转|2:询问跳转', '1', '选择框', '这里是提示', 1, 0, 0),
-('site_name', 'type=text&style=width:240px', '河淙5', '站点名称', '网站的站点名称', 2, 0, 1),
-('site_onoff', 'type=radio&value=0:关闭|1:开启', '1', '开启关闭按钮', '这里是提示', 2, 0, 1),
-('site_redirect', 'type=select&value=0:不跳转|1:自动跳转|2:询问跳转', '1', '测试框', '这是测试', 2, 0, 1);
+('hidden_onoff', 'type=radio&value=0:关闭|1:开启', '1', '开启关闭按钮', '这里是提示', 1, 0, 0),
+('hidden_redirect', 'type=select&value=0:不跳转|1:自动跳转|2:询问跳转', '1', '选择框', '这里是提示', 1, 0, 0),
+('site_description', 'type=textarea&style=width:480px;height:80px', '游学者 · 河淙是一个清新的、专注于将Web开发技术尽可能简明易懂地描述出来的博客，在这里你可以轻松愉快地学习Web开发技术。         ', '站点默认详情', '网站的默认详情', 2, 6, 1),
+('site_head_left_title', 'type=text&style=width:480px', '深渊中淙淙轻咏着的河流，河淙，何从。', '头部标题左', '网站的头部左侧标题', 2, 2, 1),
+('site_head_right_title', 'type=text&style=width:480px', '愿青龙指引你', '头部标题右', '网站的头部右侧标题', 2, 3, 1),
+('site_keywords', 'type=text&style=width:480px', '游学者 · 河淙,Web开发,编程技术,PHP', '站点默认关键词', '网站的默认关键词', 2, 5, 1),
+('site_logo', 'type=img&style=width:240px', '/Public/images/face/20161213/584f5e671849b.png', '站点logo', '网站的logo', 2, 7, 1),
+('site_name', 'type=text&style=width:240px', '游学者 · 河淙', '站点名称', '网站的站点名称', 2, 1, 1),
+('site_record', 'type=textarea&style=width:480px;height:80px', '© 2015 - 2016  597kkk.cn  All Rights Reserved.  闽ICP备15017695号-2     ', '站点备案信息', '网站的备案信息', 2, 8, 1),
+('site_title', 'type=text&style=width:480px', '游学者 · 河淙——专注各种web技术', '站点默认标题', '网站的默认标题', 2, 4, 1);
 
 -- --------------------------------------------------------
 
